@@ -28,7 +28,7 @@ const Home = () => {
 
     axios.interceptors.request.use(function (config) {
 
-        config.headers.Authorization =  ("Bearer " + token);
+        config.headers.Authorization =  ("Bearer " + token.accessToken);
 
         return config;
     });

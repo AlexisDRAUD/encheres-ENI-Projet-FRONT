@@ -6,7 +6,7 @@ const key = JSON.parse(localStorage.getItem('user'));
 
 axios.interceptors.request.use(function (config) {
 
-    config.headers.Authorization =  ("Bearer " + key);
+    config.headers.Authorization =  ("Bearer " + key.accessToken);
 
     return config;
 });
