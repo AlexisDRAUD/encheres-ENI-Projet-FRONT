@@ -1,7 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import ArticleService from "../../service/articleService";
 import CategorieService from "../../service/categorieService";
-import { Card, TextField, Button, Select, MenuItem, InputLabel, FormControl, CardContent, Typography, Grid } from '@mui/material';
+import {
+    Card,
+    TextField,
+    Button,
+    Select,
+    MenuItem,
+    InputLabel,
+    FormControl,
+    CardContent,
+    Typography,
+    Grid,
+} from '@mui/material';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
     const [articles, setArticles] = useState([]);
@@ -77,10 +89,11 @@ const Home = () => {
             <Grid container spacing={3} justifyContent="center" style={{ marginTop: '20px' }}>
                 {articles.map(article => (
                     <Grid item key={article.id} xs={12} sm={6} md={4} lg={3}>
-                        <Card>
-                            <CardContent>
+                        <Link to={`/article/${article.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                        <Card >
+                            <CardContent >
                                 <Typography gutterBottom variant="h5" component="div">
-                                    {article.nomArticle}
+                                        {article.nomArticle}
                                 </Typography>
                                 <Typography variant="body2" color="text.secondary">
                                     Prix : {article.prixVente}
@@ -96,6 +109,7 @@ const Home = () => {
                                 </Typography>
                             </CardContent>
                         </Card>
+                        </Link>
                     </Grid>
                 ))}
             </Grid>
