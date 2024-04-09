@@ -12,6 +12,21 @@ const ArticleService = {
             throw error;
         }
     },
+    addArticle: async (article) => {
+        const response = await fetch('http://localhost:8080/article/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(article),
+        });
+
+        if (!response.ok) {
+            throw new Error('Error adding article');
+        }
+
+        return await response.json();
+    },
 };
 
 export default ArticleService;

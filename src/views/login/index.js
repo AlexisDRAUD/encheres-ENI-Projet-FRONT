@@ -17,7 +17,7 @@ const Login = () => {
                 motDePasse
             });
             localStorage.setItem('jwt', response.data);
-            navigate('/films'); // Navigates to the '/films' route after successful login
+            navigate('/'); // Navigates to the '/films' route after successful login
         } catch (error) {
             console.error('Erreur de connexion:', error);
         }
