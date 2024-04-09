@@ -10,6 +10,7 @@ import Profil from "./views/profile";
 import CreateArticleForm from "./views/article/add";
 import ArticleDetail from "./views/article/detail";
 
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>

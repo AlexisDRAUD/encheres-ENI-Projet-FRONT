@@ -1,23 +1,20 @@
 import React, { useState } from 'react';
-import axios from 'axios'; // ensure axios is installed
 import { TextField, Button, Box, Typography, FormControl } from '@mui/material';
-import { useNavigate } from 'react-router-dom'; // ensure react-router-dom is installed
+import { useNavigate } from 'react-router-dom';
+import AuthService from '../../service/auth-service'; // Importing the AuthService
 
 const Login = () => {
     const [pseudo, setPseudo] = useState('');
     const [motDePasse, setMotDePasse] = useState('');
-    const navigate = useNavigate(); // This is to programmatically navigate to another route
+    const navigate = useNavigate();
 
     const login = async (event) => {
-        event.preventDefault(); // Prevents the default form submit action
+        event.preventDefault();
 
         try {
-            const response = await axios.post('/login', {
-                pseudo,
-                motDePasse
-            });
-            localStorage.setItem('jwt', response.data);
-            navigate('/'); // Navigates to the '/films' route after successful login
+            const response = await AuthService.login(pseudo, motDePasse); // Using the login method from AuthService
+            localStorage.setItem('user', JSON.stringify(response)); // Assuming response contains user data
+            navigate('/');
         } catch (error) {
             console.error('Erreur de connexion:', error);
         }

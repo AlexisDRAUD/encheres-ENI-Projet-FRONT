@@ -32,7 +32,7 @@ const ArticleService = {
             const response = await axios.get(`${API_URL}/article/detail/${id}`);
             return response.data;
         } catch (error) {
-            console.error("Erreur lors de la récupération des donné de l'article:", error);
+            console.error("Erreur lors de la récupération des donné de l'articles:", error);
             throw error;
         }
     },
