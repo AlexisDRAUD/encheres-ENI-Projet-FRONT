@@ -15,7 +15,7 @@ axios.interceptors.request.use(function (config) {
 const UtilisateurService = {
     getUtilisateurById: async () => {
         try {
-            const response = await axios.get(`${API_URL}/user/17`);
+            const response = await axios.get(`${API_URL}/user/${key.id}`);
             return response.data;
         } catch (error) {
             console.error('Erreur lors de la récupération de l\'utilisateur:', error);
@@ -25,7 +25,7 @@ const UtilisateurService = {
 
     updateUser: async(utilisateur) => {
         try {
-            await axios.put(`${API_URL}/user/2`, utilisateur);
+            await axios.put(`${API_URL}/user/${key.id}`, utilisateur);
         } catch (error) {
             console.error('Erreur lors de la récupération de l\'utilisateur:', error);
             throw error;
@@ -34,7 +34,7 @@ const UtilisateurService = {
 
     deleteUser: async() => {
         try {
-            await axios.delete(`${API_URL}/user/2`);
+            await axios.delete(`${API_URL}/user/${key.id}`);
         } catch (error) {
             console.error('Erreur lors de la supprission de l\'utilisateur:', error);
             throw error;
