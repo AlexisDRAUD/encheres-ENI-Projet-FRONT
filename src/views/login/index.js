@@ -28,7 +28,7 @@ const Login = () => {
             <form onSubmit={login}>
                 <FormControl fullWidth margin="normal">
                     <TextField
-                        label="Nom d'utilisateur"
+                        label="Nom d'utilisateur ou email"
                         variant="outlined"
                         id="username"
                         value={pseudo}
