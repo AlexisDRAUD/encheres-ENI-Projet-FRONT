@@ -25,7 +25,8 @@ const CategorieService = {
     },
     addCategorie: async (categorie) => {
         try {
-        await axios.post(`${API_URL}/categorie/add`, categorie);
+        const reponse = await axios.post(`${API_URL}/categorie/add`, categorie);
+        console.error('reponse ADD:', reponse);
         } catch (error) {
             console.error('Erreur d\'enregistrement en base:', error);
             throw error;
