@@ -41,11 +41,10 @@ const UtilisateurService = {
     updateUser: async(utilisateur) => {
         if (key) {
             try {
-                const response= await axios.put(`${API_URL}/user/${key.id}`, utilisateur);
-                return response.data
+                await axios.put(`${API_URL}/user/${key.id}`, utilisateur);
             } catch (error) {
                 console.error('Erreur lors de la récupération de l\'utilisateur:', error);
-                throw error;
+                return error.response.data;
             }
         }else {
             return {}

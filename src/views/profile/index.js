@@ -63,14 +63,18 @@ const Profil = () => {
         try {
             if (isCreation) {
                 const response = await UtilisateurService.addUser(utilisateur)
-                console.log(response)
                 if (response) {
                     setErrors(response)
                 } else {
                     navigate("/")
                 }
             } else {
-                await UtilisateurService.updateUser(utilisateur)
+                const response = await UtilisateurService.updateUser(utilisateur)
+                if (response) {
+                    setErrors(response)
+                } else {
+                    navigate("/")
+                }
             }
         } catch (error) {
             console.error('Erreur lors de la mise à jour des informations utilisateur :', error);
