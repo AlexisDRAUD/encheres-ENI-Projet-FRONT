@@ -11,10 +11,10 @@ import AuthService from "../../service/auth-service";
 
 const logout = () => {
     AuthService.logout();
-    localStorage.removeItem("user");
+    sessionStorage.removeItem("user");
 };
 const Navbar = () => {
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(sessionStorage.getItem('user'));
 
     return (
         <AppBar position="static">

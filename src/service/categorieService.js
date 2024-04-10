@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API_URL = 'http://localhost:8080';
-const key = JSON.parse(localStorage.getItem('user'));
+const key = JSON.parse(sessionStorage.getItem('user'));
 
 if (key) {
     axios.interceptors.request.use(function (config) {

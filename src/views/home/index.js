@@ -24,7 +24,7 @@ const Home = () => {
     const [categories, setCategories] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(sessionStorage.getItem('user'));
 
     useEffect(() => {
         const fetchResources = async () => {
