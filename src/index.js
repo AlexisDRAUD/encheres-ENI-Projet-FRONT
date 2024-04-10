@@ -8,6 +8,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from "./views/login";
 import Profil from "./views/profile";
 import CreateArticleForm from "./views/article/add";
+import CreateCategorieForm from "./views/categorie/add";
 import ArticleDetail from "./views/article/detail";
 
 
@@ -20,6 +21,7 @@ root.render(
                 <Route path="/" element={<Home/>} />
                 <Route path="/article/:id" element={<ArticleDetail />} />
                 <Route path="/article/add" element={<CreateArticleForm/>} />
+                <Route path="/categorie/gestion" element={<CreateCategorieForm/>} />
                 <Route path="/login" element={<Login/>} />
                 <Route path="/profil" element={<Profil/>} />
             </Routes>

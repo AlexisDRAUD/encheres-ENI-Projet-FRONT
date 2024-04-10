@@ -13,12 +13,29 @@ if (key) {
 }
 
 const CategorieService = {
+
     getAllCategories: async () => {
         try {
             const response = await axios.get(`${API_URL}/categorie`);
             return response.data;
         } catch (error) {
-            console.error('Erreur lors de la récupération des articles:', error);
+            console.error('Erreur lors de la récupération des catégories:', error);
+            throw error;
+        }
+    },
+    addCategorie: async (categorie) => {
+        try {
+        await axios.post(`${API_URL}/categorie/add`, categorie);
+        } catch (error) {
+            console.error('Erreur d\'enregistrement en base:', error);
+            throw error;
+        }
+    },
+    deleteCategorie: async (id) => {
+        try {
+        await axios.post(`${API_URL}/categorie/delete/${id}`);
+        } catch (error) {
+            console.error('Erreur lors de la suppression en base:', error);
             throw error;
         }
     },

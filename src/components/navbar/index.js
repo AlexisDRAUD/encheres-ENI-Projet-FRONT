@@ -24,6 +24,11 @@ const Navbar = () => {
                 </Typography>
                 {user ? (
                     <>
+                        <Link to={`/categorie/gestion`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                            <Typography variant="h6" component="div" sx={{ flexGrow: 0 }}>
+                                Gérer les catégories
+                            </Typography>
+                        </Link>
                         <Link to={`/article/add`} style={{ textDecoration: 'none', color: 'inherit' }}>
                             <Typography variant="h6" component="div" sx={{ flexGrow: 0 }}>
                                 Vendre un article
