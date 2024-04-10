@@ -23,22 +23,32 @@ const UtilisateurService = {
                 console.error('Erreur lors de la récupération de l\'utilisateur:', error);
                 throw error;
             }
-        }else {
-            return 'not connected'
+        } else {
+            return {}
         }
 
+    },
+
+    addUser: async(utilisateur) => {
+        try {
+            await axios.post(`${API_URL}/auth/signup`, utilisateur);
+        } catch (error) {
+            console.error('Erreur lors de la création de l\'utilisateur:', error);
+            return error.response.data;
+        }
     },
 
     updateUser: async(utilisateur) => {
         if (key) {
             try {
-                await axios.put(`${API_URL}/user/${key.id}`, utilisateur);
+                const response= await axios.put(`${API_URL}/user/${key.id}`, utilisateur);
+                return response.data
             } catch (error) {
                 console.error('Erreur lors de la récupération de l\'utilisateur:', error);
                 throw error;
             }
         }else {
-            return'not conected'
+            return {}
         }
     },
 
@@ -51,7 +61,7 @@ const UtilisateurService = {
                 throw error;
             }
         }else {
-            return 'not connected'
+            return {}
         }
     }
 };

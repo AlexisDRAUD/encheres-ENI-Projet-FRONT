@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TextField, Button, Box, Typography, FormControl } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import AuthService from '../../service/auth-service'; // Importing the AuthService
 
 const Login = () => {
@@ -48,6 +48,9 @@ const Login = () => {
                     Se connecter
                 </Button>
             </form>
+            <Button component={Link} to="/profil/create" variant="contained" color="primary">
+                Créer un compte
+            </Button>
         </Box>
     );
 };
