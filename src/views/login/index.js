@@ -10,10 +10,9 @@ const Login = () => {
 
     const login = async (event) => {
         event.preventDefault();
-
+        console.log("login");
         try {
-            const response = await AuthService.login(pseudo, motDePasse); // Using the login method from AuthService
-            localStorage.setItem('user', JSON.stringify(response)); // Assuming response contains user data
+            await AuthService.login(pseudo, motDePasse);
             navigate('/');
         } catch (error) {
             console.error('Erreur de connexion:', error);

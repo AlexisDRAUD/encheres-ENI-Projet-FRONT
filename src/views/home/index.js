@@ -13,9 +13,10 @@ import {
     CardContent,
     Typography,
     Grid,
+    Checkbox,
+    FormControlLabel
 } from '@mui/material';
 import { Link } from 'react-router-dom';
-import axios from "axios";
 
 
 const Home = () => {
@@ -23,15 +24,7 @@ const Home = () => {
     const [categories, setCategories] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
-    const [currentUser, setCurrentUser] = useState(null);
-    const token = JSON.parse(localStorage.getItem('user'));
-
-    axios.interceptors.request.use(function (config) {
-
-        config.headers.Authorization =  ("Bearer " + token.accessToken);
-
-        return config;
-    });
+    const user = JSON.parse(localStorage.getItem('user'));
 
     useEffect(() => {
         const fetchResources = async () => {
@@ -41,18 +34,12 @@ const Home = () => {
                 setArticles(articlesData);
                 setCategories(categoriesData);
             } catch (error) {
-                // handle errors or set default values
+                console.error("Error fetching resources:", error);
             }
         };
 
         fetchResources();
-
-        // Émulation de componentDidMount pour obtenir l'utilisateur actuel
-        const user = AuthService.getCurrentUser();
-        if (user) {
-            setCurrentUser(user);
-        }
-    }, []); // Tableau de dépendances vide pour exécuter une seule fois
+    }, []);
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
@@ -62,9 +49,97 @@ const Home = () => {
         setSelectedCategory(event.target.value);
     };
 
-    const logout = () => {
-        AuthService.logout();
-        setCurrentUser(null); // Réinitialiser l'état currentUser après la déconnexion
+    const FilterGrid = () => {
+        const [filters, setFilters] = useState({
+            openBids: false,
+            ongoingBids: false,
+            wonBids: false,
+            ongoingSales: false,
+            notStartedSales: false,
+            completedSales: false,
+        });
+
+        const handleCheckboxChange = (event) => {
+            setFilters({
+                ...filters,
+                [event.target.name]: event.target.checked,
+            });
+        };
+
+        return (
+            <Grid container spacing={2}>
+                <Grid item xs={6}>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Achats
+                    </Typography>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={filters.openBids}
+                                onChange={handleCheckboxChange}
+                                name="openBids"
+                            />
+                        }
+                        label="enchères ouvertes"
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={filters.ongoingBids}
+                                onChange={handleCheckboxChange}
+                                name="ongoingBids"
+                            />
+                        }
+                        label="mes enchères en cours"
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={filters.wonBids}
+                                onChange={handleCheckboxChange}
+                                name="wonBids"
+                            />
+                        }
+                        label="mes enchères remportées"
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <Typography variant="subtitle1" gutterBottom>
+                        Mes ventes
+                    </Typography>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={filters.ongoingSales}
+                                onChange={handleCheckboxChange}
+                                name="ongoingSales"
+                            />
+                        }
+                        label="mes ventes en cours"
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={filters.notStartedSales}
+                                onChange={handleCheckboxChange}
+                                name="notStartedSales"
+                            />
+                        }
+                        label="ventes non débutées"
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={filters.completedSales}
+                                onChange={handleCheckboxChange}
+                                name="completedSales"
+                            />
+                        }
+                        label="ventes terminées"
+                    />
+                </Grid>
+            </Grid>
+        );
     };
 
     return (
@@ -72,11 +147,6 @@ const Home = () => {
             <Typography variant="h4" align="center" gutterBottom>
                 Liste des enchères
             </Typography>
-            {currentUser && (
-                <Button variant="outlined" onClick={logout} style={{ marginBottom: '20px' }}>
-                    Déconnexion
-                </Button>
-            )}
             <Grid container spacing={2} justifyContent="center">
                 <Grid item xs={12} sm={6} md={4}>
                     <TextField
@@ -114,6 +184,7 @@ const Home = () => {
                     </Button>
                 </Grid>
             </Grid>
+            {user ? <FilterGrid /> : null}
             <Grid container spacing={3} justifyContent="center" style={{ marginTop: '20px' }}>
                 {articles.map(article => (
                     <Grid item key={article.id} xs={12} sm={6} md={4} lg={3}>

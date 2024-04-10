@@ -6,6 +6,7 @@ import CategorieService from "../../service/categorieService";
 
 const CreateArticleForm = () => {
     const [categories, setCategories] = useState([]);
+    const [file, setFile] = useState(null);
     const [article, setArticle] = useState({
         nomArticle: "",
         description: "",
@@ -66,16 +67,21 @@ const CreateArticleForm = () => {
         }));
     };
 
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        setFile(file);
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            await ArticleService.addArticle(article);
+            await ArticleService.addArticle(article, file);
             alert('Article added successfully!');
-            // Reset form or navigate away
         } catch (error) {
             alert('Failed to add article: ' + error.message);
         }
     };
+
 
 
     return (
@@ -161,6 +167,25 @@ const CreateArticleForm = () => {
                             ))}
                         </Select>
                     </FormControl>
+                    <Typography>
+                        Photo de l'article
+                    </Typography>
+                    <input
+                        accept="image/*"
+                        id="contained-button-file"
+                        multiple
+                        type="file"
+                        style={{display: 'none'}}
+                        onChange={handleFileChange}
+                    />
+                    <label htmlFor="contained-button-file">
+                        <Button
+                            component="span"
+                            variant="contained"
+                        >
+                            Upload file
+                        </Button>
+                    </label>
                     <Button type="submit" variant="contained" color="primary">
                         Ajouter
                     </Button>

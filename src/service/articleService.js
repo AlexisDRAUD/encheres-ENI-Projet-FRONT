@@ -3,12 +3,15 @@ import axios from 'axios';
 const API_URL = 'http://localhost:8080';
 const key = JSON.parse(localStorage.getItem('user'));
 
-axios.interceptors.request.use(function (config) {
+if (key) {
+    axios.interceptors.request.use(function (config) {
 
-    config.headers.Authorization =  ("Bearer " + key.accessToken);
+        config.headers.Authorization =  ("Bearer " + key.accessToken);
 
-    return config;
-});
+        return config;
+    });
+}
+
 
 const ArticleService = {
     getAllArticles: async () => {
@@ -20,20 +23,23 @@ const ArticleService = {
             throw error;
         }
     },
-    addArticle: async (article) => {
-        const response = await fetch('http://localhost:8080/article/add', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(article),
-        });
+    addArticle: async (article, file) => {
+        const formData = new FormData();
+        formData.append('article', JSON.stringify(article));
+        formData.append('file', file);
 
-        if (!response.ok) {
-            throw new Error('Error adding article');
+        try {
+            const response = await axios.post(`${API_URL}/article/add`, formData, {
+                headers: {
+                    "Content-Type": 'multipart/form-data'
+                }
+            });
+
+            return response.data;
+        } catch (error) {
+            console.error('Erreur lors de l\'ajout de l\'article:', error);
+            throw error;
         }
-
-        return await response.json();
     },
     getdetailArticles: async (id) => {
         try {

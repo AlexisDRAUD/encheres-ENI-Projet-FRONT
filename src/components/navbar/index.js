@@ -5,11 +5,15 @@ import Typography from '@mui/material/Typography';
 import UtilisateurService from "../../service/utilisateurService";
 import { Link } from 'react-router-dom';
 import authService from "../../service/auth-service";
+import AuthService from "../../service/auth-service";
 
-const logout = (event) => {
-    authService.logout();
+
+
+const logout = () => {
+    AuthService.logout();
+    localStorage.removeItem("user");
 };
-const Navbar = ({ logout }) => {
+const Navbar = () => {
     const user = JSON.parse(localStorage.getItem('user'));
 
     return (
@@ -20,6 +24,11 @@ const Navbar = ({ logout }) => {
                 </Typography>
                 {user ? (
                     <>
+                        <Link to={`/article/add`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                            <Typography variant="h6" component="div" sx={{ flexGrow: 0 }}>
+                                Vendre un article
+                            </Typography>
+                        </Link>
                         <Link to={`/profil`} style={{ textDecoration: 'none', color: 'inherit' }}>
                             <Typography variant="h6" component="div" sx={{ flexGrow: 0 }}>
                                 Mon profil
