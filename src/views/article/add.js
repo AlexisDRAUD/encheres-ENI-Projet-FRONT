@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import { TextField, Button, Select, MenuItem, InputLabel, FormControl, Typography, Grid } from '@mui/material';
 import ArticleService from "../../service/articleService";
 import CategorieService from "../../service/categorieService";
+import UtilisateurService from "../../service/utilisateurService";
 
 const CreateArticleForm = () => {
     const [categories, setCategories] = useState([]);
@@ -15,25 +16,9 @@ const CreateArticleForm = () => {
         miseAPrix: '',
         prixVente: '',
         categorie: { id: '', libelle: '' },
-        vendeur: {
-            id: 4,
-            pseudo: "admin",
-            nom: "admin",
-            prenom: "admin",
-            email: "admin@test.com",
-            telephone: "0102030405",
-            adresse: {
-                id: 4,
-                rue: "rue du test1",
-                code_postal: 79000,
-                ville: "Niort"
-            },
-            password: "password",
-            credit: 500,
-            administrateur: true
-        },
+        vendeur: {},
         retrait: {
-            id: 4,
+            id: 1,
             rue: "rue du test1",
             code_postal: 79000,
             ville: "Niort"
@@ -75,7 +60,8 @@ const CreateArticleForm = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            await ArticleService.addArticle(article, file);
+            article.vendeur = await UtilisateurService.getUtilisateurById()
+            await ArticleService.addArticle(article);
             alert('Article added successfully!');
         } catch (error) {
             alert('Failed to add article: ' + error.message);

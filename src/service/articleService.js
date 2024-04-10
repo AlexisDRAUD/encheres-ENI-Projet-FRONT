@@ -23,21 +23,11 @@ const ArticleService = {
             throw error;
         }
     },
-    addArticle: async (article, file) => {
-        const formData = new FormData();
-        formData.append('article', JSON.stringify(article));
-        formData.append('file', file);
-
+    addArticle: async (article) => {
         try {
-            const response = await axios.post(`${API_URL}/article/add`, formData, {
-                headers: {
-                    "Content-Type": 'multipart/form-data'
-                }
-            });
-
-            return response.data;
+            await axios.post(`${API_URL}/article/add`, article);
         } catch (error) {
-            console.error('Erreur lors de l\'ajout de l\'article:', error);
+            console.error('Erreur lors de la création de l article:', error);
             throw error;
         }
     },
