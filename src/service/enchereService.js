@@ -14,9 +14,18 @@ if (key) {
 
 
 const EnchereService = {
-    getAllEncheres: async () => {
+    getAllEncheresbyarticle: async (id) => {
         try {
-            const response = await axios.get(`${API_URL}/enchere`);
+            const response = await axios.get(`${API_URL}/enchere/article/${id}`);
+            return response.data;
+        } catch (error) {
+            console.error('Erreur lors de la récupération des Encheres:', error);
+            throw error;
+        }
+    },
+    getAllEncheresbyuser: async (id) => {
+        try {
+            const response = await axios.get(`${API_URL}/enchere/user/${id}`);
             return response.data;
         } catch (error) {
             console.error('Erreur lors de la récupération des Encheres:', error);

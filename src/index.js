@@ -23,7 +23,7 @@ root.render(
                 <Route path="/article/add" element={<CreateArticleForm/>} />
                 <Route path="/categorie/gestion" element={<CreateCategorieForm/>} />
                 <Route path="/login" element={<Login/>} />
-                <Route path="/profil" element={<Profil/>} />
+                <Route path="/profil/:param" element={<Profil/>} />
             </Routes>
         </BrowserRouter>
     </React.StrictMode>

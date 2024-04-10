@@ -1,26 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import {Button, TextField, Typography, Box, Grid} from "@mui/material";
 import UtilisateurService from "../../service/utilisateurService";
+import {useNavigate, useParams} from "react-router-dom";
 
 
 const Profil = () => {
+    const { param } = useParams();
+    const navigate = useNavigate()
+    const isCreation = param === "create"
     const [utilisateur, setUtilisateur] = useState({
         nom: '',
         prenom: '',
-        pseudo: '',
+        username: '',
         email: '',
         telephone: '',
-        adresse: {
-            rue: '',
-            codePostal: '',
-            ville: ''
-        },
-        motDePasse: '',
+        rue: '',
+        codePostal: '',
+        ville: '',
+        oldPassword: '',
+        password: '',
+        passwordConfirmation: '',
         credit: 0,
     });
-    const [editable, setEditable] = useState(false);
-    const [nouveauMotDePasse, setNouveauMotDePasse] = useState('');
-    const [confirmation, setConfirmation] = useState('');
+    const [errors, setErrors] = useState({
+        nom: '',
+        prenom: '',
+        username: '',
+        email: '',
+        telephone: '',
+        rue: '',
+        codePostal: '',
+        ville: '',
+        oldPassword: '',
+        password: '',
+        passwordConfirmation: ''
+    });
+    const [editable, setEditable] = useState(isCreation);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -35,7 +50,7 @@ const Profil = () => {
         fetchUserData();
     }, []);
 
-    const handleChangeUser = (e) => {
+    const handleChange = (e) => {
         const { name, value } = e.target;
         setUtilisateur((prevUser) => ({
             ...prevUser,
@@ -43,23 +58,24 @@ const Profil = () => {
         }));
     };
 
-    const handleChangeUserAdresse = (e) => {
-        const { name, value } = e.target;
-        setUtilisateur((prevUser) => ({
-            ...prevUser,
-            ["adresse"]: {
-                ...prevUser.adresse,
-                [name]: value
-            }
-        }));
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setEditable(false);
         try {
-            await UtilisateurService.updateUser(utilisateur)
-            alert('Les informations utilisateur ont été mises à jour avec succès !');
+            if (isCreation) {
+                const response = await UtilisateurService.addUser(utilisateur)
+                if (response) {
+                    setErrors(response)
+                } else {
+                    navigate("/")
+                }
+            } else {
+                const response = await UtilisateurService.updateUser(utilisateur)
+                if (response) {
+                    setErrors(response)
+                } else {
+                    navigate("/")
+                }
+            }
         } catch (error) {
             console.error('Erreur lors de la mise à jour des informations utilisateur :', error);
         }
@@ -84,12 +100,15 @@ const Profil = () => {
                     <Grid item xs={6}>
                         <TextField
                             label="Pseudo"
-                            name="pseudo"
-                            value={utilisateur.pseudo}
+                            name="username"
+                            value={utilisateur.username}
                             disabled={!editable}
-                            onChange={handleChangeUser}
+                            onChange={handleChange}
                             fullWidth
                         />
+                        <Typography variant="caption" style={{color:"#FF0000"}}>
+                            {errors.username}
+                        </Typography>
                     </Grid>
                     <Grid item xs={6}>
                         <TextField
@@ -97,9 +116,12 @@ const Profil = () => {
                             name="nom"
                             value={utilisateur.nom}
                             disabled={!editable}
-                            onChange={handleChangeUser}
+                            onChange={handleChange}
                             fullWidth
                         />
+                        <Typography variant="caption" style={{color:"#FF0000"}}>
+                            {errors.nom}
+                        </Typography>
                     </Grid>
                     <Grid item xs={6}>
                         <TextField
@@ -107,9 +129,12 @@ const Profil = () => {
                             name="prenom"
                             value={utilisateur.prenom}
                             disabled={!editable}
-                            onChange={handleChangeUser}
+                            onChange={handleChange}
                             fullWidth
                         />
+                        <Typography variant="caption" style={{color:"#FF0000"}}>
+                            {errors.prenom}
+                        </Typography>
                     </Grid>
                     <Grid item xs={6}>
                         <TextField
@@ -117,9 +142,12 @@ const Profil = () => {
                             name="email"
                             value={utilisateur.email}
                             disabled={!editable}
-                            onChange={handleChangeUser}
+                            onChange={handleChange}
                             fullWidth
                         />
+                        <Typography variant="caption" style={{color:"#FF0000"}}>
+                            {errors.email}
+                        </Typography>
                     </Grid>
                     <Grid item xs={6}>
                         <TextField
@@ -127,83 +155,120 @@ const Profil = () => {
                             name="telephone"
                             value={utilisateur.telephone}
                             disabled={!editable}
-                            onChange={handleChangeUser}
+                            onChange={handleChange}
                             fullWidth
                         />
+                        <Typography variant="caption" style={{color:"#FF0000"}}>
+                            {errors.telephone}
+                        </Typography>
                     </Grid>
                     <Grid item xs={6}>
                         <TextField
                             label="Rue"
                             name="rue"
-                            value={utilisateur.adresse.rue}
+                            value={utilisateur.rue}
                             disabled={!editable}
-                            onChange={handleChangeUserAdresse}
+                            onChange={handleChange}
                             fullWidth
                         />
+                        <Typography variant="caption" style={{color:"#FF0000"}}>
+                            {errors.rue}
+                        </Typography>
                     </Grid>
                     <Grid item xs={6}>
                         <TextField
                             label="Code Postal"
                             name="codePostal"
-                            value={utilisateur.adresse.codePostal}
+                            value={utilisateur.codePostal}
                             disabled={!editable}
-                            onChange={handleChangeUserAdresse}
+                            onChange={handleChange}
                             fullWidth
                         />
+                        <Typography variant="caption" style={{color:"#FF0000"}}>
+                            {errors.codePostal}
+                        </Typography>
                     </Grid>
                     <Grid item xs={6}>
                         <TextField
                             label="Ville"
                             name="ville"
-                            value={utilisateur.adresse.ville}
+                            value={utilisateur.ville}
                             disabled={!editable}
-                            onChange={handleChangeUserAdresse}
+                            onChange={handleChange}
                             fullWidth
                         />
+                        <Typography variant="caption" style={{color:"#FF0000"}}>
+                            {errors.ville}
+                        </Typography>
                     </Grid>
-                    <Grid item xs={6}>
-                        <TextField
-                            label="Mot de passe actuel"
-                            type="password"
-                            name="motDePasse"
-                            value={utilisateur.motDePasse}
-                            disabled={!editable}
-                            onChange={handleChangeUser}
-                            fullWidth
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <TextField
-                            label="Nouveau mot de passe"
-                            type="password"
-                            value={nouveauMotDePasse}
-                            onChange={(e) => setNouveauMotDePasse(e.target.value)}
-                            disabled={!editable}
-                            fullWidth
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <TextField
-                            label="Confirmation"
-                            type="password"
-                            value={confirmation}
-                            onChange={(e) => setConfirmation(e.target.value)}
-                            disabled={!editable}
-                            fullWidth
-                        />
-                    </Grid>
+
+                    {editable && !isCreation ? (
+                        <Grid item xs={6}>
+                            <TextField
+                                label="Mot de passe actuel"
+                                type="password"
+                                name="oldPassword"
+                                value={isCreation ? utilisateur.password : utilisateur.oldPassword}
+                                disabled={!editable}
+                                onChange={handleChange}
+                                fullWidth
+                            />
+                            <Typography variant="caption" style={{color:"#FF0000"}}>
+                                {errors.oldPassword}
+                            </Typography>
+                        </Grid>) : null}
+
+                    {editable ?
+                            (<Grid item xs={6}>
+                                <TextField
+                                    label={isCreation ? "Mot de passe" : "Nouveau mot de passe"}
+                                    type="password"
+                                    name="password"
+                                    value={utilisateur.password}
+                                    onChange={handleChange}
+                                    disabled={!editable}
+                                    fullWidth
+                                />
+                                <Typography variant="caption" style={{color:"#FF0000"}}>
+                                    {errors.password}
+                                </Typography>
+                            </Grid>) : null}
+
+                    {editable ? (
+                        <Grid item xs={6}>
+                            <TextField
+                                label="Confirmation"
+                                type="password"
+                                name="passwordConfirmation"
+                                value={utilisateur.passwordConfirmation}
+                                onChange={handleChange}
+                                disabled={!editable}
+                                fullWidth
+                            />
+                            <Typography variant="caption" style={{color:"#FF0000"}}>
+                                {errors.passwordConfirmation}
+                            </Typography>
+                    </Grid>) : null}
+
                 </Grid>
-                <Typography variant="h6">
-                    Crédit: {utilisateur.credit}
-                </Typography>
+                {isCreation ? null :
+                    (<Typography variant="h6">
+                        Crédit: {utilisateur.credit}
+                    </Typography>)}
                 {editable && (
                     <>
                         <Button type="submit" variant="contained" color="primary">
                             Enregistrer
                         </Button>
-                        <Button onClick={handleDeleteAccount} variant="outlined" color="secondary">
-                            Supprimer mon compte
-                        </Button>
+                        {isCreation ?
+                            (<Button onClick={async () => {navigate("/")}} variant="outlined" color="secondary">
+                                Annuler
+                            </Button>)
+                            :
+                            (<Button onClick={handleDeleteAccount} variant="outlined" color="secondary">
+                                Supprimer mon compte
+                            </Button>)}
+
                     </>
                 )}
             </form>
