@@ -4,7 +4,7 @@ import {Link, useNavigate} from 'react-router-dom';
 import AuthService from '../../service/auth-service'; // Importing the AuthService
 
 const Login = () => {
-    const [pseudo, setPseudo] = useState('');
+    const [username, setUsername] = useState('');
     const [motDePasse, setMotDePasse] = useState('');
     const navigate = useNavigate();
 
@@ -12,7 +12,7 @@ const Login = () => {
         event.preventDefault();
         console.log("login");
         try {
-            await AuthService.login(pseudo, motDePasse);
+            await AuthService.login(username, motDePasse);
             navigate('/');
         } catch (error) {
             console.error('Erreur de connexion:', error);
@@ -30,8 +30,8 @@ const Login = () => {
                         label="Nom d'utilisateur ou email"
                         variant="outlined"
                         id="username"
-                        value={pseudo}
-                        onChange={(e) => setPseudo(e.target.value)}
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
                     />
                 </FormControl>
                 <FormControl fullWidth margin="normal">
