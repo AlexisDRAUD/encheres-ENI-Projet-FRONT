@@ -26,8 +26,7 @@ const Home = () => {
     const [categories, setCategories] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
-    const user = JSON.parse(sessionStorage.getItem('user'));
-
+    const [user, setUser] = useState(null);
     useEffect(() => {
         const fetchResources = async () => {
             try {
@@ -40,7 +39,17 @@ const Home = () => {
             }
         };
 
+        const updateUser = () => {
+            const userFromSession = JSON.parse(sessionStorage.getItem('user'));
+            setUser(userFromSession);
+        };
+
         fetchResources();
+        updateUser();
+        window.addEventListener('storage', updateUser);
+        return () => {
+            window.removeEventListener('storage', updateUser);
+        };
     }, []);
 
     const handleSearchChange = (event) => {

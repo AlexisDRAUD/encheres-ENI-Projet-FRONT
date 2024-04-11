@@ -15,7 +15,8 @@ const Login = () => {
         setLoading(true); // Set loading to true when login starts
         try {
             await AuthService.login(username, motDePasse);
-            navigate('/');
+            window.location.reload()
+            window.location.replace("/");
         } catch (error) {
             console.error('Erreur de connexion:', error);
         } finally {

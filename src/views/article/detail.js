@@ -9,15 +9,18 @@ import {
     Card,
     CardContent,
     CardActions,
-    TextField
+    TextField,
+    Snackbar
 } from '@mui/material';
 import ArticleService from '../../service/articleService';
 import UtilisateurService from "../../service/utilisateurService";
 import EnchereService from "../../service/enchereService";
 import Paper from "@mui/material/Paper";
-import enchereService from "../../service/enchereService";
+import Navbar from "../../components/navbar";
 
 const ArticleDetail = () => {
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
     const { id } = useParams();
     const [encheres, setEncheres] = useState([])
     const [article, setArticle] = useState(null);
@@ -99,58 +102,67 @@ const ArticleDetail = () => {
     };
 
     return (
-        <Grid container spacing={3} justifyContent="center">
-            <Grid item xs={12} sm={8}>
-                <Typography variant="h3">{article.nomArticle}</Typography>
-                <Typography variant="body1">Description: {article.description}</Typography>
-                <Typography variant="body1">Catégorie: {article.categorie.libelle}</Typography>
-                <Typography variant="body1">Meilleure offre: {encheres.length > 0 ? `${encheres[0].montantEnchere}€ par ${encheres[0].utilisateur.username}` : "Aucune offre pour le moment"}</Typography>
-                <Typography variant="body1">Mise à prix: {article.miseAPrix}€</Typography>
-                <Typography variant="body1">Fin de l'enchère : {formatDate(article.dateFin)}</Typography>
-                <Typography variant="body1">Retrait : {article.retrait.rue} {article.retrait.codePostal} {article.retrait.ville}</Typography>
-                <Typography variant="body1">Vendeur: {article.vendeur.username}</Typography>
-                {isConnected() && currentUtilisateur && article.vendeur.username !== currentUtilisateur.username && (
-                    <>
-                        <form onSubmit={handleSubmit} style={{width: '100%'}}>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    fullWidth
-                                    type={"number"}
-                                    label="Ma Proposition"
-                                    variant="outlined"
-                                    value={proposition}
-                                    onChange={handleSearchChange}
-                                />
-                                <Button type="submit" variant="contained" color="primary">
-                                    Enchérir
-                                </Button>
+        <>
+            <Navbar />
+            <Grid container spacing={3} justifyContent="center">
+                <Grid item xs={12} sm={8}>
+                    <Typography variant="h3">{article.nomArticle}</Typography>
+                    <Typography variant="body1">Description: {article.description}</Typography>
+                    <Typography variant="body1">Catégorie: {article.categorie.libelle}</Typography>
+                    <Typography variant="body1">Meilleure offre: {encheres.length > 0 ? `${encheres[0].montantEnchere}€ par ${encheres[0].utilisateur.pseudo}` : "Aucune offre pour le moment"}</Typography>
+                    <Typography variant="body1">Mise à prix: {article.miseAPrix}€</Typography>
+                    <Typography variant="body1">Fin de l'enchère : {formatDate(article.dateFin)}</Typography>
+                    <Typography variant="body1">Retrait : {article.retrait.rue} {article.retrait.codePostal} {article.retrait.ville}</Typography>
+                    <Typography variant="body1">Vendeur: {article.vendeur.pseudo}</Typography>
+                    {isConnected() && currentUtilisateur && article.vendeur.id !== currentUtilisateur.id && (
+                        <>
+                            <form onSubmit={handleSubmit} style={{width: '100%'}}>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        fullWidth
+                                        type={"number"}
+                                        label="Ma Proposition"
+                                        variant="outlined"
+                                        value={proposition}
+                                        onChange={handleSearchChange}
+                                    />
+                                    <Button type="submit" variant="contained" color="primary">
+                                        Enchérir
+                                    </Button>
+                                </Grid>
+                            </form>
+                        </>
+                    )}
+                </Grid>
+                {currentUtilisateur && article.vendeur.id === currentUtilisateur.id && encheres && (
+                    <Grid container spacing={2} justifyContent="center">
+                        {encheres.map((auction) => (
+                            <Grid item key={auction.id}>
+                                <Paper variant="outlined">
+                                    <CardContent>
+                                        <Typography variant="h5" component="div">
+                                            {auction.utilisateur.pseudo}
+                                        </Typography>
+                                        <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                                            Montant de l'enchère: {auction.montantEnchere}€
+                                        </Typography>
+                                        <Typography variant="body2">
+                                            Date de l'enchère: {new Date(auction.dateEnchere).toLocaleString()}
+                                        </Typography>
+                                    </CardContent>
+                                </Paper>
                             </Grid>
-                        </form>
-                    </>
+                        ))}
+                    </Grid>
                 )}
             </Grid>
-            {currentUtilisateur && article.vendeur.username === currentUtilisateur.username && encheres && (
-                <Grid container spacing={2} justifyContent="center">
-                    {encheres.map((auction) => (
-                        <Grid item key={auction.id}>
-                            <Paper variant="outlined">
-                                <CardContent>
-                                    <Typography variant="h5" component="div">
-                                        {auction.utilisateur.username}
-                                    </Typography>
-                                    <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                                        Montant de l'enchère: {auction.montantEnchere}€
-                                    </Typography>
-                                    <Typography variant="body2">
-                                        Date de l'enchère: {new Date(auction.dateEnchere).toLocaleString()}
-                                    </Typography>
-                                </CardContent>
-                            </Paper>
-                        </Grid>
-                    ))}
-                </Grid>
-            )}
-        </Grid>
+            <Snackbar
+                open={openSnackbar}
+                autoHideDuration={6000}
+                onClose={() => setOpenSnackbar(false)}
+                message={errorMessage}
+            />
+        </>
     );
 };
 
