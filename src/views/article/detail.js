@@ -128,11 +128,11 @@ const ArticleDetail = () => {
                     <Typography variant="h3">{article.nomArticle}</Typography>
                     <Typography variant="body1">Description: {article.description}</Typography>
                     <Typography variant="body1">Catégorie: {article.categorie.libelle}</Typography>
-                    <Typography variant="body1">Meilleure offre: {encheres.length > 0 ? `${encheres[0].montantEnchere}€ par ${encheres[0].utilisateur.pseudo}` : "Aucune offre pour le moment"}</Typography>
+                    <Typography variant="body1">Meilleure offre: {encheres.length > 0 ? `${encheres[0].montantEnchere}€ par ${encheres[0].utilisateur.username}` : "Aucune offre pour le moment"}</Typography>
                     <Typography variant="body1">Mise à prix: {article.miseAPrix}€</Typography>
                     <Typography variant="body1">Fin de l'enchère : {formatDate(article.dateFin)}</Typography>
                     <Typography variant="body1">Retrait : {article.retrait.rue} {article.retrait.codePostal} {article.retrait.ville}</Typography>
-                    <Typography variant="body1">Vendeur: {article.vendeur.pseudo}</Typography>
+                    <Typography variant="body1">Vendeur: {article.vendeur.username}</Typography>
                     {isConnected() && currentUtilisateur && article.vendeur.id !== currentUtilisateur.id && (
                         <>
                             <form onSubmit={handleSubmit} style={{width: '100%'}}>

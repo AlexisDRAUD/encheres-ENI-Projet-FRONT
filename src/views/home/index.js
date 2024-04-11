@@ -42,7 +42,7 @@ const Home = () => {
         const fetchResources = async () => {
             try {
                 const articlesData = await ArticleService.getAllArticles();
-                const categoriesData = await CategorieService.getAllCategories();
+                const categoriesData = await SearchService.Search();
                 setArticles(articlesData);
                 setCategories(categoriesData);
             } catch (error) {
