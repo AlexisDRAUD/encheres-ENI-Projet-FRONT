@@ -27,8 +27,8 @@ const ArticleDetail = () => {
     const [enchere, setenchree] = useState({
         dateEnchere: "",
         montantEnchere: 0,
-        utilisateur: {},
-        article:{},
+        userId: "",
+        articleId:"",
 
     });
     const isConnected = () => {
@@ -66,8 +66,8 @@ const ArticleDetail = () => {
         const secondes = addZero(currentDate.getSeconds())
         const formattedDateTime = `${year}-${month}-${day}T${hours}:${minutes}:${secondes}`;
         event.preventDefault();
-        enchere.article = article;
-        enchere.utilisateur = currentUtilisateur;
+        enchere.articleId = article.id;
+        enchere.userId = currentUtilisateur.id;
         enchere.montantEnchere = proposition;
         enchere.dateEnchere = formattedDateTime;
 
