@@ -17,6 +17,7 @@ const Navbar = () => {
         AuthService.logout();
         sessionStorage.removeItem("user");
         setIsLoggedIn(false);
+        window.location.reload()
     };
 
     return (
