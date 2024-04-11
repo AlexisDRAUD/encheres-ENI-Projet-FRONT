@@ -20,13 +20,17 @@ import Navbar from "../../components/navbar";
 
 const ArticleDetail = () => {
     const [openSnackbar, setOpenSnackbar] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
     const { id } = useParams();
     const [encheres, setEncheres] = useState([])
     const [article, setArticle] = useState(null);
     const [proposition, setproposition] = useState([])
     const [currentUtilisateur, setCurrentUtilisateur] = useState(null);
     const currentDate = new Date();
+    const [errors, setErrors] = useState({
+        montant: '',
+        user: ''
+    });
+
     const [enchere, setenchree] = useState({
         dateEnchere: "",
         montantEnchere: 0,
@@ -34,6 +38,7 @@ const ArticleDetail = () => {
         articleId:"",
 
     });
+
     const isConnected = () => {
         // Retourne true si l'utilisateur est connecté, sinon retourne false
         const user = sessionStorage.getItem("user");
@@ -68,18 +73,21 @@ const ArticleDetail = () => {
         const minutes = addZero(currentDate.getMinutes());
         const secondes = addZero(currentDate.getSeconds())
         const formattedDateTime = `${year}-${month}-${day}T${hours}:${minutes}:${secondes}`;
+
+
         event.preventDefault();
+
         enchere.articleId = article.id;
         enchere.userId = currentUtilisateur.id;
         enchere.montantEnchere = proposition;
         enchere.dateEnchere = formattedDateTime;
-
-        try {
-            await EnchereService.addEnchere(enchere);
-        } catch (error) {
-            alert('Failed to add enchère: ' + error.message);
+        const response = EnchereService.addEnchere(enchere);
+        if (response) {
+            setErrors(response)
+            setOpenSnackbar(true);
+        } else {
         }
-        window.location.reload();
+
     };
     if (!article) {
         return (
@@ -160,7 +168,7 @@ const ArticleDetail = () => {
                 open={openSnackbar}
                 autoHideDuration={6000}
                 onClose={() => setOpenSnackbar(false)}
-                message={errorMessage}
+                message={errors}
             />
         </>
     );
