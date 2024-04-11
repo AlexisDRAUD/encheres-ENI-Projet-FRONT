@@ -25,8 +25,9 @@ const Home = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
     const [user, setUser] = useState(null);
+    const key = JSON.parse(sessionStorage.getItem('user'));
     const [filters, setFilters] = useState({
-        userId: (user && user.id) ? user.id : 0,
+        userId: (key && key.id) ? key.id : 0,
         search: '',
         categorieId :0,
         openBids: true,
