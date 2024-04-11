@@ -9,6 +9,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import CategorieService from "../../service/categorieService";
+import Navbar from "../../components/navbar";
 
 const CreateCategorieForm = () => {
 
@@ -66,6 +67,8 @@ const CreateCategorieForm = () => {
     console.log('categories', categories)
 
     return (
+        <>
+            <Navbar />
         <Grid container spacing={2} justifyContent="center" alignItems="center" direction="column">
             <Typography variant="h4" gutterBottom>
                 Créer une nouvelle catégorie
@@ -117,6 +120,7 @@ const CreateCategorieForm = () => {
                 </Table>
             </TableContainer>
         </Grid>
+            </>
     );
 };
 

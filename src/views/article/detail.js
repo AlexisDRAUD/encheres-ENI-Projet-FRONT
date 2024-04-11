@@ -9,15 +9,19 @@ import {
     Card,
     CardContent,
     CardActions,
-    TextField
+    TextField,
+    Snackbar
 } from '@mui/material';
 import ArticleService from '../../service/articleService';
 import UtilisateurService from "../../service/utilisateurService";
 import EnchereService from "../../service/enchereService";
 import Paper from "@mui/material/Paper";
 import enchereService from "../../service/enchereService";
+import Navbar from "../../components/navbar";
 
 const ArticleDetail = () => {
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
     const { id } = useParams();
     const [encheres, setEncheres] = useState([])
     const [article, setArticle] = useState(null);
@@ -99,6 +103,8 @@ const ArticleDetail = () => {
     };
 
     return (
+        <>
+            <Navbar />
         <Grid container spacing={3} justifyContent="center">
             <Grid item xs={12} sm={8}>
                 <Typography variant="h3">{article.nomArticle}</Typography>
@@ -109,7 +115,7 @@ const ArticleDetail = () => {
                 <Typography variant="body1">Fin de l'enchère : {formatDate(article.dateFin)}</Typography>
                 <Typography variant="body1">Retrait : {article.retrait.rue} {article.retrait.codePostal} {article.retrait.ville}</Typography>
                 <Typography variant="body1">Vendeur: {article.vendeur.pseudo}</Typography>
-                {isConnected() && currentUtilisateur && article.vendeur.pseudo !== currentUtilisateur.username && (
+                {isConnected() && currentUtilisateur && article.vendeur.id !== currentUtilisateur.id && (
                     <>
                         <form onSubmit={handleSubmit} style={{width: '100%'}}>
                             <Grid item xs={12} sm={6}>
@@ -151,6 +157,13 @@ const ArticleDetail = () => {
                 </Grid>
             )}
         </Grid>
+    <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={() => setOpenSnackbar(false)}
+        message={errorMessage}
+    />
+    </>
     );
 };
 

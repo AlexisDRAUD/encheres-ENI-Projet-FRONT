@@ -37,7 +37,7 @@ const EnchereService = {
             await axios.post(`${API_URL}/enchere/add`, Enchere);
         } catch (error) {
             console.error('Erreur lors de la création de l Enchere:', error);
-            throw error;
+            return error.response.data;
         }
     },
 };

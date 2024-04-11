@@ -1,30 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import AuthService from "../../service/auth-service";
 
-const logout = () => {
-    AuthService.logout();
-    sessionStorage.removeItem("user");
-};
-
 const Navbar = () => {
-    const user = JSON.parse(sessionStorage.getItem('user'));
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        const user = JSON.parse(sessionStorage.getItem('user'));
+        setIsLoggedIn(user !== null);
+    }, [sessionStorage.getItem('user')]);
+
+    const logout = () => {
+        AuthService.logout();
+        sessionStorage.removeItem("user");
+        setIsLoggedIn(false);
+    };
 
     return (
         <AppBar position="static">
             <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Button variant="h6" component={Link} to={`/`}>
-                    {user ? (<Button color="inherit" component={Link} to={`/`}>
-                            ENI-Encheres
-                        </Button>)
-                        : <>ENI-Encheres</>}
+                    ENI-Encheres
                 </Button>
                 <div>
-                    {user ? (
+                    {isLoggedIn ? (
                         <>
                             <Button color="inherit" component={Link} to={`/categorie/gestion`}>
                                 Gérer les catégories

@@ -1,25 +1,31 @@
 import React, { useState } from 'react';
-import { TextField, Button, Box, Typography, FormControl } from '@mui/material';
-import {Link, useNavigate} from 'react-router-dom';
-import AuthService from '../../service/auth-service'; // Importing the AuthService
+import { TextField, Button, Box, Typography, FormControl, CircularProgress } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
+import AuthService from '../../service/auth-service';
+import Navbar from "../../components/navbar"; // Importing the AuthService
 
 const Login = () => {
     const [pseudo, setPseudo] = useState('');
     const [motDePasse, setMotDePasse] = useState('');
+    const [loading, setLoading] = useState(false); // State for loading indicator
     const navigate = useNavigate();
 
     const login = async (event) => {
         event.preventDefault();
-        console.log("login");
+        setLoading(true); // Set loading to true when login starts
         try {
             await AuthService.login(pseudo, motDePasse);
             navigate('/');
         } catch (error) {
             console.error('Erreur de connexion:', error);
+        } finally {
+            setLoading(false); // Set loading to false when login finishes
         }
     };
 
     return (
+        <>
+            <Navbar />
         <Box>
             <Typography variant="h4" component="h2" gutterBottom>
                 Connexion
@@ -44,14 +50,19 @@ const Login = () => {
                         onChange={(e) => setMotDePasse(e.target.value)}
                     />
                 </FormControl>
-                <Button type="submit" variant="contained" color="primary">
-                    Se connecter
-                </Button>
+                {loading ? ( // Show loading indicator if loading is true
+                    <CircularProgress />
+                ) : (
+                    <Button type="submit" variant="contained" color="primary">
+                        Se connecter
+                    </Button>
+                )}
             </form>
             <Button component={Link} to="/profil/create" variant="contained" color="primary">
                 Créer un compte
             </Button>
         </Box>
+            </>
     );
 };
 

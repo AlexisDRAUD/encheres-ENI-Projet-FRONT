@@ -18,6 +18,7 @@ import {
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import Filters from "../../components/filter";
+import Navbar from "../../components/navbar";
 
 
 const Home = () => {
@@ -50,6 +51,14 @@ const Home = () => {
         setSelectedCategory(event.target.value);
     };
 
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    };
+
     const FilterGrid = () => {
         const [filters, setFilters] = useState({
             openBids: false,
@@ -75,7 +84,9 @@ const Home = () => {
     };
 
     return (
-        <div style={{ padding: '20px' }}>
+        <>
+            <Navbar />
+            <div style={{ padding: '20px' }}>
             <Typography variant="h4" align="center" gutterBottom>
                 Liste des enchères
             </Typography>
@@ -110,34 +121,43 @@ const Home = () => {
                         </Select>
                     </FormControl>
                 </Grid>
-                <Grid item xs={12} sm={2} md={1}>
+                <Grid item xs={12} sm={8} md={7}>
                     <Button variant="contained" fullWidth>
                         Rechercher
                     </Button>
                 </Grid>
             </Grid>
-            {user ? <FilterGrid /> : null}
+            <Grid justifyContent="center">
+                {user ? <FilterGrid /> : null}
+            </Grid>
             <Grid container spacing={3} justifyContent="center" style={{ marginTop: '20px' }}>
                 {articles.map(article => (
-                    <Grid item key={article.id} xs={12} sm={6} md={4} lg={3}>
+                    <Grid item key={article.id} xs={12} sm={6} md={5} lg={5}>
                         <Link to={`/article/${article.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                            <Card >
-                                <CardContent >
-                                    <Typography gutterBottom variant="h5" component="div">
-                                        {article.nomArticle}
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary">
-                                        Prix : {article.prixVente}
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary">
-                                        Fin de l'enchère : {article.dateFin}
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary">
-                                        Vendeur: {article.vendeur.nom}, {article.vendeur.prenom}
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary">
-                                        {article.description}
-                                    </Typography>
+                            <Card>
+                                <CardContent>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={4}>
+                                            <div style={{ width: '100%', height: 0, paddingTop: '100%', backgroundColor: 'grey' }}></div>
+                                        </Grid>
+                                        <Grid item xs={8}>
+                                            <Typography gutterBottom variant="h5" component="div" style={{ textDecoration: 'underline' }}>
+                                                {article.nomArticle}
+                                            </Typography>
+                                            <Typography variant="body2" color="text.secondary" component="div">
+                                                <span >Prix :</span> {article.prixVente}
+                                            </Typography>
+                                            <Typography variant="body2" color="text.secondary" component="div">
+                                                <span >Fin de l'enchère :</span> {formatDate(article.dateFin)}
+                                            </Typography>
+                                            <Typography variant="body2" color="text.secondary" component="div">
+                                                <span >Vendeur:</span> {article.vendeur.pseudo}
+                                            </Typography>
+                                            <Typography variant="body2" color="text.secondary">
+                                                {article.description}
+                                            </Typography>
+                                        </Grid>
+                                    </Grid>
                                 </CardContent>
                             </Card>
                         </Link>
@@ -145,6 +165,7 @@ const Home = () => {
                 ))}
             </Grid>
         </div>
+            </>
     );
 };
 

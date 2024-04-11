@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {Button, TextField, Typography, Box, Grid} from "@mui/material";
 import UtilisateurService from "../../service/utilisateurService";
 import {useNavigate, useParams} from "react-router-dom";
+import Navbar from "../../components/navbar";
 
 
 const Profil = () => {
@@ -91,6 +92,8 @@ const Profil = () => {
     };
 
     return (
+        <>
+            <Navbar />
         <Box sx={{ maxWidth: 800, mx: 'auto' }}>
             <Typography variant="h4" gutterBottom>
                 Mon Profil
@@ -278,6 +281,7 @@ const Profil = () => {
                 </Button>
             )}
         </Box>
+            </>
     );
 };
 

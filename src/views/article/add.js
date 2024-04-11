@@ -4,6 +4,7 @@ import { TextField, Button, Select, MenuItem, InputLabel, FormControl, Typograph
 import ArticleService from "../../service/articleService";
 import CategorieService from "../../service/categorieService";
 import UtilisateurService from "../../service/utilisateurService";
+import Navbar from "../../components/navbar";
 
 const CreateArticleForm = () => {
     const [categories, setCategories] = useState([]);
@@ -40,6 +41,15 @@ const CreateArticleForm = () => {
         setArticle((prevArticle) => ({ ...prevArticle, [name]: value }));
     };
 
+    const handleCategoryChange = (event) => {
+        const { value } = event.target;
+        console.log(event.target)
+        setArticle((prevArticle) => ({
+            ...prevArticle,
+            categorie: { id : value.id , libelle: value.libelle}
+        }));
+    };
+
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         setFile(file);
@@ -60,6 +70,8 @@ const CreateArticleForm = () => {
 
 
     return (
+        <>
+        <Navbar />
         <Grid container spacing={2} justifyContent="center" alignItems="center" direction="column">
             <Typography variant="h4" gutterBottom>
                 Créer un nouvel article
@@ -167,6 +179,7 @@ const CreateArticleForm = () => {
                 </Grid>
             </form>
         </Grid>
+            </>
     );
 };
 
