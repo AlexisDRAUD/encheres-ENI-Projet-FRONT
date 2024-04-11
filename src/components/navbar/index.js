@@ -7,10 +7,12 @@ import AuthService from "../../service/auth-service";
 
 const Navbar = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [IsAdmin, setIsAdmin] = useState(false);
 
     useEffect(() => {
         const user = JSON.parse(sessionStorage.getItem('user'));
         setIsLoggedIn(user !== null);
+        setIsAdmin((user && user.admin) ? user.admin : '',)
     }, [sessionStorage.getItem('user')]);
 
     const logout = () => {
@@ -29,9 +31,15 @@ const Navbar = () => {
                 <div>
                     {isLoggedIn ? (
                         <>
-                            <Button color="inherit" component={Link} to={`/categorie/gestion`}>
-                                Gérer les catégories
-                            </Button>
+                            {IsAdmin ? (
+                                <>
+                                    <Button color="inherit" component={Link} to={`/categorie/gestion`}>
+                                        Gérer les catégories
+                                    </Button>
+                                </>
+                            ) : (
+                                <></>
+                            )}
                             <Button color="inherit" component={Link} to={`/article/add`}>
                                 Vendre un article
                             </Button>
