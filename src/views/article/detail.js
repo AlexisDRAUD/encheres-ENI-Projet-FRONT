@@ -31,6 +31,11 @@ const ArticleDetail = () => {
         article:{},
 
     });
+    const isConnected = () => {
+        // Retourne true si l'utilisateur est connecté, sinon retourne false
+        const user = sessionStorage.getItem("user");
+        return user !== null;
+    };
 
     useEffect(() => {
         const fetchArticleAndUser = async () => {
@@ -104,12 +109,13 @@ const ArticleDetail = () => {
                 <Typography variant="body1">Fin de l'enchère : {formatDate(article.dateFin)}</Typography>
                 <Typography variant="body1">Retrait : {article.retrait.rue} {article.retrait.codePostal} {article.retrait.ville}</Typography>
                 <Typography variant="body1">Vendeur: {article.vendeur.pseudo}</Typography>
-                {currentUtilisateur && currentUtilisateur.isConnected && article.vendeur.pseudo !== currentUtilisateur.username && (
+                {isConnected() && currentUtilisateur && article.vendeur.pseudo !== currentUtilisateur.username && (
                     <>
                         <form onSubmit={handleSubmit} style={{width: '100%'}}>
                             <Grid item xs={12} sm={6}>
                                 <TextField
                                     fullWidth
+                                    type={"number"}
                                     label="Ma Proposition"
                                     variant="outlined"
                                     value={proposition}
