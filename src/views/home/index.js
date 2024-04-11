@@ -13,12 +13,11 @@ import {
     CardContent,
     Typography,
     Grid,
-    Checkbox,
-    FormControlLabel
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import Filters from "../../components/filter";
 import Navbar from "../../components/navbar";
+import SearchService from "../../service/searchService";
 
 
 const Home = () => {
@@ -27,6 +26,17 @@ const Home = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
     const [user, setUser] = useState(null);
+    const [filters, setFilters] = useState({
+        userId: (user && user.id) ? user.id : '',
+        search: '',
+        categorieId :'',
+        openBids: false,
+        ongoingBids: false,
+        wonBids: false,
+        ongoingSales: false,
+        notStartedSales: false,
+        completedSales: false,
+    });
     useEffect(() => {
         const fetchResources = async () => {
             try {
@@ -53,11 +63,25 @@ const Home = () => {
     }, []);
 
     const handleSearchChange = (event) => {
-        setSearchTerm(event.target.value);
+        const { value } = event.target;
+        sessionStorage.setItem("filters", JSON.stringify({
+            ...filters,
+            search: value,
+        }));
+        setSearchTerm(value);
     };
 
     const handleCategoryChange = (event) => {
-        setSelectedCategory(event.target.value);
+        const { value } = event.target;
+        sessionStorage.setItem("filters", JSON.stringify({
+            ...filters,
+            categorieId: value,
+        }));
+        setSelectedCategory(value);
+    };
+
+    const handleSearchClick = async () => {
+        const articlesData = await SearchService.Search();
     };
 
     const formatDate = (dateString) => {
@@ -69,20 +93,17 @@ const Home = () => {
     };
 
     const FilterGrid = () => {
-        const [filters, setFilters] = useState({
-            openBids: false,
-            ongoingBids: false,
-            wonBids: false,
-            ongoingSales: false,
-            notStartedSales: false,
-            completedSales: false,
-        });
 
         const handleCheckboxChange = (event) => {
-            setFilters({
+            const { name, checked } = event.target;
+            setFilters((prevFilters) => ({
+                ...prevFilters,
+                [name]: checked,
+            }));
+            sessionStorage.setItem("filters", JSON.stringify({
                 ...filters,
-                [event.target.name]: event.target.checked,
-            });
+                [name]: checked,
+            }));
         };
 
         return (
@@ -123,7 +144,7 @@ const Home = () => {
                                 <em>Toutes</em>
                             </MenuItem>
                             {categories.map((category) => (
-                                <MenuItem key={category.id} value={category.libelle}>
+                                <MenuItem key={category.id} value={category.id}>
                                     {category.libelle}
                                 </MenuItem>
                             ))}
@@ -131,9 +152,10 @@ const Home = () => {
                     </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={8} md={7}>
-                    <Button variant="contained" fullWidth>
+                    <Button variant="contained" fullWidth onClick={handleSearchClick}>
                         Rechercher
                     </Button>
+
                 </Grid>
             </Grid>
             <Grid justifyContent="center">
