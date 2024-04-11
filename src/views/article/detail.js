@@ -10,7 +10,7 @@ import {
     CardContent,
     CardActions,
     TextField,
-    Snackbar
+    Snackbar, MenuItem
 } from '@mui/material';
 import ArticleService from '../../service/articleService';
 import UtilisateurService from "../../service/utilisateurService";
@@ -26,10 +26,7 @@ const ArticleDetail = () => {
     const [proposition, setproposition] = useState([])
     const [currentUtilisateur, setCurrentUtilisateur] = useState(null);
     const currentDate = new Date();
-    const [errors, setErrors] = useState({
-        montant: '',
-        user: ''
-    });
+    const [errors, setErrors] = useState([]);
 
     const [enchere, setenchree] = useState({
         dateEnchere: "",
@@ -65,6 +62,8 @@ const ArticleDetail = () => {
 
 
     const handleSubmit = async (event) => {
+        event.preventDefault();
+
         const addZero = (num) => (num < 10 ? `0${num}` : num);
         const year = currentDate.getFullYear();
         const month = addZero(currentDate.getMonth() + 1);
@@ -74,21 +73,33 @@ const ArticleDetail = () => {
         const secondes = addZero(currentDate.getSeconds())
         const formattedDateTime = `${year}-${month}-${day}T${hours}:${minutes}:${secondes}`;
 
-
-        event.preventDefault();
-
         enchere.articleId = article.id;
         enchere.userId = currentUtilisateur.id;
         enchere.montantEnchere = proposition;
         enchere.dateEnchere = formattedDateTime;
-        const response = EnchereService.addEnchere(enchere);
-        if (response) {
-            setErrors(response)
-            setOpenSnackbar(true);
-        } else {
-        }
 
+        try {
+            const response = await EnchereService.addEnchere(enchere);
+            if (response) {
+                if (response.montant) {
+                    setErrors([response.montant]);
+                    setOpenSnackbar(true);
+                } else if (response.user) {
+                    setErrors([response.user]);
+                    setOpenSnackbar(true);
+                } else {
+                    setErrors([]);
+                }
+            }
+
+
+        } catch (error) {
+            console.error('Erreur lors de l\'ajout de l\'enchère:', error);
+            setErrors(['Une erreur s\'est produite lors de l\'ajout de l\'enchère']);
+            setOpenSnackbar(true);
+        }
     };
+
     if (!article) {
         return (
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -164,12 +175,15 @@ const ArticleDetail = () => {
                     </Grid>
                 )}
             </Grid>
-            <Snackbar
-                open={openSnackbar}
-                autoHideDuration={6000}
-                onClose={() => setOpenSnackbar(false)}
-                message={errors}
-            />
+            {errors.map((error) => (
+                <Snackbar
+                    open={openSnackbar}
+                    autoHideDuration={6000}
+                    onClose={() => setOpenSnackbar(false)}
+                    message={error}
+                />
+            ))}
+
         </>
     );
 };
