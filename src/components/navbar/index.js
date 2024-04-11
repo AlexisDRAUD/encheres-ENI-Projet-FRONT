@@ -17,10 +17,12 @@ const Navbar = () => {
     return (
         <AppBar position="static">
             <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Typography variant="h6" component="div">
-                    {user ? (<Link to="/">ENI-Encheres</Link>)
+                <Button variant="h6" component={Link} to={`/`}>
+                    {user ? (<Button color="inherit" component={Link} to={`/`}>
+                            ENI-Encheres
+                        </Button>)
                         : <>ENI-Encheres</>}
-                </Typography>
+                </Button>
                 <div>
                     {user ? (
                         <>

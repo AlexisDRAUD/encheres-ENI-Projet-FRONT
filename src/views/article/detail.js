@@ -14,6 +14,8 @@ import {
 import ArticleService from '../../service/articleService';
 import UtilisateurService from "../../service/utilisateurService";
 import EnchereService from "../../service/enchereService";
+import Paper from "@mui/material/Paper";
+import enchereService from "../../service/enchereService";
 
 const ArticleDetail = () => {
     const { id } = useParams();
@@ -35,10 +37,12 @@ const ArticleDetail = () => {
             try {
                 const fetchedArticle = await ArticleService.getdetailArticles(id);
                 setArticle(fetchedArticle);
-                const fetchedEnchere = await EnchereService.getAllEncheresbyarticle(fetchedArticle.id);
-                setEncheres(fetchedEnchere.sort((a, b) => b.montantEnchere - a.montantEnchere));
                 const fetchedUtilisateur = await UtilisateurService.getUtilisateurById("userId");
                 setCurrentUtilisateur(fetchedUtilisateur);
+                const fetchedEnchere = await EnchereService.getAllEncheresbyarticle(fetchedArticle.id);
+                setEncheres(fetchedEnchere.sort((a, b) => b.montantEnchere - a.montantEnchere));
+
+
             } catch (error) {
                 console.error('Error fetching article, encheres or user:', error);
             }
@@ -81,21 +85,26 @@ const ArticleDetail = () => {
         console.log(proposition);
     };
 
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    };
+
     return (
-        <Grid container spacing={2} justifyContent="center" alignItems="center" direction="column">
-            <Typography variant="h4" gutterBottom>
-                Détail de l'article
-            </Typography>
-            <Grid item xs={12} sm={6}>
-                <Typography variant="h6">Nom de l'article: {article.nomArticle}</Typography>
+        <Grid container spacing={3} justifyContent="center">
+            <Grid item xs={12} sm={8}>
+                <Typography variant="h3">{article.nomArticle}</Typography>
                 <Typography variant="body1">Description: {article.description}</Typography>
-                <Typography variant="body1">Date de début: {article.dateDebut}</Typography>
-                <Typography variant="body1">Date de fin: {article.dateFin}</Typography>
-                <Typography variant="body1">Mise à prix: {article.miseAPrix}</Typography>
-                <Typography variant="body1">Prix de vente: {article.prixVente}</Typography>
                 <Typography variant="body1">Catégorie: {article.categorie.libelle}</Typography>
+                <Typography variant="body1">Meilleure offre: {encheres.length > 0 ? `${encheres[0].montantEnchere}€ par ${encheres[0].utilisateur.pseudo}` : "Aucune offre pour le moment"}</Typography>
+                <Typography variant="body1">Mise à prix: {article.miseAPrix}€</Typography>
+                <Typography variant="body1">Fin de l'enchère : {formatDate(article.dateFin)}</Typography>
+                <Typography variant="body1">Retrait : {article.retrait.rue} {article.retrait.codePostal} {article.retrait.ville}</Typography>
                 <Typography variant="body1">Vendeur: {article.vendeur.pseudo}</Typography>
-                {currentUtilisateur && article.vendeur.pseudo !== currentUtilisateur.pseudo && (
+                {currentUtilisateur && currentUtilisateur.isConnected && article.vendeur.pseudo !== currentUtilisateur.username && (
                     <>
                         <form onSubmit={handleSubmit} style={{width: '100%'}}>
                             <Grid item xs={12} sm={6}>
@@ -114,11 +123,11 @@ const ArticleDetail = () => {
                     </>
                 )}
             </Grid>
-            {currentUtilisateur && article.vendeur.pseudo === currentUtilisateur.pseudo && encheres && (
+            {currentUtilisateur && article.vendeur.pseudo === currentUtilisateur.username && encheres && (
                 <Grid container spacing={2} justifyContent="center">
                     {encheres.map((auction) => (
-                        <Grid item key={auction.id} xs={12} sm={6} md={4}>
-                            <Card>
+                        <Grid item key={auction.id}>
+                            <Paper variant="outlined">
                                 <CardContent>
                                     <Typography variant="h5" component="div">
                                         {auction.utilisateur.pseudo}
@@ -130,7 +139,7 @@ const ArticleDetail = () => {
                                         Date de l'enchère: {new Date(auction.dateEnchere).toLocaleString()}
                                     </Typography>
                                 </CardContent>
-                            </Card>
+                            </Paper>
                         </Grid>
                     ))}
                 </Grid>
