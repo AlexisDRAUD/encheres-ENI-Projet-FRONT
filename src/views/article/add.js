@@ -15,14 +15,11 @@ const CreateArticleForm = () => {
         dateFin: '',
         miseAPrix: '',
         prixVente: '',
-        categorie: { id: '', libelle: '' },
-        vendeur: {},
-        retrait: {
-            id: 1,
-            rue: "rue du test1",
-            code_postal: 79000,
-            ville: "Niort"
-        }
+        categorieId: "",
+        vendeurId: "",
+        rue: "test",
+        codePostal: 79000,
+        ville: "Niort"
     });
 
     useEffect(() => {
@@ -43,15 +40,6 @@ const CreateArticleForm = () => {
         setArticle((prevArticle) => ({ ...prevArticle, [name]: value }));
     };
 
-    const handleCategoryChange = (event) => {
-        const { value } = event.target;
-        console.log(event.target)
-        setArticle((prevArticle) => ({
-            ...prevArticle,
-            categorie: { id : value.id , libelle: value.libelle}
-        }));
-    };
-
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         setFile(file);
@@ -60,7 +48,8 @@ const CreateArticleForm = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            article.vendeur = await UtilisateurService.getUtilisateurById()
+            const vendeur = await UtilisateurService.getUtilisateurById()
+            article.vendeurId = vendeur.id
             await ArticleService.addArticle(article);
             alert('Article added successfully!');
         } catch (error) {
@@ -140,14 +129,14 @@ const CreateArticleForm = () => {
                         <Select
                             labelId="category-label"
                             id="categorie-select"
-                            value={article.categorie.id}
-                            name="categorie"
-                            onChange={handleCategoryChange}
+                            value={article.categorieId}
+                            name="categorieId"
+                            onChange={handleChange}
                             label="Catégorie"
                         >
                             <MenuItem value=""><em>Aucune</em></MenuItem>
                             {categories.map((category) => (
-                                <MenuItem key={category.id} value={category}>
+                                <MenuItem key={category.id} value={category.id}>
                                     {category.libelle}
                                 </MenuItem>
                             ))}
