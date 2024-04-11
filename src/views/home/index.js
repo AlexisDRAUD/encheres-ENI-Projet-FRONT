@@ -26,9 +26,9 @@ const Home = () => {
     const [selectedCategory, setSelectedCategory] = useState('');
     const [user, setUser] = useState(null);
     const [filters, setFilters] = useState({
-        userId: '',
+        userId: (user && user.id) ? user.id : 0,
         search: '',
-        categorieId :'',
+        categorieId :0,
         openBids: true,
         ongoingBids: false,
         wonBids: false,
@@ -138,7 +138,7 @@ const Home = () => {
                                 onChange={handleCategoryChange}
                                 label="Catégorie"
                             >
-                                <MenuItem value="">
+                                <MenuItem value={0}>
                                     <em>Toutes</em>
                                 </MenuItem>
                                 {categories.map((category) => (
@@ -159,38 +159,44 @@ const Home = () => {
                     {user ? <FilterGrid /> : null}
                 </Grid>
                 <Grid container spacing={3} justifyContent="center" style={{ marginTop: '20px' }}>
-                    {articles.map(article => (
-                        <Grid item key={article.id} xs={12} sm={6} md={5} lg={5}>
-                            <Link to={`/article/${article.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                                <Card>
-                                    <CardContent>
-                                        <Grid container spacing={2}>
-                                            <Grid item xs={4}>
-                                                <div style={{ width: '100%', height: 0, paddingTop: '100%', backgroundColor: 'grey' }}></div>
+                    {articles.length > 0 ? (
+                        articles.map(article => (
+                            <Grid item key={article.id} xs={12} sm={6} md={5} lg={5}>
+                                <Link to={`/article/${article.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                    <Card>
+                                        <CardContent>
+                                            <Grid container spacing={2}>
+                                                <Grid item xs={4}>
+                                                    <div style={{ width: '100%', height: 0, paddingTop: '100%', backgroundColor: 'grey' }}></div>
+                                                </Grid>
+                                                <Grid item xs={8}>
+                                                    <Typography gutterBottom variant="h5" component="div" style={{ textDecoration: 'underline' }}>
+                                                        {article.nomArticle}
+                                                    </Typography>
+                                                    <Typography variant="body2" color="text.secondary" component="div">
+                                                        <span>Prix :</span> {article.prixVente}
+                                                    </Typography>
+                                                    <Typography variant="body2" color="text.secondary" component="div">
+                                                        <span>Fin de l'enchère :</span> {formatDate(article.dateFin)}
+                                                    </Typography>
+                                                    <Typography variant="body2" color="text.secondary" component="div">
+                                                        <span>Vendeur:</span> {article.vendeur.username}
+                                                    </Typography>
+                                                    <Typography variant="body2" color="text.secondary">
+                                                        {article.description}
+                                                    </Typography>
+                                                </Grid>
                                             </Grid>
-                                            <Grid item xs={8}>
-                                                <Typography gutterBottom variant="h5" component="div" style={{ textDecoration: 'underline' }}>
-                                                    {article.nomArticle}
-                                                </Typography>
-                                                <Typography variant="body2" color="text.secondary" component="div">
-                                                    <span >Prix :</span> {article.prixVente}
-                                                </Typography>
-                                                <Typography variant="body2" color="text.secondary" component="div">
-                                                    <span >Fin de l'enchère :</span> {formatDate(article.dateFin)}
-                                                </Typography>
-                                                <Typography variant="body2" color="text.secondary" component="div">
-                                                    <span >Vendeur:</span> {article.vendeur.pseudo}
-                                                </Typography>
-                                                <Typography variant="body2" color="text.secondary">
-                                                    {article.description}
-                                                </Typography>
-                                            </Grid>
-                                        </Grid>
-                                    </CardContent>
-                                </Card>
-                            </Link>
-                        </Grid>
-                    ))}
+                                        </CardContent>
+                                    </Card>
+                                </Link>
+                            </Grid>
+                        ))
+                    ) : (
+                        <Typography variant="h5" align="center" style={{ width: '100%' }}>
+                            Pas de produit trouvé
+                        </Typography>
+                    )}
                 </Grid>
             </div>
         </>
