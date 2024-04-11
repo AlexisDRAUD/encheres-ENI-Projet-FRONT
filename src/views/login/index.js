@@ -5,7 +5,7 @@ import AuthService from '../../service/auth-service';
 import Navbar from "../../components/navbar"; // Importing the AuthService
 
 const Login = () => {
-    const [pseudo, setPseudo] = useState('');
+    const [username, setUsername] = useState('');
     const [motDePasse, setMotDePasse] = useState('');
     const [loading, setLoading] = useState(false); // State for loading indicator
     const navigate = useNavigate();
@@ -14,7 +14,7 @@ const Login = () => {
         event.preventDefault();
         setLoading(true); // Set loading to true when login starts
         try {
-            await AuthService.login(pseudo, motDePasse);
+            await AuthService.login(username, motDePasse);
             navigate('/');
         } catch (error) {
             console.error('Erreur de connexion:', error);
@@ -36,8 +36,8 @@ const Login = () => {
                         label="Nom d'utilisateur ou email"
                         variant="outlined"
                         id="username"
-                        value={pseudo}
-                        onChange={(e) => setPseudo(e.target.value)}
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
                     />
                 </FormControl>
                 <FormControl fullWidth margin="normal">
