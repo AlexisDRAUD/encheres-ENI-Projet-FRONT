@@ -19,7 +19,6 @@ import Filters from "../../components/filter";
 import Navbar from "../../components/navbar";
 import SearchService from "../../service/searchService";
 
-
 const Home = () => {
     const [articles, setArticles] = useState([]);
     const [categories, setCategories] = useState([]);
@@ -27,16 +26,17 @@ const Home = () => {
     const [selectedCategory, setSelectedCategory] = useState('');
     const [user, setUser] = useState(null);
     const [filters, setFilters] = useState({
-        userId: (user && user.id) ? user.id : '',
+        userId: '',
         search: '',
         categorieId :'',
-        openBids: false,
+        openBids: true,
         ongoingBids: false,
         wonBids: false,
         ongoingSales: false,
         notStartedSales: false,
         completedSales: false,
     });
+
     useEffect(() => {
         const fetchResources = async () => {
             try {
@@ -49,39 +49,44 @@ const Home = () => {
             }
         };
 
+        fetchResources();
+
+        const userFromSession = JSON.parse(sessionStorage.getItem('user'));
+        setUser(userFromSession);
+
         const updateUser = () => {
             const userFromSession = JSON.parse(sessionStorage.getItem('user'));
             setUser(userFromSession);
         };
 
-        fetchResources();
-        updateUser();
         window.addEventListener('storage', updateUser);
         return () => {
             window.removeEventListener('storage', updateUser);
         };
     }, []);
 
+    const updateFilters = (newFilters) => {
+        setFilters(newFilters);
+        sessionStorage.setItem("filters", JSON.stringify(newFilters));
+    };
+
     const handleSearchChange = (event) => {
         const { value } = event.target;
-        sessionStorage.setItem("filters", JSON.stringify({
-            ...filters,
-            search: value,
-        }));
+        const newFilters = { ...filters, search: value };
+        updateFilters(newFilters);
         setSearchTerm(value);
     };
 
     const handleCategoryChange = (event) => {
         const { value } = event.target;
-        sessionStorage.setItem("filters", JSON.stringify({
-            ...filters,
-            categorieId: value,
-        }));
+        const newFilters = { ...filters, categorieId: value };
+        updateFilters(newFilters);
         setSelectedCategory(value);
     };
 
     const handleSearchClick = async () => {
         const articlesData = await SearchService.Search();
+        setArticles(articlesData);
     };
 
     const formatDate = (dateString) => {
@@ -93,17 +98,10 @@ const Home = () => {
     };
 
     const FilterGrid = () => {
-
         const handleCheckboxChange = (event) => {
             const { name, checked } = event.target;
-            setFilters((prevFilters) => ({
-                ...prevFilters,
-                [name]: checked,
-            }));
-            sessionStorage.setItem("filters", JSON.stringify({
-                ...filters,
-                [name]: checked,
-            }));
+            const newFilters = { ...filters, [name]: checked };
+            updateFilters(newFilters);
         };
 
         return (
@@ -117,86 +115,85 @@ const Home = () => {
         <>
             <Navbar />
             <div style={{ padding: '20px' }}>
-            <Typography variant="h4" align="center" gutterBottom>
-                Liste des enchères
-            </Typography>
-            <Grid container spacing={2} justifyContent="center">
-                <Grid item xs={12} sm={6} md={4}>
-                    <TextField
-                        fullWidth
-                        label="Le nom de l'article contient"
-                        variant="outlined"
-                        value={searchTerm}
-                        onChange={handleSearchChange}
-                    />
-                </Grid>
-                <Grid item xs={12} sm={4} md={3}>
-                    <FormControl fullWidth>
-                        <InputLabel id="category-label">Catégorie</InputLabel>
-                        <Select
-                            labelId="category-label"
-                            id="category-select"
-                            value={selectedCategory}
-                            onChange={handleCategoryChange}
-                            label="Catégorie"
-                        >
-                            <MenuItem value="">
-                                <em>Toutes</em>
-                            </MenuItem>
-                            {categories.map((category) => (
-                                <MenuItem key={category.id} value={category.id}>
-                                    {category.libelle}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                </Grid>
-                <Grid item xs={12} sm={8} md={7}>
-                    <Button variant="contained" fullWidth onClick={handleSearchClick}>
-                        Rechercher
-                    </Button>
-
-                </Grid>
-            </Grid>
-            <Grid justifyContent="center">
-                {user ? <FilterGrid /> : null}
-            </Grid>
-            <Grid container spacing={3} justifyContent="center" style={{ marginTop: '20px' }}>
-                {articles.map(article => (
-                    <Grid item key={article.id} xs={12} sm={6} md={5} lg={5}>
-                        <Link to={`/article/${article.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                            <Card>
-                                <CardContent>
-                                    <Grid container spacing={2}>
-                                        <Grid item xs={4}>
-                                            <div style={{ width: '100%', height: 0, paddingTop: '100%', backgroundColor: 'grey' }}></div>
-                                        </Grid>
-                                        <Grid item xs={8}>
-                                            <Typography gutterBottom variant="h5" component="div" style={{ textDecoration: 'underline' }}>
-                                                {article.nomArticle}
-                                            </Typography>
-                                            <Typography variant="body2" color="text.secondary" component="div">
-                                                <span >Prix :</span> {article.prixVente}
-                                            </Typography>
-                                            <Typography variant="body2" color="text.secondary" component="div">
-                                                <span >Fin de l'enchère :</span> {formatDate(article.dateFin)}
-                                            </Typography>
-                                            <Typography variant="body2" color="text.secondary" component="div">
-                                                <span >Vendeur:</span> {article.vendeur.pseudo}
-                                            </Typography>
-                                            <Typography variant="body2" color="text.secondary">
-                                                {article.description}
-                                            </Typography>
-                                        </Grid>
-                                    </Grid>
-                                </CardContent>
-                            </Card>
-                        </Link>
+                <Typography variant="h4" align="center" gutterBottom>
+                    Liste des enchères
+                </Typography>
+                <Grid container spacing={2} justifyContent="center">
+                    <Grid item xs={12} sm={6} md={4}>
+                        <TextField
+                            fullWidth
+                            label="Le nom de l'article contient"
+                            variant="outlined"
+                            value={searchTerm}
+                            onChange={handleSearchChange}
+                        />
                     </Grid>
-                ))}
-            </Grid>
-        </div>
-            </>
+                    <Grid item xs={12} sm={4} md={3}>
+                        <FormControl fullWidth>
+                            <InputLabel id="category-label">Catégorie</InputLabel>
+                            <Select
+                                labelId="category-label"
+                                id="category-select"
+                                value={selectedCategory}
+                                onChange={handleCategoryChange}
+                                label="Catégorie"
+                            >
+                                <MenuItem value="">
+                                    <em>Toutes</em>
+                                </MenuItem>
+                                {categories.map((category) => (
+                                    <MenuItem key={category.id} value={category.id}>
+                                        {category.libelle}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={12} sm={8} md={7}>
+                        <Button variant="contained" fullWidth onClick={handleSearchClick}>
+                            Rechercher
+                        </Button>
+                    </Grid>
+                </Grid>
+                <Grid justifyContent="center">
+                    {user ? <FilterGrid /> : null}
+                </Grid>
+                <Grid container spacing={3} justifyContent="center" style={{ marginTop: '20px' }}>
+                    {articles.map(article => (
+                        <Grid item key={article.id} xs={12} sm={6} md={5} lg={5}>
+                            <Link to={`/article/${article.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                <Card>
+                                    <CardContent>
+                                        <Grid container spacing={2}>
+                                            <Grid item xs={4}>
+                                                <div style={{ width: '100%', height: 0, paddingTop: '100%', backgroundColor: 'grey' }}></div>
+                                            </Grid>
+                                            <Grid item xs={8}>
+                                                <Typography gutterBottom variant="h5" component="div" style={{ textDecoration: 'underline' }}>
+                                                    {article.nomArticle}
+                                                </Typography>
+                                                <Typography variant="body2" color="text.secondary" component="div">
+                                                    <span >Prix :</span> {article.prixVente}
+                                                </Typography>
+                                                <Typography variant="body2" color="text.secondary" component="div">
+                                                    <span >Fin de l'enchère :</span> {formatDate(article.dateFin)}
+                                                </Typography>
+                                                <Typography variant="body2" color="text.secondary" component="div">
+                                                    <span >Vendeur:</span> {article.vendeur.pseudo}
+                                                </Typography>
+                                                <Typography variant="body2" color="text.secondary">
+                                                    {article.description}
+                                                </Typography>
+                                            </Grid>
+                                        </Grid>
+                                    </CardContent>
+                                </Card>
+                            </Link>
+                        </Grid>
+                    ))}
+                </Grid>
+            </div>
+        </>
     );
 };
 

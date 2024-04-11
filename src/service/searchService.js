@@ -15,9 +15,10 @@ if (key) {
 
 const SearchService = {
     Search: async () => {
-        const filter = sessionStorage.getItem("filter");
+        const filter = JSON.parse(sessionStorage.getItem("filters"));
         try {
-            await axios.post(`${API_URL}/article`, filter);
+            const response = await axios.post(`${API_URL}/article`, filter);
+            return response.data;
         } catch (error) {
             console.error('Erreur lors de la création de l Enchere:', error);
             return error.response.data;
