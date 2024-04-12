@@ -10,6 +10,7 @@ import Profil from "./views/profile";
 import CreateArticleForm from "./views/article/add";
 import CreateCategorieForm from "./views/categorie/add";
 import ArticleDetail from "./views/article/detail";
+import CreateArticleEditOrDelete from "./views/article/edit";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
