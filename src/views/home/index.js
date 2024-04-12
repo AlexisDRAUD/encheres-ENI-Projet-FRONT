@@ -118,10 +118,15 @@ const Home = () => {
     };
 
     const FilterGrid = () => {
-        const handleCheckboxChange = (event) => {
-            const { name, checked } = event.target;
-            const newFilters = { ...filters, [name]: checked };
+        const handleCheckboxChange = async (event) => {
+            const {name, checked} = event.target;
+            const newFilters = {...filters, [name]: checked};
             updateFilters(newFilters);
+            setPageNum(1);
+            const PageArticlesData = await SearchService.Search(1);
+            setPageArticles(PageArticlesData);
+            setArticles(PageArticlesData.content)
+            setTotalPages(PageArticlesData.totalPages)
         };
 
         return (
