@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import ArticleService from "../../service/articleService";
 import CategorieService from "../../service/categorieService";
-import AuthService from "../../service/auth-service";
 import {
     Card,
     TextField,
@@ -41,8 +39,8 @@ const Home = () => {
     useEffect(() => {
         const fetchResources = async () => {
             try {
-                const articlesData = await ArticleService.getAllArticles();
-                const categoriesData = await SearchService.Search();
+                const articlesData = await SearchService.Search();
+                const categoriesData = await CategorieService.getAllCategories();
                 setArticles(articlesData);
                 setCategories(categoriesData);
             } catch (error) {
