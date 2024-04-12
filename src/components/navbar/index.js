@@ -78,7 +78,7 @@ const Navbar = () => {
                         <ListItem button component={Link} to="/" onClick={logout}>
                             <ListItemText primary="Déconnexion" />
                         </ListItem>
-                        <ListItem button component={Link} to="/" onClick={logout}>
+                        <ListItem>
                             <Chip icon={<CurrencyBitcoinIcon/>} label={utilisateur.credit} />
                         </ListItem>
                     </>
