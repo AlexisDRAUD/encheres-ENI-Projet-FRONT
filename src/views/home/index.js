@@ -44,6 +44,7 @@ const Home = () => {
                     const articlesData = await ArticleService.getAllArticles();
                     setArticles(articlesData);
                 }else {
+                    sessionStorage.setItem("filters", JSON.stringify(filters));
                     const articlesData = await SearchService.Search();
                     setArticles(articlesData);
                 }
