@@ -16,6 +16,7 @@ import { Link } from 'react-router-dom';
 import Filters from "../../components/filter";
 import Navbar from "../../components/navbar";
 import SearchService from "../../service/searchService";
+import ArticleService from "../../service/articleService";
 
 const Home = () => {
     const [articles, setArticles] = useState([]);
@@ -39,9 +40,14 @@ const Home = () => {
     useEffect(() => {
         const fetchResources = async () => {
             try {
-                const articlesData = await SearchService.Search();
+                if (!key){
+                    const articlesData = await ArticleService.getAllArticles();
+                    setArticles(articlesData);
+                }else {
+                    const articlesData = await SearchService.Search();
+                    setArticles(articlesData);
+                }
                 const categoriesData = await CategorieService.getAllCategories();
-                setArticles(articlesData);
                 setCategories(categoriesData);
             } catch (error) {
                 console.error("Error fetching resources:", error);
