@@ -54,7 +54,6 @@ const Navbar = () => {
         }
         setDrawerOpen(open);
     };
-    console.log(utilisateur);
 
     const drawer = (
         <Drawer

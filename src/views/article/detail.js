@@ -21,23 +21,9 @@ import Navbar from "../../components/navbar";
 const ArticleDetail = () => {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const { id } = useParams();
-    const [encheres, setEncheres] = useState([])
-    const [article, setArticle] = useState(null);
-    const [proposition, setproposition] = useState([])
-    const [currentUtilisateur, setCurrentUtilisateur] = useState(null);
     const currentDate = new Date();
-    const [errors, setErrors] = useState([]);
-
-    const [enchere, setenchree] = useState({
-        dateEnchere: "",
-        montantEnchere: 0,
-        userId: "",
-        articleId:"",
-
-    });
 
     const isConnected = () => {
-        // Retourne true si l'utilisateur est connecté, sinon retourne false
         const user = sessionStorage.getItem("user");
         return user !== null;
     };
@@ -51,8 +37,6 @@ const ArticleDetail = () => {
                 setCurrentUtilisateur(fetchedUtilisateur);
                 const fetchedEnchere = await EnchereService.getAllEncheresbyarticle(fetchedArticle.id);
                 setEncheres(fetchedEnchere.sort((a, b) => b.montantEnchere - a.montantEnchere));
-
-
             } catch (error) {
                 console.error('Error fetching article, encheres or user:', error);
             }
@@ -60,18 +44,27 @@ const ArticleDetail = () => {
         fetchArticleAndUser();
     }, [id]);
 
+    const [encheres, setEncheres] = useState([]);
+    const [article, setArticle] = useState(null);
+    const [currentUtilisateur, setCurrentUtilisateur] = useState(null);
+    const [proposition, setproposition] = useState("");
+    const [errors, setErrors] = useState([]);
+    const [enchere, setenchree] = useState({
+        dateEnchere: "",
+        montantEnchere: 0,
+        userId: "",
+        articleId:"",
+    });
+
+    const handleSearchChange = (event) => {
+        setproposition(event.target.value);
+    };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const addZero = (num) => (num < 10 ? `0${num}` : num);
-        const year = currentDate.getFullYear();
-        const month = addZero(currentDate.getMonth() + 1);
-        const day = addZero(currentDate.getDate());
-        const hours = addZero(currentDate.getHours());
-        const minutes = addZero(currentDate.getMinutes());
-        const secondes = addZero(currentDate.getSeconds())
-        const formattedDateTime = `${year}-${month}-${day}T${hours}:${minutes}:${secondes}`;
+        // Construire la date actuelle au format ISO
+        const formattedDateTime = currentDate.toISOString();
 
         enchere.articleId = article.id;
         enchere.userId = currentUtilisateur.id;
@@ -91,26 +84,21 @@ const ArticleDetail = () => {
                     setErrors([]);
                 }
             }
-            window.location.reload();
-
-
         } catch (error) {
             console.error('Erreur lors de l\'ajout de l\'enchère:', error);
             setErrors(['Une erreur s\'est produite lors de l\'ajout de l\'enchère']);
             setOpenSnackbar(true);
+        } finally {
+            setErrors(["Enchère créée avec succès"]);
+            setOpenSnackbar(true);
+            const fetchedArticle = await ArticleService.getdetailArticles(id);
+            setArticle(fetchedArticle);
+            const fetchedUtilisateur = await UtilisateurService.getUtilisateurById("userId");
+            setCurrentUtilisateur(fetchedUtilisateur);
+            const fetchedEnchere = await EnchereService.getAllEncheresbyarticle(fetchedArticle.id);
+            setEncheres(fetchedEnchere.sort((a, b) => b.montantEnchere - a.montantEnchere));
+            setproposition("");
         }
-    };
-
-    if (!article) {
-        return (
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                <CircularProgress />
-            </Box>
-        );
-    }
-    const handleSearchChange = (event) => {
-        setproposition(event.target.value);
-        console.log(proposition);
     };
 
     const formatDate = (dateString) => {
@@ -120,6 +108,14 @@ const ArticleDetail = () => {
         const year = date.getFullYear();
         return `${day}/${month}/${year}`;
     };
+
+    if (!article) {
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <CircularProgress />
+            </Box>
+        );
+    }
 
     return (
         <>
