@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import AuthService from './auth-service';
 
 const SessionTimeout = () => {

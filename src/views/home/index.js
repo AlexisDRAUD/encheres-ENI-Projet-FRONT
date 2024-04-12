@@ -189,10 +189,26 @@ const Home = () => {
                                         <CardContent>
                                             <Grid container spacing={2}>
                                                 <Grid item xs={4}>
-                                                    <div style={{ width: '100%', height: 0, paddingTop: '100%', backgroundColor: 'grey' }}></div>
+                                                    <div>
+                                                        {article.img ? (
+                                                            <div>
+                                                                <img src={article.img} alt="Image de l'article"
+                                                                     style={{width: '100%', height: 'auto'}}/>
+                                                            </div>
+
+                                                        ) : (
+                                                            <div style={{
+                                                                width: '100%',
+                                                                height: 0,
+                                                                paddingTop: '100%',
+                                                                backgroundColor: 'grey'
+                                                            }}></div>
+                                                        )}
+                                                    </div>
                                                 </Grid>
                                                 <Grid item xs={8}>
-                                                    <Typography gutterBottom variant="h5" component="div" style={{ textDecoration: 'underline' }}>
+                                                    <Typography gutterBottom variant="h5" component="div"
+                                                                style={{textDecoration: 'underline' }}>
                                                         {article.nomArticle}
                                                     </Typography>
                                                     <Typography variant="body2" color="text.secondary" component="div">

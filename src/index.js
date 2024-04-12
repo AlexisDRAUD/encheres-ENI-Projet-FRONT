@@ -13,6 +13,7 @@ import CreateArticleForm from "./views/article/add";
 import CreateCategorieForm from "./views/categorie/add";
 import ArticleDetail from "./views/article/detail";
 import CreateArticleEditOrDelete from "./views/article/edit";
+import ImageUpload from "./views/image";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -22,6 +23,7 @@ root.render(
             <SessionTimeout />
             <Routes>
                 <Route path="/" element={<Home />} />
+                <Route path="/image" element={<ImageUpload />} />
                 <Route path="/article/:id" element={<ArticleDetail />} />
                 <Route path="/article/:id/edit_or_delete" element={<CreateArticleEditOrDelete/>} />
                 <Route path="/article/add" element={<CreateArticleForm />} />
