@@ -5,6 +5,7 @@ import { TextField, Button, Select, MenuItem, InputLabel, FormControl, Typograph
 import ArticleService from "../../service/articleService";
 import CategorieService from "../../service/categorieService";
 import Navbar from "../../components/navbar";
+import axios from "axios";
 
 const CreateArticleEditOrDelete = () => {
     const { id } = useParams();
@@ -54,10 +55,13 @@ const CreateArticleEditOrDelete = () => {
     };
 
     const handleSubmit = async (event) => {
+        const formData = new FormData();
+        formData.append('image', file);
         event.preventDefault();
         try {
             console.log('ART MODIF', article)
             article.img = ('http://localhost:8080/upload/' + file.name);
+            await axios.post('http://localhost:8080/upload', formData);
             await ArticleService.updateArticle(article);
             alert('Article update successfully!');
         } catch (error) {
