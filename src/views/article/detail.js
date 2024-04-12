@@ -91,6 +91,7 @@ const ArticleDetail = () => {
                     setErrors([]);
                 }
             }
+            window.location.reload();
 
 
         } catch (error) {
