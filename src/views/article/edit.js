@@ -1,16 +1,15 @@
 // CreateArticleForm.js
 import React, {useEffect, useState} from 'react';
-import {useParams} from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
 import { TextField, Button, Select, MenuItem, InputLabel, FormControl, Typography, Grid } from '@mui/material';
 import ArticleService from "../../service/articleService";
 import CategorieService from "../../service/categorieService";
-import UtilisateurService from "../../service/utilisateurService";
+import Navbar from "../../components/navbar";
 
 const CreateArticleEditOrDelete = () => {
     const { id } = useParams();
     const [categories, setCategories] = useState([]);
     const [file, setFile] = useState(null);
-    //const [articleRecup, setArticleRecup] = useState({});
     const [article, setArticle] = useState({
         idArticle:0,
         nomArticle: "",
@@ -46,6 +45,7 @@ const CreateArticleEditOrDelete = () => {
     const handleChange = (event) => {
         const { name, value } = event.target;
         setArticle((prevArticle) => ({ ...prevArticle, [name]: value }));
+        console.log('ART CHGE', article)
     };
 
     const handleFileChange = (event) => {
@@ -56,7 +56,7 @@ const CreateArticleEditOrDelete = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            article.vendeur = await UtilisateurService.getUtilisateurById()
+            console.log('ART MODIF', article)
             await ArticleService.updateArticle(article);
             alert('Article update successfully!');
         } catch (error) {
@@ -64,9 +64,27 @@ const CreateArticleEditOrDelete = () => {
         }
     };
 
+    async function deleteArticle(id) {
+        try {
+            console.log('delete', id)
+            await ArticleService.deleteArticle(id);
+            alert('Catégorie supprimée avec succès!');
+            // Reset form or navigate away
+        } catch (error) {
+            alert('Failed to delete catégorie: ' + error.message);
+        }
+        window.location.replace("/");
+    }
+
+    const retour = () => {
+        console.log('retour')
+        window.location.replace("/");
+    };
 
 
     return (
+        <>
+            <Navbar />
         <Grid container spacing={2} justifyContent="center" alignItems="center" direction="column">
             <Typography variant="h4" gutterBottom>
                 Modifier ou supprimer une vente
@@ -187,12 +205,18 @@ const CreateArticleEditOrDelete = () => {
                         </Button>
                     </label>
                     <Button type="submit" variant="contained" color="primary">
-                        Ajouter
+                        Modifier
                     </Button>
                 </Grid>
             </form>
-
+            <Button variant="contained" color="primary" component={Link} to="/">
+                Retour
+            </Button>
+            <Button type="button" variant="contained" color="primary" onClick={() => deleteArticle(article.id)}>
+                Supprimer
+            </Button>
         </Grid>
+      </>
     );
 };
 

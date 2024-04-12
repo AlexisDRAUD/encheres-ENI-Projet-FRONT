@@ -18,6 +18,7 @@ import Navbar from "../../components/navbar";
 import SearchService from "../../service/searchService";
 import ArticleService from "../../service/articleService";
 
+
 const Home = () => {
     const [PageArticles, setPageArticles] = useState([]);
     const [pageNum, setPageNum] = useState(1);
@@ -28,6 +29,7 @@ const Home = () => {
     const [selectedCategory, setSelectedCategory] = useState('');
     const [user, setUser] = useState(null);
     const key = JSON.parse(sessionStorage.getItem('user'));
+    const [date, setDate] = useState(new Date(Date.now()));
     const [filters, setFilters] = useState({
         userId: (key && key.id) ? key.id : 0,
         search: '',
@@ -39,7 +41,7 @@ const Home = () => {
         notStartedSales: false,
         completedSales: false,
     });
-
+    const [canEdit, setCanEdit] = useState(false);
     useEffect(() => {
         const fetchResources = async () => {
             try {
@@ -65,11 +67,15 @@ const Home = () => {
             setUser(userFromSession);
         };
 
+        fetchResources();
+        updateUser();
         window.addEventListener('storage', updateUser);
         return () => {
             window.removeEventListener('storage', updateUser);
         };
     }, []);
+
+    console.log('date :', date)
 
     const updateFilters = (newFilters) => {
         setFilters(newFilters);
@@ -129,7 +135,7 @@ const Home = () => {
 
     return (
         <>
-            <Navbar />
+            <Navbar/>
             <div style={{ padding: '20px' }}>
                 <Typography variant="h4" align="center" gutterBottom>
                     Liste des enchères
@@ -201,6 +207,10 @@ const Home = () => {
                                                     <Typography variant="body2" color="text.secondary">
                                                         {article.description}
                                                     </Typography>
+                                                    {(formatDate(article.dateDebut) > formatDate(date) && article.vendeur.id === key.id)
+                                                        ? (<Link to={`/article/${article.id}/edit_or_delete`}>Modifier</Link>)
+                                                        : (<></>)
+                                                    }
                                                 </Grid>
                                             </Grid>
                                         </CardContent>

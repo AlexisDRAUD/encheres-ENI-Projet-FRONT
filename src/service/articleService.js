@@ -51,9 +51,19 @@ const ArticleService = {
     getArticleForUpdate: async (id) => {
         try {
             const response = await axios.get(`${API_URL}/article/modif/${id}`);
+            console.log('UPDATE :', response.data  )
             return response.data;
         } catch (error) {
             console.error("Erreur lors de la récupération des donné de l'articles pour modification:", error);
+            throw error;
+        }
+    },
+
+    deleteArticle: async (id) => {
+        try {
+            await axios.post(`${API_URL}/article/delete/${id}`);
+        } catch (error) {
+            console.error('Erreur lors de la suppression en base:', error);
             throw error;
         }
     },
