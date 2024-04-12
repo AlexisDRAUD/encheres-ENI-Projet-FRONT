@@ -19,6 +19,7 @@ root.render(
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/article/:id" element={<ArticleDetail />} />
+                <Route path="/article/:id/edit_or_delete" element={<CreateArticleEditOrDelete/>} />
                 <Route path="/article/add" element={<CreateArticleForm />} />
                 <Route path="/categorie/gestion" element={<CreateCategorieForm />} />
                 <Route path="/login" element={<Login />} />

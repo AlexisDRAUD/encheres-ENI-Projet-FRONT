@@ -31,12 +31,29 @@ const ArticleService = {
             throw error;
         }
     },
+    updateArticle: async (article) => {
+        try {
+            await axios.put(`${API_URL}/article/${article.id}`, article);
+        } catch (error) {
+            console.error('Erreur lors de la modification de l article:', error);
+            throw error;
+        }
+    },
     getdetailArticles: async (id) => {
         try {
             const response = await axios.get(`${API_URL}/article/detail/${id}`);
             return response.data;
         } catch (error) {
             console.error("Erreur lors de la récupération des donné de l'articles:", error);
+            throw error;
+        }
+    },
+    getArticleForUpdate: async (id) => {
+        try {
+            const response = await axios.get(`${API_URL}/article/modif/${id}`);
+            return response.data;
+        } catch (error) {
+            console.error("Erreur lors de la récupération des donné de l'articles pour modification:", error);
             throw error;
         }
     },

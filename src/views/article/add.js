@@ -1,14 +1,28 @@
 // CreateArticleForm.js
 import React, {useEffect, useState} from 'react';
-import { TextField, Button, Select, MenuItem, InputLabel, FormControl, Typography, Grid } from '@mui/material';
+
+import {
+    TextField,
+    Button,
+    Select,
+    MenuItem,
+    InputLabel,
+    FormControl,
+    Typography,
+    Grid
+} from '@mui/material';
 import ArticleService from "../../service/articleService";
 import CategorieService from "../../service/categorieService";
 import UtilisateurService from "../../service/utilisateurService";
 import Navbar from "../../components/navbar";
 
 const CreateArticleForm = () => {
+    const key = JSON.parse(sessionStorage.getItem('user'));
+    const [utilisateur, setUtilisateur] = useState({});
+
     const [categories, setCategories] = useState([]);
     const [file, setFile] = useState(null);
+
     const [article, setArticle] = useState({
         nomArticle: "",
         description: "",
@@ -18,9 +32,9 @@ const CreateArticleForm = () => {
         prixVente: '',
         categorieId: "",
         vendeurId: "",
-        rue: "test",
-        codePostal: 79000,
-        ville: "Niort"
+        rue: "",
+        codePostal: "",
+        ville: ""
     });
 
     useEffect(() => {
@@ -28,13 +42,24 @@ const CreateArticleForm = () => {
             try {
                 const categoriesData = await CategorieService.getAllCategories();
                 setCategories(categoriesData);
+                const utilisateurData= await UtilisateurService.getUtilisateurById(key.id)
+                setUtilisateur(utilisateurData)
             } catch (error) {
                 // handle errors or set default values
             }
         };
-
         fetchResources();
+        console.log('fetch 1', utilisateur )
+
     }, []);
+
+    useEffect(() => {
+        setArticle((prevArticle) => ({ ...prevArticle,
+            rue : utilisateur.rue,
+            codePostal: utilisateur.codePostal,
+            ville : utilisateur.ville
+        }));
+        }, [utilisateur]);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -58,20 +83,17 @@ const CreateArticleForm = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const vendeur = await UtilisateurService.getUtilisateurById()
-            article.vendeurId = vendeur.id
+            article.vendeurId = utilisateur.id
+            article.prixVente = article.miseAPrix
+            console.log('ARTICLE 2', article)
             await ArticleService.addArticle(article);
             alert('Article added successfully!');
         } catch (error) {
             alert('Failed to add article: ' + error.message);
         }
     };
-
-
-
     return (
         <>
-        <Navbar />
         <Grid container spacing={2} justifyContent="center" alignItems="center" direction="column">
             <Typography variant="h4" gutterBottom>
                 Créer un nouvel article
@@ -129,10 +151,28 @@ const CreateArticleForm = () => {
                     />
                     <TextField
                         fullWidth
-                        label="Prix de vente"
-                        name="prixVente"
-                        type="number"
-                        value={article.prixVente}
+                        type="text"
+                        label="Rue"
+                        name="rue"
+                        value={article.rue}
+                        onChange={handleChange}
+                        margin="normal"
+                    />
+                    <TextField
+                        fullWidth
+                        type="text"
+                        label="Code postal"
+                        name="codePostal"
+                        value={article.codePostal}
+                        onChange={handleChange}
+                        margin="normal"
+                    />
+                    <TextField
+                        fullWidth
+                        type="text"
+                        label="Ville"
+                        name="ville"
+                        value={article.ville}
                         onChange={handleChange}
                         margin="normal"
                     />
