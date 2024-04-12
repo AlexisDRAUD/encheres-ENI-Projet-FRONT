@@ -111,6 +111,15 @@ const ArticleDetail = () => {
         const year = date.getFullYear();
         return `${day}/${month}/${year}`;
     };
+    const formatDateTime = (dateString) => {
+        const date = new Date(dateString);
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        const hours = date.getHours();
+        const min = date.getMinutes();
+        return `${day}/${month}/${year}/${hours}/${min}`;
+    };
 
     if (!article) {
         return (
@@ -132,7 +141,7 @@ const ArticleDetail = () => {
                     <Typography variant="body1">Fin de l'enchère : {formatDate(article.dateFin)}</Typography>
                     <Typography variant="body1">Retrait : {article.retrait.rue} {article.retrait.codePostal} {article.retrait.ville}</Typography>
                     <Typography variant="body1">Vendeur: {article.vendeur.username}</Typography>
-                    {isConnected() && currentUtilisateur && article.vendeur.id !== currentUtilisateur.id && formatDate(article.dateFin) > formatDate(currentDate) && formatDate(article.dateDebut) < formatDate(currentDate) &&(
+                    {isConnected() && currentUtilisateur && article.vendeur.id !== currentUtilisateur.id && formatDateTime(article.dateFin) > formatDateTime(currentDate) && formatDateTime(article.dateDebut) < formatDateTime(currentDate) &&(
                         <>
                             <form onSubmit={handleSubmit} style={{width: '100%'}}>
                                 <Grid item xs={12} sm={6}>
