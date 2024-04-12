@@ -10,7 +10,7 @@ import {
     CardContent,
     CardActions,
     TextField,
-    Snackbar, MenuItem
+    Snackbar, MenuItem, Alert
 } from '@mui/material';
 import ArticleService from '../../service/articleService';
 import UtilisateurService from "../../service/utilisateurService";
@@ -20,6 +20,7 @@ import Navbar from "../../components/navbar";
 
 const ArticleDetail = () => {
     const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [openSnackbarOK, setOpenSnackbarOK] = useState(false);
     const { id } = useParams();
     const currentDate = new Date();
 
@@ -81,15 +82,17 @@ const ArticleDetail = () => {
                     setErrors([response.user]);
                     setOpenSnackbar(true);
                 } else {
-                    setErrors([]);
+
                 }
+            }else {
+                setErrors(['Enchère créée avec succès']);
+                setOpenSnackbar(true);
             }
         } catch (error) {
             console.error('Erreur lors de l\'ajout de l\'enchère:', error);
             setErrors(['Une erreur s\'est produite lors de l\'ajout de l\'enchère']);
             setOpenSnackbar(true);
         } finally {
-            setErrors(["Enchère créée avec succès"]);
             setOpenSnackbar(true);
             const fetchedArticle = await ArticleService.getdetailArticles(id);
             setArticle(fetchedArticle);
@@ -180,7 +183,6 @@ const ArticleDetail = () => {
                     message={error}
                 />
             ))}
-
         </>
     );
 };
