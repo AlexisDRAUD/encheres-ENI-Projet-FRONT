@@ -180,7 +180,7 @@ const Home = () => {
                                                         {article.nomArticle}
                                                     </Typography>
                                                     <Typography variant="body2" color="text.secondary" component="div">
-                                                        <span>Prix :</span> {article.prixVente}
+                                                        <span>Prix :</span> {(article.prixVente) ? article.prixVente : article.miseAPrix}
                                                     </Typography>
                                                     <Typography variant="body2" color="text.secondary" component="div">
                                                         <span>Fin de l'enchère :</span> {formatDate(article.dateFin)}
