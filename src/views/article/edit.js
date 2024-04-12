@@ -22,7 +22,8 @@ const CreateArticleEditOrDelete = () => {
         vendeurId: "",
         rue: "",
         codePostal: "",
-        ville: ""
+        ville: "",
+        img:''
     });
     useEffect(() => {
         const fetchResources = async () => {
@@ -49,14 +50,14 @@ const CreateArticleEditOrDelete = () => {
     };
 
     const handleFileChange = (event) => {
-        const file = event.target.files[0];
-        setFile(file);
+        setFile(event.target.files[0]);
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
             console.log('ART MODIF', article)
+            article.img = ('http://localhost:8080/upload/' + file.name);
             await ArticleService.updateArticle(article);
             alert('Article update successfully!');
         } catch (error) {
