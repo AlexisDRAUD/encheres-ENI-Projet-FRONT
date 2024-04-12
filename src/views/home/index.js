@@ -75,8 +75,6 @@ const Home = () => {
         };
     }, []);
 
-    console.log('date :', date)
-
     const updateFilters = (newFilters) => {
         setFilters(newFilters);
         sessionStorage.setItem("filters", JSON.stringify(newFilters));

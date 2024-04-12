@@ -51,7 +51,6 @@ const CreateArticleForm = () => {
             }
         };
         fetchResources();
-        console.log('fetch 1', utilisateur )
 
     }, []);
 
@@ -66,15 +65,6 @@ const CreateArticleForm = () => {
     const handleChange = (event) => {
         const { name, value } = event.target;
         setArticle((prevArticle) => ({ ...prevArticle, [name]: value }));
-    };
-
-    const handleCategoryChange = (event) => {
-        const { value } = event.target;
-        console.log(event.target)
-        setArticle((prevArticle) => ({
-            ...prevArticle,
-            categorie: { id : value.id , libelle: value.libelle}
-        }));
     };
 
     const handleFileChange = (event) => {
@@ -96,6 +86,7 @@ const CreateArticleForm = () => {
             await axios.post('http://localhost:8080/upload', formData);
             await ArticleService.addArticle(article);
             alert('Article added successfully!');
+            window.location.replace("/");
         } catch (error) {
             alert('Failed to add article: ' + error.message);
         }

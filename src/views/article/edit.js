@@ -42,12 +42,9 @@ const CreateArticleEditOrDelete = () => {
 
     }, []);
 
-    console.log('ART', article)
-
     const handleChange = (event) => {
         const { name, value } = event.target;
         setArticle((prevArticle) => ({ ...prevArticle, [name]: value }));
-        console.log('ART CHGE', article)
     };
 
     const handleFileChange = (event) => {
@@ -59,7 +56,6 @@ const CreateArticleEditOrDelete = () => {
         formData.append('image', file);
         event.preventDefault();
         try {
-            console.log('ART MODIF', article)
             article.img = ('http://localhost:8080/upload/' + file.name);
             await axios.post('http://localhost:8080/upload', formData);
             await ArticleService.updateArticle(article);
@@ -71,7 +67,6 @@ const CreateArticleEditOrDelete = () => {
 
     async function deleteArticle(id) {
         try {
-            console.log('delete', id)
             await ArticleService.deleteArticle(id);
             alert('Catégorie supprimée avec succès!');
             // Reset form or navigate away
@@ -80,12 +75,6 @@ const CreateArticleEditOrDelete = () => {
         }
         window.location.replace("/");
     }
-
-    const retour = () => {
-        console.log('retour')
-        window.location.replace("/");
-    };
-
 
     return (
         <>
