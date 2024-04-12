@@ -131,6 +131,7 @@ const ArticleDetail = () => {
 
     return (
         <>
+            <Navbar/>
             <Grid container spacing={3} justifyContent="center">
                 <Grid item xs={12} sm={8}>
                     <Typography variant="h3">{article.nomArticle}</Typography>
