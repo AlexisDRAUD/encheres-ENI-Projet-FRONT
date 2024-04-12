@@ -10,7 +10,7 @@ import {
     FormControl,
     CardContent,
     Typography,
-    Grid,
+    Grid, Pagination,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import Filters from "../../components/filter";
@@ -19,6 +19,9 @@ import SearchService from "../../service/searchService";
 import ArticleService from "../../service/articleService";
 
 const Home = () => {
+    const [PageArticles, setPageArticles] = useState([]);
+    const [pageNum, setPageNum] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
     const [articles, setArticles] = useState([]);
     const [categories, setCategories] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
@@ -40,14 +43,11 @@ const Home = () => {
     useEffect(() => {
         const fetchResources = async () => {
             try {
-                if (!key){
-                    const articlesData = await ArticleService.getAllArticles();
-                    setArticles(articlesData);
-                }else {
-                    sessionStorage.setItem("filters", JSON.stringify(filters));
-                    const articlesData = await SearchService.Search();
-                    setArticles(articlesData);
-                }
+                sessionStorage.setItem("filters", JSON.stringify(filters));
+                const PageArticlesData = await SearchService.Search(pageNum);
+                setPageArticles(PageArticlesData);
+                setArticles(PageArticlesData.content)
+                setTotalPages(PageArticlesData.totalPages)
                 const categoriesData = await CategorieService.getAllCategories();
                 setCategories(categoriesData);
             } catch (error) {
@@ -76,6 +76,14 @@ const Home = () => {
         sessionStorage.setItem("filters", JSON.stringify(newFilters));
     };
 
+    const handlePageChange = async (event, value) => {
+        setPageNum(value);
+        const PageArticlesData = await SearchService.Search(value);
+        setPageArticles(PageArticlesData);
+        setArticles(PageArticlesData.content)
+        setTotalPages(PageArticlesData.totalPages)
+    };
+
     const handleSearchChange = (event) => {
         const { value } = event.target;
         const newFilters = { ...filters, search: value };
@@ -91,8 +99,10 @@ const Home = () => {
     };
 
     const handleSearchClick = async () => {
-        const articlesData = await SearchService.Search();
-        setArticles(articlesData);
+        const PageArticlesData = await SearchService.Search(pageNum);
+        setPageArticles(PageArticlesData);
+        setArticles(PageArticlesData.content)
+        setTotalPages(PageArticlesData.totalPages)
     };
 
     const formatDate = (dateString) => {
@@ -161,12 +171,12 @@ const Home = () => {
                         </Button>
                     </Grid>
                 </Grid>
-                <Grid justifyContent="center">
-                    {user ? <FilterGrid /> : null}
-                </Grid>
-                <Grid container spacing={3} justifyContent="center" style={{ marginTop: '20px' }}>
-                    {articles.length > 0 ? (
-                        articles.map(article => (
+                <div style={{display: 'flex', justifyContent: 'center'}}>
+                    {user ? <FilterGrid/> : null}
+                </div>
+            <Grid container spacing={3} justifyContent="center" style={{marginTop: '20px'}}>
+                {articles.length > 0 ? (
+                    articles.map(article => (
                             <Grid item key={article.id} xs={12} sm={6} md={5} lg={5}>
                                 <Link to={`/article/${article.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                                     <Card>
@@ -204,6 +214,9 @@ const Home = () => {
                         </Typography>
                     )}
                 </Grid>
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <Pagination count={totalPages} page={pageNum}  onChange={handlePageChange} shape="rounded" style={{ margin: 'auto', textAlign: 'center' }} />
+                </div>
             </div>
         </>
     );

@@ -14,10 +14,11 @@ if (key) {
 
 
 const SearchService = {
-    Search: async () => {
+    Search: async (pageNum) => {
         const filter = JSON.parse(sessionStorage.getItem("filters"));
         try {
-            const response = await axios.post(`${API_URL}/article`, filter);
+            console.log(pageNum)
+            const response = await axios.post(`${API_URL}/article/${pageNum}`, filter);
             return response.data;
         } catch (error) {
             console.error('Erreur lors de la création de l Enchere:', error);
