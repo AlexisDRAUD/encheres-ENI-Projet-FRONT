@@ -32,6 +32,26 @@ class AuthService {
         });
     }
 
+    async forgottenPass(email) {
+        try {
+            await axios.post(API_URL + "resetPassword?email=" + email, {});
+        } catch (error) {
+            return error.response.data;
+        }
+    }
+
+    async savePass(password, passwordConfirmation, token) {
+        try {
+            await axios.post(API_URL + "savePassword", {
+                password: password,
+                passwordConfirmation: passwordConfirmation,
+                token: token
+            });
+        } catch (error) {
+            return error.response.data;
+        }
+    }
+
     getCurrentUser(){
         return JSON.parse(sessionStorage.getItem('user'));
     }
