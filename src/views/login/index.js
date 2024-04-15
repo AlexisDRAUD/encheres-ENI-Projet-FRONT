@@ -80,6 +80,7 @@ const Login = () => {
                         control={<Checkbox checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />}
                         label="Se souvenir de moi"
                     />
+                    <Link to={"/lost-password"}>Mot de passe oublié</Link>
                     {loading ? (
                         <CircularProgress />
                     ) : (

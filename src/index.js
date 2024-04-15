@@ -14,6 +14,8 @@ import CreateCategorieForm from "./views/categorie/add";
 import ArticleDetail from "./views/article/detail";
 import CreateArticleEditOrDelete from "./views/article/edit";
 import ImageUpload from "./views/image";
+import LostPassword from "./views/login/forgetPassword";
+import ChangePassword from "./views/login/newPassword";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -31,6 +33,8 @@ root.render(
                 <Route path="/login" element={<Login />} />
                 <Route path="/profil/:param" element={<Profil />} />
                 <Route path="/profil" element={<Profil />} />
+                <Route path="/lost-password" element={<LostPassword />} />
+                <Route path="/change-password/:token" element={<ChangePassword />} />
             </Routes>
         </BrowserRouter>
     </React.StrictMode>
