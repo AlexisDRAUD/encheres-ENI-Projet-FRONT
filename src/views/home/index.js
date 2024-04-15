@@ -164,7 +164,7 @@ const Home = () => {
                                     onChange={handleCategoryChange}
                                     displayEmpty
                                 >
-                                    <MenuItem value="">
+                                    <MenuItem value={0}>
                                         <em>Toutes</em>
                                     </MenuItem>
                                     {categories.map((category) => (

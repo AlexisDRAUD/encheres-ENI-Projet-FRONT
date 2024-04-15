@@ -52,6 +52,7 @@ const Login = () => {
     return (
         <>
             <Navbar />
+            <div style={{ padding: '80px' }}>
             <Box>
                 <Typography variant="h4" component="h2" gutterBottom>
                     Connexion
@@ -93,6 +94,7 @@ const Login = () => {
                     Créer un compte
                 </Button>
             </Box>
+            </div>
         </>
     );
 };
