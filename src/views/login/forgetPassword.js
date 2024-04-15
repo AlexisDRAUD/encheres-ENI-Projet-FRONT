@@ -6,11 +6,8 @@ import {
     Typography,
     FormControl,
     CircularProgress,
-    Checkbox,
-    FormControlLabel,
-    Snackbar
 } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import AuthService from '../../service/auth-service';
 import Navbar from "../../components/navbar";
 

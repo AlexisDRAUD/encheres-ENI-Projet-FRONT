@@ -6,11 +6,9 @@ import {
     Typography,
     FormControl,
     CircularProgress,
-    Checkbox,
-    FormControlLabel,
     Snackbar
 } from '@mui/material';
-import {Link, useNavigate, useParams} from 'react-router-dom';
+import { useNavigate, useParams} from 'react-router-dom';
 import AuthService from '../../service/auth-service';
 import Navbar from "../../components/navbar";
 
@@ -29,7 +27,7 @@ const ChangePassword = () => {
 
     useEffect(() => {
         console.log(errors)
-        if (errors.url && errors.url != '') {
+        if (errors.url && errors.url !== '') {
             setOpenSnackbar(true);
         }
     }, [errors]);

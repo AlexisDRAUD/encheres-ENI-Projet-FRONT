@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
         fontSize: '1.2rem'
     },
     imageStyle: {
-        width: '100%',
+        width: '20%',
         height: 'auto'
     }
 }));
@@ -161,36 +161,8 @@ const ArticleDetail = () => {
             <Typography sx={{ display: 'flex', justifyContent: 'center' }} variant="h6">{article.nomArticle}</Typography>
             {currentUtilisateur && article.vendeur.id === currentUtilisateur.id && formatDateTime(article.dateFin) < formatDateTime(currentDate) && encheres && (
                 <>
-                    {!isMobile && (
-                        <Grid container justifyContent="center" style={{ display: "flex" }}>
-                            <Grid item xs={4}>
-                                <div>
-                                    {article.img ? (
-                                        <div>
-                                            <img src={article.img} alt="Image de l'article" style={{ width: '100%', height: 'auto' }} />
-                                        </div>
-                                    ) : (
-                                        <div style={{ width: '100%', height: 0, paddingTop: '100%', backgroundColor: 'grey' }}></div>
-                                    )}
-                                </div>
-                            </Grid>
-                            <Grid item xs={8}>
-                                <div >
-                                    <Typography variant="body1">Description: {article.description}</Typography>
-                                    <Typography variant="body1">Catégorie: {article.categorie.libelle}</Typography>
-                                    <Typography variant="body1">Meilleure offre: {encheres.length > 0 ? `${encheres[0].montantEnchere}€ par ${encheres[0].utilisateur.username}` : "Aucune offre pour le moment"}</Typography>
-                                    <Typography variant="body1">Mise à prix: {article.miseAPrix}€</Typography>
-                                    <Typography variant="body1">Fin de l'enchère : {formatDate(article.dateFin)}</Typography>
-                                    <Typography variant="body1">Retrait : {article.retrait.rue} {article.retrait.codePostal} {article.retrait.ville}</Typography>
-                                    <Button variant="contained" color="secondary" onClick={handleRetraitEffectue}>
-                                        Retrait effectué
-                                    </Button>
-                                </div>
-                            </Grid>
-                        </Grid>
-                    )}
-                    {isMobile && (
-                        <Grid container justifyContent="center" style={{ display: "flex" }}>
+                    <Grid container justifyContent="center" style={{ display: "flex" }}>
+                        <Grid item xs={4}>
                             <div>
                                 {article.img ? (
                                     <div>
@@ -200,18 +172,18 @@ const ArticleDetail = () => {
                                     <div style={{ width: '100%', height: 0, paddingTop: '100%', backgroundColor: 'grey' }}></div>
                                 )}
                             </div>
-                            <Typography variant="body1">Description: {article.description}</Typography>
-                            <Typography variant="body1">Catégorie: {article.categorie.libelle}</Typography>
-                            <Typography variant="body1">Meilleure offre: {encheres.length > 0 ? `${encheres[0].montantEnchere}€ par ${encheres[0].utilisateur.username}` : "Aucune offre pour le moment"}</Typography>
-                            <Typography variant="body1">Mise à prix: {article.miseAPrix}€</Typography>
-                            <Typography variant="body1">Fin de l'enchère : {formatDate(article.dateFin)}</Typography>
-                            <Typography variant="body1">Retrait : {article.retrait.rue} {article.retrait.codePostal} {article.retrait.ville}</Typography>
-                            <Button variant="contained" color="secondary" onClick={handleRetraitEffectue}>
-                                Retrait effectué
-                            </Button>
-
                         </Grid>
-                    )}
+                        <Grid item xs={8}>
+                            <div >
+                                <Typography variant="body1">Description: {article.description}</Typography>
+                                <Typography variant="body1">Catégorie: {article.categorie.libelle}</Typography>
+                                <Typography variant="body1">Meilleure offre: {encheres.length > 0 ? `${encheres[0].montantEnchere}€ par ${encheres[0].utilisateur.username}` : "Aucune offre pour le moment"}</Typography>
+                                <Typography variant="body1">Mise à prix: {article.miseAPrix}€</Typography>
+                                <Typography variant="body1">Fin de l'enchère : {formatDate(article.dateFin)}</Typography>
+                                <Typography variant="body1">Retrait : {article.retrait.rue} {article.retrait.codePostal} {article.retrait.ville}</Typography>
+                            </div>
+                        </Grid>
+                    </Grid>
                 </>
             )}
             {!currentUtilisateur || article.vendeur.id !== currentUtilisateur.id || formatDateTime(article.dateFin) >= formatDateTime(currentDate) || !encheres ? (
@@ -219,10 +191,16 @@ const ArticleDetail = () => {
                     <div>
                         {article.img ? (
                             <div>
-                                <img src={article.img} alt="Image de l'article" style={{ width: '100%', height: 'auto' }} />
+                                <img src={article.img} alt="Image de l'article"
+                                     style={{width: '100%', height: 'auto'}}/>
                             </div>
                         ) : (
-                            <div className={classes.imagePlaceholder}>Image non disponible</div>
+                            <div style={{
+                                width: '100%',
+                                height: 0,
+                                paddingTop: '100%',
+                                backgroundColor: 'grey'
+                            }}></div>
                         )}
                     </div>
                 </Grid>
@@ -235,7 +213,6 @@ const ArticleDetail = () => {
                     <Typography variant="body1">Mise à prix: {article.miseAPrix}€</Typography>
                     <Typography variant="body1">Fin de l'enchère : {formatDateTime(article.dateFin)}</Typography>
                     {!isMobile && <Typography variant="body1">Retrait : {article.retrait.rue} {article.retrait.codePostal} {article.retrait.ville}</Typography>}
-
                 </>
             ) : null}
             {isConnected() && currentUtilisateur && article.vendeur.id !== currentUtilisateur.id && formatDateTime(article.dateFin) > formatDateTime(currentDate) && formatDateTime(article.dateDebut) < formatDateTime(currentDate) && (
@@ -260,16 +237,15 @@ const ArticleDetail = () => {
         </Grid>
     );
 
-
-
     return (
         <>
             <Navbar />
             <div style={{ padding: '80px' }}>
-            <Box container spacing={3} justifyContent="center" xs={12} >
+
+            <Grid container spacing={3} justifyContent="center">
                 {article && currentUtilisateur && formatDateTime(article.dateFin) < formatDateTime(currentDate) && article.acheteur.id === currentUtilisateur.id ? (
                     <>
-                        <Grid item xs={12} sm={8} spacing={1}>
+                        <Grid item xs={12} sm={8}>
                             <Grid container justifyContent="center" style={{ display: "flex" }}>
                                 <Typography variant="h6">Vous avez remporté la vente</Typography>
                             </Grid>
@@ -284,68 +260,47 @@ const ArticleDetail = () => {
                                 </Grid>
                             )}
                             {!isMobile && (
-                                <Grid container spacing={3} justifyContent="center" xs={12}>
-                                    <Grid item xs={2}>
-                                        <Box className={classes.itemContainer}>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={3}>
-                                        <Box className={classes.itemContainer}>
+                                <Grid container justifyContent="center" style={{ display: "flex" }}>
+                                    <Grid item xs={4}>
+                                        <div>
                                             {article.img ? (
-                                                <img src={article.img} alt="Image de l'article" className={classes.imageStyle} />
+                                                <div>
+                                                    <img src={article.img} alt="Image de l'article" style={{ width: '100%', height: 'auto' }} />
+                                                </div>
                                             ) : (
-                                                <div className={classes.imagePlaceholder}>Image non disponible</div>
+                                                <div style={{ width: '100%', height: 0, paddingTop: '100%', backgroundColor: 'grey' }}></div>
                                             )}
-                                        </Box>
+                                        </div>
                                     </Grid>
-                                    <Grid item xs={6}>
-                                        <Box className={classes.itemContainer}>
+                                    <Grid item xs={8}>
+                                        <div >
                                             <Typography variant="body1">Description: {article.description}</Typography>
                                             <Typography variant="body1">Catégorie: {article.categorie.libelle}</Typography>
                                             <Typography variant="body1">Meilleure offre: {encheres.length > 0 ? `${encheres[0].montantEnchere}€ par ${encheres[0].utilisateur.username}` : "Aucune offre pour le moment"}</Typography>
                                             <Typography variant="body1">Mise à prix: {article.miseAPrix}€</Typography>
                                             <Typography variant="body1">Fin de l'enchère : {formatDate(article.dateFin)}</Typography>
                                             <Typography variant="body1">Retrait : {article.retrait.rue} {article.retrait.codePostal} {article.retrait.ville}</Typography>
-                                        </Box>
+                                        </div>
                                     </Grid>
                                 </Grid>
                             )}
                             {isMobile && (
-                                <Grid container justifyContent="center" spacing={1}>
-                                    <Grid item xs={12} >
-                                        <Card>
-                                            <CardContent>
-                                                {article.img ? (
-                                                    <img src={article.img} alt="Image de l'article" style={{ width: '100%', height: 'auto' }} />
-                                                ) : (
-                                                    <Box style={{ width: '100%', height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#f0f0f0' }}>
-                                                        <Typography variant="subtitle1" color="textSecondary">Aucune image disponible</Typography>
-                                                    </Box>
-                                                )}
-                                            </CardContent>
-                                        </Card>
-                                    </Grid>
-                                    <Typography variant="h6" gutterBottom>
-                                        Meilleure offre: {encheres.length > 0 ? `${encheres[0].montantEnchere}€ par ${encheres[0].utilisateur.username}` : "Aucune offre pour le moment"}
-                                    </Typography>
-                                    <Typography variant="h6">
-                                        Mise à prix: {article.miseAPrix}€
-                                    </Typography>
-                                    <Grid item xs={12} sm={6}>
-                                        <Card>
-                                            <CardContent>
-                                                <Typography variant="body1" color="textSecondary">
-                                                    Retrait : {article.retrait.rue} {article.retrait.codePostal} {article.retrait.ville}
-                                                </Typography>
-                                                <Typography variant="body1" color="textSecondary">
-                                                    Vendeur : {article.vendeur.username}
-                                                </Typography>
-                                                <Typography variant="body1" color="textSecondary">
-                                                    Tel : {article.vendeur.telephone}
-                                                </Typography>
-                                            </CardContent>
-                                        </Card>
-                                    </Grid>
+                                <Grid container justifyContent="center" style={{ display: "flex" }}>
+                                    <div>
+                                        {article.img ? (
+                                            <div>
+                                                <img src={article.img} alt="Image de l'article" style={{ width: '100%', height: 'auto' }} />
+                                            </div>
+                                        ) : (
+                                            <div style={{ width: '100%', height: 0, paddingTop: '100%', backgroundColor: 'grey' }}></div>
+                                        )}
+                                    </div>
+                                    <Typography variant="body1">Description: {article.description}</Typography>
+                                    <Typography variant="body1">Catégorie: {article.categorie.libelle}</Typography>
+                                    <Typography variant="body1">Meilleure offre: {encheres.length > 0 ? `${encheres[0].montantEnchere}€ par ${encheres[0].utilisateur.username}` : "Aucune offre pour le moment"}</Typography>
+                                    <Typography variant="body1">Mise à prix: {article.miseAPrix}€</Typography>
+                                    <Typography variant="body1">Fin de l'enchère : {formatDate(article.dateFin)}</Typography>
+                                    <Typography variant="body1">Retrait : {article.retrait.rue} {article.retrait.codePostal} {article.retrait.ville}</Typography>
                                 </Grid>
                             )}
                         </Grid>
@@ -372,7 +327,7 @@ const ArticleDetail = () => {
                         ))}
                     </Grid>
                 )}
-            </Box>
+            </Grid>
             {errors.map((error) => (
                 <Snackbar
                     open={openSnackbar}
@@ -385,6 +340,8 @@ const ArticleDetail = () => {
             </div>
         </>
     );
+
+
 
 };
 

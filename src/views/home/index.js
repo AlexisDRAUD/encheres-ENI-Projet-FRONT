@@ -7,18 +7,20 @@ import {
     Button,
     Select,
     MenuItem,
-    InputLabel,
     FormControl,
     CardContent,
     Typography,
-    Grid, Pagination, useMediaQuery, useTheme,
+    Grid,
+    Pagination,
+    useMediaQuery,
+    useTheme, InputLabel,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import Filters from "../../components/filter";
 import Navbar from "../../components/navbar";
 import SearchService from "../../service/searchService";
-import ArticleService from "../../service/articleService";
 
+import './Home.css'; // Importation des styles CSS
 
 const Home = () => {
     const theme = useTheme();
@@ -32,11 +34,11 @@ const Home = () => {
     const [selectedCategory, setSelectedCategory] = useState('');
     const [user, setUser] = useState(null);
     const key = JSON.parse(sessionStorage.getItem('user'));
-    const [date, setDate] = useState(new Date(Date.now()));
+    const [date] = useState(new Date(Date.now()));
     const [filters, setFilters] = useState({
         userId: (key && key.id) ? key.id : 0,
         search: '',
-        categorieId :0,
+        categorieId: 0,
         openBids: true,
         ongoingBids: false,
         wonBids: false,
@@ -44,7 +46,7 @@ const Home = () => {
         notStartedSales: false,
         completedSales: false,
     });
-    const [canEdit, setCanEdit] = useState(false);
+
     useEffect(() => {
         const fetchResources = async () => {
             try {
@@ -76,7 +78,7 @@ const Home = () => {
         return () => {
             window.removeEventListener('storage', updateUser);
         };
-    }, []);
+    }, [filters, pageNum]);
 
     const updateFilters = (newFilters) => {
         setFilters(newFilters);
@@ -122,8 +124,8 @@ const Home = () => {
 
     const FilterGrid = () => {
         const handleCheckboxChange = async (event) => {
-            const {name, checked} = event.target;
-            const newFilters = {...filters, [name]: checked};
+            const { name, checked } = event.target;
+            const newFilters = { ...filters, [name]: checked };
             updateFilters(newFilters);
             setPageNum(1);
             const PageArticlesData = await SearchService.Search(1);
@@ -142,13 +144,14 @@ const Home = () => {
     return (
         <>
             <Navbar />
-            <div style={{ padding: '80px' }}>
+            <div className="container">
                 <Typography variant="h4" align="center" gutterBottom>
                     Liste des enchères
                 </Typography>
-                <Box display="flex" justifyContent="center">
-                    <Grid container alignItems="stretch" justifyContent="center">
-                        <Grid item xs={12} sm={4} md={3}>
+                {isMobile && (
+                    <>
+                    <Grid container spacing={2} justifyContent="center">
+                        <Grid item xs={12} sm={6} md={4}>
                             <TextField
                                 fullWidth
                                 label="Le nom de l'article contient"
@@ -156,13 +159,16 @@ const Home = () => {
                                 value={searchTerm}
                                 onChange={handleSearchChange}
                             />
+                        </Grid>
+                        <Grid item xs={12} sm={4} md={3}>
                             <FormControl fullWidth>
+                                <InputLabel id="category-label">Catégorie</InputLabel>
                                 <Select
                                     labelId="category-label"
                                     id="category-select"
                                     value={selectedCategory}
                                     onChange={handleCategoryChange}
-                                    displayEmpty
+                                    label="Catégorie"
                                 >
                                     <MenuItem value={0}>
                                         <em>Toutes</em>
@@ -174,34 +180,86 @@ const Home = () => {
                                     ))}
                                 </Select>
                             </FormControl>
-                            {user ? <FilterGrid /> : null}
                         </Grid>
-                        <Grid item xs={12} sm={5} md={4}>
-                            {isMobile && (
-                                <Button
-                                    variant="contained"
-                                    fullWidth
-                                    onClick={handleSearchClick}
-                                >
-                                    Rechercher
-                                </Button>
-                            )}
-                            {!isMobile && (
-                            <Button
-                                variant="contained"
-                                style={{ height: '40%', width: '60%' , right: '-40%', bottom: '-50%'}}
-                                onClick={handleSearchClick}
-                            >
+                        <Grid item xs={12} sm={8} md={7}>
+                            <Button variant="contained" fullWidth onClick={handleSearchClick}>
                                 Rechercher
                             </Button>
-                            )}
                         </Grid>
                     </Grid>
-                </Box>
+                    <div style={{display: 'flex', justifyContent: 'center'}}>
+                {user ? <FilterGrid/> : null}
             </div>
-            <Grid container spacing={3} justifyContent="center" style={{marginTop: '20px'}}>
-                {articles.length > 0 ? (
-                    articles.map(article => (
+            </>
+                )}
+                {!isMobile && (
+                    <Box display="flex" justifyContent="center">
+                        <Grid container alignItems="stretch" justifyContent="center" spacing={3}>
+                            {/* Card for category selection */}
+                            <Grid item xs={12} sm={6} md={4}>
+                                <Card className="card-container">
+                                    <CardContent>
+                                        <Typography variant="h6" gutterBottom className="card-header">
+                                            Categories
+                                        </Typography>
+                                        <FormControl fullWidth className="card-content">
+                                            <Select
+                                                labelId="category-label"
+                                                id="category-select"
+                                                value={selectedCategory}
+                                                onChange={handleCategoryChange}
+                                                displayEmpty
+                                            >
+                                                <MenuItem value={0}><em>Toutes les Categories</em></MenuItem>
+                                                {categories.map((category) => (
+                                                    <MenuItem key={category.id} value={category.id}>
+                                                        {category.libelle}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                        {user ? <FilterGrid/> : null}
+                                    </CardContent>
+                                </Card>
+                            </Grid>
+
+                            {/* Card for article search */}
+                            <Grid item xs={12} sm={6} md={4}>
+                                <Card className="card-container">
+                                    <CardContent>
+                                        <Typography variant="h6" gutterBottom className="card-header">
+                                            Recherche d'articles
+                                        </Typography>
+                                        <div className="card-content">
+                                            <TextField
+                                                fullWidth
+                                                label="Le nom de l'article contient"
+                                                variant="outlined"
+                                                value={searchTerm}
+                                                onChange={handleSearchChange}
+                                            />
+                                            <Box marginTop={2}>
+                                                <Button
+                                                    variant="contained"
+                                                    fullWidth
+                                                    onClick={handleSearchClick}
+                                                    className="search-button"
+                                                >
+                                                    Search
+                                                </Button>
+                                            </Box>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            </Grid>
+                        </Grid>
+                    </Box>
+                )}
+            </div>
+            {!isMobile && (
+                <Grid container spacing={3} justifyContent="center" className="articles-grid"> {/* Ajout de la classe CSS */}
+                    {articles.length > 0 ? (
+                        articles.map(article => (
                             <Grid item key={article.id} xs={12} sm={6} md={5} lg={5}>
                                 <Link to={`/article/${article.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                                     <Card>
@@ -211,8 +269,8 @@ const Home = () => {
                                                     <div>
                                                         {article.img ? (
                                                             <div>
-                                                                <img src={article.img} alt="Image de l'article"
-                                                                     style={{width: '100%', height: 'auto'}}/>
+                                                                {/* eslint-disable-next-line jsx-a11y/img-redundant-alt */}
+                                                                <img src={article.img} alt="Image de l'article" style={{ width: '100%', height: 'auto' }} />
                                                             </div>
 
                                                         ) : (
@@ -227,7 +285,7 @@ const Home = () => {
                                                 </Grid>
                                                 <Grid item xs={8}>
                                                     <Typography gutterBottom variant="h5" component="div"
-                                                                style={{textDecoration: 'underline' }}>
+                                                                style={{ textDecoration: 'underline' }}>
                                                         {article.nomArticle}
                                                     </Typography>
                                                     <Typography variant="body2" color="text.secondary" component="div">
@@ -259,9 +317,72 @@ const Home = () => {
                         </Typography>
                     )}
                 </Grid>
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                    <Pagination count={totalPages} page={pageNum}  onChange={handlePageChange} shape="rounded" style={{ margin: 'auto', textAlign: 'center' }} />
-                </div>
+            )}
+            {isMobile && (
+                <Grid container spacing={3} justifyContent="center" className="articles-grid"> {/* Ajout de la classe CSS */}
+                    {articles.length > 0 ? (
+                        articles.map(article => (
+                            <Grid item key={article.id} xs={12} sm={6} md={5} lg={5}>
+                                <Link to={`/article/${article.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                    <Card>
+                                        <CardContent>
+                                            <Grid container spacing={2}>
+                                                <Grid item xs={4}>
+                                                    <div>
+                                                        {article.img ? (
+                                                            <div>
+                                                                {/* eslint-disable-next-line jsx-a11y/img-redundant-alt */}
+                                                                <img src={article.img} alt="Image de l'article" style={{ width: '100%', height: 'auto' }} />
+                                                            </div>
+
+                                                        ) : (
+                                                            <div style={{
+                                                                width: '100%',
+                                                                height: 0,
+                                                                paddingTop: '100%',
+                                                                backgroundColor: 'grey'
+                                                            }}></div>
+                                                        )}
+                                                    </div>
+                                                </Grid>
+                                                <Grid item xs={8}>
+                                                    <Typography gutterBottom variant="h5" component="div"
+                                                                style={{ textDecoration: 'underline' }}>
+                                                        {article.nomArticle}
+                                                    </Typography>
+                                                    <Typography variant="body2" color="text.secondary" component="div">
+                                                        <span>Prix :</span> {(article.prixVente) ? article.prixVente : article.miseAPrix}
+                                                    </Typography>
+                                                    <Typography variant="body2" color="text.secondary" component="div">
+                                                        <span>Fin de l'enchère :</span> {formatDate(article.dateFin)}
+                                                    </Typography>
+                                                    <Typography variant="body2" color="text.secondary" component="div">
+                                                        <span>Retrait:</span> Retrait : {article.retrait.rue} {article.retrait.codePostal} {article.retrait.ville}
+                                                    </Typography>
+                                                    <Typography variant="body2" color="text.secondary" component="div">
+                                                        <span>Vendeur:</span> {article.vendeur.username}
+                                                    </Typography>
+                                                    {(formatDate(article.dateDebut) > formatDate(date) && article.vendeur.id === key.id)
+                                                        ? (<Link to={`/article/${article.id}/edit_or_delete`}>Modifier</Link>)
+                                                        : (<></>)
+                                                    }
+                                                </Grid>
+                                            </Grid>
+                                        </CardContent>
+                                    </Card>
+                                </Link>
+                            </Grid>
+                        ))
+                    ) : (
+                        <Typography variant="h5" align="center" style={{ width: '100%' }}>
+                            Pas de produit trouvé
+                        </Typography>
+                    )}
+                </Grid>
+            )}
+            <div className="pagination-container"> {/* Ajout de la classe CSS */}
+                <Pagination count={totalPages} page={pageNum} onChange={handlePageChange} shape="rounded" />
+            </div>
         </>
     );
 };

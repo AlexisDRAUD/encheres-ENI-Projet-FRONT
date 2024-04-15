@@ -1,0 +1,52 @@
+.container {
+    padding: 80px;
+}
+
+.articles-grid {
+    margin-top: 20px;
+}
+
+.search-button {
+    height: 40%;
+    width: 60%;
+    right: -40%;
+    bottom: -50%;
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    text-align: center;
+}
+
+.card-container {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s;
+}
+
+.card-container:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card-header {
+    background-color: #f5f5f5;
+    color: #333;
+    padding: 10px 15px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.card-content {
+    padding: 20px;
+}
+
+.search-button {
+    background-color: #007bff;
+    color: white;
+}
+
+.search-button:hover {
+    background-color: #0056b3;
+}

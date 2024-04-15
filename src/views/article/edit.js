@@ -80,10 +80,11 @@ const CreateArticleEditOrDelete = () => {
         <>
             <Navbar/>
             <div style={{ padding: '80px' }}>
-            <Grid container spacing={2} justifyContent="center" alignItems="center" direction="column">
-                <Typography variant="h4" gutterBottom>
-                    Modifier ou supprimer une vente
-                </Typography>
+                <Grid container spacing={2} justifyContent="center" alignItems="center">
+                    <Grid item xs={12} md={8}>
+                        <Typography variant="h4" gutterBottom>
+                            Modifier ou supprimer une vente
+                        </Typography>
                 <form onSubmit={handleSubmit} style={{width: '100%'}}>
                     <Grid item xs={12} sm={6}>
                         <TextField
@@ -202,15 +203,25 @@ const CreateArticleEditOrDelete = () => {
                         <Button type="submit" variant="contained" color="primary">
                             Modifier
                         </Button>
+                        <Button variant="contained" color="primary" component={Link} to="/">
+                        Retour
+                    </Button>
+                        <Button type="button" variant="contained" color="primary" onClick={() => deleteArticle(article.id)}>
+                            Supprimer
+                        </Button>
                     </Grid>
                 </form>
-                <Button variant="contained" color="primary" component={Link} to="/">
-                    Retour
-                </Button>
-                <Button type="button" variant="contained" color="primary" onClick={() => deleteArticle(article.id)}>
-                    Supprimer
-                </Button>
-            </Grid>
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                        {article.img ? (
+                            <img src={article.img} alt="Article" style={{ width: '100%', height: 'auto' }} />
+                        ) : (
+                            <div style={{ width: '100%', height: '300px', backgroundColor: 'grey', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '24px', color: 'white' }}>
+                                No image
+                            </div>
+                        )}
+                    </Grid>
+                </Grid>
             </div>
         </>
     );

@@ -94,7 +94,8 @@ const Profil = () => {
     return (
         <>
             <Navbar />
-        <Box sx={{ maxWidth: 800, mx: 'auto' }}>
+            <div style={{ padding: '80px' }}>
+            <Box sx={{ maxWidth: 800, mx: 'auto' }}>
             <Typography variant="h4" gutterBottom>
                 Mon Profil
             </Typography>
@@ -281,6 +282,7 @@ const Profil = () => {
                 </Button>
             )}
         </Box>
+            </div>
             </>
     );
 };
