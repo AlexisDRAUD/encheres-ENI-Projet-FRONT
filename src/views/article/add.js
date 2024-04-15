@@ -95,6 +95,7 @@ const CreateArticleForm = () => {
     return (
         <>
             <Navbar />
+            <div style={{ padding: '80px' }}>
         <Grid container spacing={2} justifyContent="center" alignItems="center" direction="column">
             <Typography variant="h4" gutterBottom>
                 Créer un nouvel article
@@ -220,6 +221,7 @@ const CreateArticleForm = () => {
                 </Grid>
             </form>
         </Grid>
+            </div>
             </>
     );
 };

@@ -78,139 +78,141 @@ const CreateArticleEditOrDelete = () => {
 
     return (
         <>
-            <Navbar />
-        <Grid container spacing={2} justifyContent="center" alignItems="center" direction="column">
-            <Typography variant="h4" gutterBottom>
-                Modifier ou supprimer une vente
-            </Typography>
-            <form onSubmit={handleSubmit} style={{width: '100%'}}>
-                <Grid item xs={12} sm={6}>
-                    <TextField
-                        fullWidth
-                        label="Nom de l'article"
-                        name="nomArticle"
-                        value={article.nomArticle}
-                        onChange={handleChange}
-                        margin="normal"
-                    />
-                    <TextField
-                        fullWidth
-                        label="Description"
-                        name="description"
-                        value={article.description}
-                        onChange={handleChange}
-                        margin="normal"
-                    />
-                    <TextField
-                        fullWidth
-                        type="datetime-local"
-                        label="Date de début"
-                        name="dateDebut"
-                        value={article.dateDebut}
-                        onChange={handleChange}
-                        margin="normal"
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                    />
-                    <TextField
-                        fullWidth
-                        type="datetime-local"
-                        label="Date de fin"
-                        name="dateFin"
-                        value={article.dateFin}
-                        onChange={handleChange}
-                        margin="normal"
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                    />
-                    <TextField
-                        fullWidth
-                        label="Mise à prix"
-                        name="miseAPrix"
-                        type="number"
-                        value={article.miseAPrix}
-                        onChange={handleChange}
-                        margin="normal"
-                    />
-                    <TextField
-                        fullWidth
-                        type="text"
-                        label="Rue"
-                        name="rue"
-                        value={article.rue}
-                        onChange={handleChange}
-                        margin="normal"
-                    />
-                    <TextField
-                        fullWidth
-                        type="text"
-                        label="Code postal"
-                        name="codePostal"
-                        value={article.codePostal}
-                        onChange={handleChange}
-                        margin="normal"
-                    />
-                    <TextField
-                        fullWidth
-                        type="text"
-                        label="Ville"
-                        name="ville"
-                        value={article.ville}
-                        onChange={handleChange}
-                        margin="normal"
-                    />
-                    <FormControl fullWidth margin="normal">
-                        <InputLabel id="category-label">Catégorie</InputLabel>
-                        <Select
-                            labelId="category-label"
-                            id="categorie-select"
-                            value={article.categorieId}
-                            name="categorieId"
+            <Navbar/>
+            <div style={{ padding: '80px' }}>
+            <Grid container spacing={2} justifyContent="center" alignItems="center" direction="column">
+                <Typography variant="h4" gutterBottom>
+                    Modifier ou supprimer une vente
+                </Typography>
+                <form onSubmit={handleSubmit} style={{width: '100%'}}>
+                    <Grid item xs={12} sm={6}>
+                        <TextField
+                            fullWidth
+                            label="Nom de l'article"
+                            name="nomArticle"
+                            value={article.nomArticle}
                             onChange={handleChange}
-                            label="Catégorie"
-                        >
-                            <MenuItem value=""><em>Aucune</em></MenuItem>
-                            {categories.map((category) => (
-                                <MenuItem key={category.id} value={category.id}>
-                                    {category.libelle}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                    <Typography>
-                        Photo de l'article
-                    </Typography>
-                    <input
-                        accept="image/*"
-                        id="contained-button-file"
-                        multiple
-                        type="file"
-                        style={{display: 'none'}}
-                        onChange={handleFileChange}
-                    />
-                    <label htmlFor="contained-button-file">
-                        <Button
-                            component="span"
-                            variant="contained"
-                        >
-                            Upload file
+                            margin="normal"
+                        />
+                        <TextField
+                            fullWidth
+                            label="Description"
+                            name="description"
+                            value={article.description}
+                            onChange={handleChange}
+                            margin="normal"
+                        />
+                        <TextField
+                            fullWidth
+                            type="datetime-local"
+                            label="Date de début"
+                            name="dateDebut"
+                            value={article.dateDebut}
+                            onChange={handleChange}
+                            margin="normal"
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        />
+                        <TextField
+                            fullWidth
+                            type="datetime-local"
+                            label="Date de fin"
+                            name="dateFin"
+                            value={article.dateFin}
+                            onChange={handleChange}
+                            margin="normal"
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        />
+                        <TextField
+                            fullWidth
+                            label="Mise à prix"
+                            name="miseAPrix"
+                            type="number"
+                            value={article.miseAPrix}
+                            onChange={handleChange}
+                            margin="normal"
+                        />
+                        <TextField
+                            fullWidth
+                            type="text"
+                            label="Rue"
+                            name="rue"
+                            value={article.rue}
+                            onChange={handleChange}
+                            margin="normal"
+                        />
+                        <TextField
+                            fullWidth
+                            type="text"
+                            label="Code postal"
+                            name="codePostal"
+                            value={article.codePostal}
+                            onChange={handleChange}
+                            margin="normal"
+                        />
+                        <TextField
+                            fullWidth
+                            type="text"
+                            label="Ville"
+                            name="ville"
+                            value={article.ville}
+                            onChange={handleChange}
+                            margin="normal"
+                        />
+                        <FormControl fullWidth margin="normal">
+                            <InputLabel id="category-label">Catégorie</InputLabel>
+                            <Select
+                                labelId="category-label"
+                                id="categorie-select"
+                                value={article.categorieId}
+                                name="categorieId"
+                                onChange={handleChange}
+                                label="Catégorie"
+                            >
+                                <MenuItem value=""><em>Aucune</em></MenuItem>
+                                {categories.map((category) => (
+                                    <MenuItem key={category.id} value={category.id}>
+                                        {category.libelle}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                        <Typography>
+                            Photo de l'article
+                        </Typography>
+                        <input
+                            accept="image/*"
+                            id="contained-button-file"
+                            multiple
+                            type="file"
+                            style={{display: 'none'}}
+                            onChange={handleFileChange}
+                        />
+                        <label htmlFor="contained-button-file">
+                            <Button
+                                component="span"
+                                variant="contained"
+                            >
+                                Upload file
+                            </Button>
+                        </label>
+                        <Button type="submit" variant="contained" color="primary">
+                            Modifier
                         </Button>
-                    </label>
-                    <Button type="submit" variant="contained" color="primary">
-                        Modifier
-                    </Button>
-                </Grid>
-            </form>
-            <Button variant="contained" color="primary" component={Link} to="/">
-                Retour
-            </Button>
-            <Button type="button" variant="contained" color="primary" onClick={() => deleteArticle(article.id)}>
-                Supprimer
-            </Button>
-        </Grid>
-      </>
+                    </Grid>
+                </form>
+                <Button variant="contained" color="primary" component={Link} to="/">
+                    Retour
+                </Button>
+                <Button type="button" variant="contained" color="primary" onClick={() => deleteArticle(article.id)}>
+                    Supprimer
+                </Button>
+            </Grid>
+            </div>
+        </>
     );
 };
 

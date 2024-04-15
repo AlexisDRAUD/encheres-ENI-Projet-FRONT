@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import CategorieService from "../../service/categorieService";
 import {
+    Box,
     Card,
     TextField,
     Button,
@@ -10,7 +11,7 @@ import {
     FormControl,
     CardContent,
     Typography,
-    Grid, Pagination,
+    Grid, Pagination, useMediaQuery, useTheme,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import Filters from "../../components/filter";
@@ -20,8 +21,10 @@ import ArticleService from "../../service/articleService";
 
 
 const Home = () => {
+    const theme = useTheme();
     const [PageArticles, setPageArticles] = useState([]);
     const [pageNum, setPageNum] = useState(1);
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const [totalPages, setTotalPages] = useState(1);
     const [articles, setArticles] = useState([]);
     const [categories, setCategories] = useState([]);
@@ -138,51 +141,64 @@ const Home = () => {
 
     return (
         <>
-            <Navbar/>
-            <div style={{ padding: '20px' }}>
+            <Navbar />
+            <div style={{ padding: '80px' }}>
                 <Typography variant="h4" align="center" gutterBottom>
                     Liste des enchères
                 </Typography>
-                <Grid container spacing={2} justifyContent="center">
-                    <Grid item xs={12} sm={6} md={4}>
-                        <TextField
-                            fullWidth
-                            label="Le nom de l'article contient"
-                            variant="outlined"
-                            value={searchTerm}
-                            onChange={handleSearchChange}
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={4} md={3}>
-                        <FormControl fullWidth>
-                            <InputLabel id="category-label">Catégorie</InputLabel>
-                            <Select
-                                labelId="category-label"
-                                id="category-select"
-                                value={selectedCategory}
-                                onChange={handleCategoryChange}
-                                label="Catégorie"
-                            >
-                                <MenuItem value={0}>
-                                    <em>Toutes</em>
-                                </MenuItem>
-                                {categories.map((category) => (
-                                    <MenuItem key={category.id} value={category.id}>
-                                        {category.libelle}
+                <Box display="flex" justifyContent="center">
+                    <Grid container alignItems="stretch" justifyContent="center">
+                        <Grid item xs={12} sm={4} md={3}>
+                            <TextField
+                                fullWidth
+                                label="Le nom de l'article contient"
+                                variant="outlined"
+                                value={searchTerm}
+                                onChange={handleSearchChange}
+                            />
+                            <FormControl fullWidth>
+                                <Select
+                                    labelId="category-label"
+                                    id="category-select"
+                                    value={selectedCategory}
+                                    onChange={handleCategoryChange}
+                                    displayEmpty
+                                >
+                                    <MenuItem value="">
+                                        <em>Toutes</em>
                                     </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
+                                    {categories.map((category) => (
+                                        <MenuItem key={category.id} value={category.id}>
+                                            {category.libelle}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                            {user ? <FilterGrid /> : null}
+                        </Grid>
+                        <Grid item xs={12} sm={5} md={4}>
+                            {isMobile && (
+                                <Button
+                                    variant="contained"
+                                    fullWidth
+                                    onClick={handleSearchClick}
+                                >
+                                    Rechercher
+                                </Button>
+                            )}
+                            {!isMobile && (
+                            <Button
+                                variant="contained"
+                                style={{ height: '40%', width: '60%' , right: '-40%', bottom: '-50%'}}
+                                onClick={handleSearchClick}
+                            >
+                                Rechercher
+                            </Button>
+                            )}
+                        </Grid>
                     </Grid>
-                    <Grid item xs={12} sm={8} md={7}>
-                        <Button variant="contained" fullWidth onClick={handleSearchClick}>
-                            Rechercher
-                        </Button>
-                    </Grid>
-                </Grid>
-                <div style={{display: 'flex', justifyContent: 'center'}}>
-                    {user ? <FilterGrid/> : null}
-                </div>
+                </Box>
+            </div>
             <Grid container spacing={3} justifyContent="center" style={{marginTop: '20px'}}>
                 {articles.length > 0 ? (
                     articles.map(article => (
@@ -246,7 +262,6 @@ const Home = () => {
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <Pagination count={totalPages} page={pageNum}  onChange={handlePageChange} shape="rounded" style={{ margin: 'auto', textAlign: 'center' }} />
                 </div>
-            </div>
         </>
     );
 };

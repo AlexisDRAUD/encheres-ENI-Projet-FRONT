@@ -26,7 +26,7 @@ const Filters = ({ filters, handleCheckboxChange }) => {
 
     return (
         <>
-            <Grid item xs={6}>
+            <Grid item xs={6} >
                 <Typography variant="subtitle1" gutterBottom>
                     Achats
                 </Typography>
@@ -36,18 +36,24 @@ const Filters = ({ filters, handleCheckboxChange }) => {
                             checked={filters.openBids}
                             onChange={handleCheckboxChange}
                             name="openBids"
-                            disabled={categoryDisabled.bids} // Désactiver si un filtre d'enchères est coché
+                            disabled={categoryDisabled.bids}
                         />
                     }
                     label="enchères ouvertes"
+                    style={{
+                        marginRight: 0,
+                        wordBreak: "break-word",
+                        maxWidth: '100%',
+                    }}
                 />
+
                 <FormControlLabel
                     control={
                         <Checkbox
                             checked={filters.ongoingBids}
                             onChange={handleCheckboxChange}
                             name="ongoingBids"
-                            disabled={categoryDisabled.bids} // Désactiver si un filtre d'enchères est coché
+                            disabled={categoryDisabled.bids}
                         />
                     }
                     label="mes enchères en cours"
@@ -58,7 +64,7 @@ const Filters = ({ filters, handleCheckboxChange }) => {
                             checked={filters.wonBids}
                             onChange={handleCheckboxChange}
                             name="wonBids"
-                            disabled={categoryDisabled.bids} // Désactiver si un filtre d'enchères est coché
+                            disabled={categoryDisabled.bids}
                         />
                     }
                     label="mes enchères remportées"
@@ -74,7 +80,7 @@ const Filters = ({ filters, handleCheckboxChange }) => {
                             checked={filters.ongoingSales}
                             onChange={handleCheckboxChange}
                             name="ongoingSales"
-                            disabled={categoryDisabled.sales} // Désactiver si un filtre de ventes est coché
+                            disabled={categoryDisabled.sales}
                         />
                     }
                     label="mes ventes en cours"
@@ -85,7 +91,7 @@ const Filters = ({ filters, handleCheckboxChange }) => {
                             checked={filters.notStartedSales}
                             onChange={handleCheckboxChange}
                             name="notStartedSales"
-                            disabled={categoryDisabled.sales} // Désactiver si un filtre de ventes est coché
+                            disabled={categoryDisabled.sales}
                         />
                     }
                     label="ventes non débutées"
@@ -96,7 +102,7 @@ const Filters = ({ filters, handleCheckboxChange }) => {
                             checked={filters.completedSales}
                             onChange={handleCheckboxChange}
                             name="completedSales"
-                            disabled={categoryDisabled.sales} // Désactiver si un filtre de ventes est coché
+                            disabled={categoryDisabled.sales}
                         />
                     }
                     label="ventes terminées"
