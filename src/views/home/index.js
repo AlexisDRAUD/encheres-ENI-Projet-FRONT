@@ -225,7 +225,7 @@ const Home = () => {
                             </Grid>
 
                             {/* Card for article search */}
-                            <Grid item xs={12} sm={6} md={4}>
+                            <Grid item xs={12} sm={6} md={4} justifyContent="center" alignItems="center">
                                 <Card className="card-container">
                                     <CardContent>
                                         <Typography variant="h6" gutterBottom className="card-header">
@@ -242,11 +242,10 @@ const Home = () => {
                                             <Box marginTop={2}>
                                                 <Button
                                                     variant="contained"
-                                                    fullWidth
                                                     onClick={handleSearchClick}
                                                     className="search-button"
                                                 >
-                                                    Search
+                                                    Rechercher
                                                 </Button>
                                             </Box>
                                         </div>
