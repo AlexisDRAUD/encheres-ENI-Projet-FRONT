@@ -16,6 +16,7 @@ import CreateArticleEditOrDelete from "./views/article/edit";
 import ImageUpload from "./views/image";
 import LostPassword from "./views/login/forgetPassword";
 import ChangePassword from "./views/login/newPassword";
+import CreateUtilisateurForm from "./views/utilisateur/gestionUtilisateurAdmin";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -30,6 +31,7 @@ root.render(
                 <Route path="/article/:id/edit_or_delete" element={<CreateArticleEditOrDelete/>} />
                 <Route path="/article/add" element={<CreateArticleForm />} />
                 <Route path="/categorie/gestion" element={<CreateCategorieForm />} />
+                <Route path="/admin/gestionUser" element={<CreateUtilisateurForm />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/profil/:param" element={<Profil />} />
                 <Route path="/profil" element={<Profil />} />

@@ -29,6 +29,20 @@ const UtilisateurService = {
 
     },
 
+    getUtilisateurs: async () => {
+        if (key){
+            try {
+                const response = await axios.get(`${API_URL}/user`);
+                return response.data;
+            } catch (error) {
+                console.error('Erreur lors de la récupération des utilisateurs :', error);
+                throw error;
+            }
+        } else {
+            return {}
+        }
+    },
+
     addUser: async(utilisateur) => {
         try {
             await axios.post(`${API_URL}/auth/signup`, utilisateur);
@@ -51,12 +65,25 @@ const UtilisateurService = {
         }
     },
 
+    deleteUserByAdmin: async(id) => {
+        if (key) {
+            try {
+                await axios.delete(`${API_URL}/user/${id}`);
+            } catch (error) {
+                console.error('Erreur lors de la supprission de l\'utilisateur:', error);
+                throw error;
+            }
+        }else {
+            return {}
+        }
+    },
+
     deleteUser: async() => {
         if (key) {
             try {
                 await axios.delete(`${API_URL}/user/${key.id}`);
             } catch (error) {
-                console.error('Erreur lors de la supprission de l\'utilisateur:', error);
+                console.error('Erreur lors de la suppression de l\'utilisateur:', error);
                 throw error;
             }
         }else {

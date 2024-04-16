@@ -44,11 +44,11 @@ const Profil = () => {
             try {
                 const userData = await UtilisateurService.getUtilisateurById();
                 setUtilisateur(userData);
+                console.log("user", utilisateur)
             } catch (error) {
                 // handle errors or set default values
             }
         };
-
         fetchUserData();
     }, []);
 
@@ -85,7 +85,7 @@ const Profil = () => {
 
     const handleDeleteAccount = async () => {
         try {
-            await UtilisateurService.deleteUser()
+            UtilisateurService.deleteUser()
             alert("La suppression de l'utilisateur a réussi");
             authService.logout();
             window.location.replace("/");
