@@ -275,9 +275,9 @@ const Home = () => {
                                                                     src={article.img}
                                                                     alt="Image de l'article"
                                                                     style={{
-                                                                        maxWidth: '300px',
-                                                                        minWidth: '300px',
-                                                                        height: 'auto',
+                                                                        maxWidth: '190px',
+                                                                        minWidth: '190px',
+                                                                        height: '200px',
                                                                         objectFit: 'cover',
                                                                         backgroundColor: '#ffffff'
                                                                     }}
