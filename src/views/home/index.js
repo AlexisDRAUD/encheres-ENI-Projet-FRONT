@@ -270,7 +270,16 @@ const Home = () => {
                                                         {article.img ? (
                                                             <div>
                                                                 {/* eslint-disable-next-line jsx-a11y/img-redundant-alt */}
-                                                                <img src={article.img} alt="Image de l'article" style={{ width: '100%', height: 'auto' }} />
+                                                                <img
+                                                                    src={article.img}
+                                                                    alt="Image de l'article"
+                                                                    style={{
+                                                                        width: '100%',
+                                                                        height: 'auto',
+                                                                        objectFit: 'cover',
+                                                                        backgroundColor: '#ccc'
+                                                                    }}
+                                                                />
                                                             </div>
 
                                                         ) : (
@@ -331,8 +340,16 @@ const Home = () => {
                                                     <div>
                                                         {article.img ? (
                                                             <div>
-                                                                {/* eslint-disable-next-line jsx-a11y/img-redundant-alt */}
-                                                                <img src={article.img} alt="Image de l'article" style={{ width: '100%', height: 'auto' }} />
+                                                                <img
+                                                                    src={article.img}
+                                                                    alt="Image de l'article"
+                                                                    style={{
+                                                                        maxWidth: '300px',
+                                                                        height: 'auto',
+                                                                        objectFit: 'cover',
+                                                                        backgroundColor: '#ccc'
+                                                                    }}
+                                                                />
                                                             </div>
 
                                                         ) : (

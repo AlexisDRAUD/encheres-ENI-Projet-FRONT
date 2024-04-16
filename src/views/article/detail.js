@@ -211,7 +211,7 @@ const ArticleDetail = () => {
                     <Typography variant="body1">Catégorie: {article.categorie.libelle}</Typography>
                     <Typography variant="body1">Meilleure offre: {encheres.length > 0 ? `${encheres[0].montantEnchere}€ par ${encheres[0].utilisateur.username}` : "Aucune offre pour le moment"}</Typography>
                     <Typography variant="body1">Mise à prix: {article.miseAPrix}€</Typography>
-                    <Typography variant="body1">Fin de l'enchère : {formatDateTime(article.dateFin)}</Typography>
+                    <Typography variant="body1">Fin de l'enchère : {formatDate(article.dateFin)}</Typography>
                     {!isMobile && <Typography variant="body1">Retrait : {article.retrait.rue} {article.retrait.codePostal} {article.retrait.ville}</Typography>}
                 </>
             ) : null}
