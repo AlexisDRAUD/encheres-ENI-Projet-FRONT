@@ -77,7 +77,7 @@ const ArticleDetail = () => {
     });
 
     const handleSearchChange = (event) => {
-        setproposition(event.target.value);
+        setproposition(event.target.valueAsNumber);
     };
 
     const handleRetraitEffectue = (event) => {
@@ -151,92 +151,6 @@ const ArticleDetail = () => {
         );
     }
 
-    const RenderArticleDetails = () => (
-        <Grid item xs={12} sm={8}>
-            {currentUtilisateur && article.vendeur.id === currentUtilisateur.id && formatDateTime(article.dateFin) < formatDateTime(currentDate) && encheres && (
-                <>
-                    <Typography sx={{ display: 'flex', justifyContent: 'center' }} variant="h4">{article.acheteur.username} a remporté l'enchère</Typography>
-                </>
-            )}
-            <Typography sx={{ display: 'flex', justifyContent: 'center' }} variant="h6">{article.nomArticle}</Typography>
-            {currentUtilisateur && article.vendeur.id === currentUtilisateur.id && formatDateTime(article.dateFin) < formatDateTime(currentDate) && encheres && (
-                <>
-                    <Grid container justifyContent="center" style={{ display: "flex" }}>
-                        <Grid item xs={4}>
-                            <div>
-                                {article.img ? (
-                                    <div>
-                                        <img src={article.img} alt="Image de l'article" style={{ width: '100%', height: 'auto' }} />
-                                    </div>
-                                ) : (
-                                    <div style={{ width: '100%', height: 0, paddingTop: '100%', backgroundColor: 'grey' }}></div>
-                                )}
-                            </div>
-                        </Grid>
-                        <Grid item xs={8}>
-                            <div >
-                                <Typography variant="body1">Description: {article.description}</Typography>
-                                <Typography variant="body1">Catégorie: {article.categorie.libelle}</Typography>
-                                <Typography variant="body1">Meilleure offre: {encheres.length > 0 ? `${encheres[0].montantEnchere}€ par ${encheres[0].utilisateur.username}` : "Aucune offre pour le moment"}</Typography>
-                                <Typography variant="body1">Mise à prix: {article.miseAPrix}€</Typography>
-                                <Typography variant="body1">Fin de l'enchère : {formatDate(article.dateFin)}</Typography>
-                                <Typography variant="body1">Retrait : {article.retrait.rue} {article.retrait.codePostal} {article.retrait.ville}</Typography>
-                            </div>
-                        </Grid>
-                    </Grid>
-                </>
-            )}
-            {!currentUtilisateur || article.vendeur.id !== currentUtilisateur.id || formatDateTime(article.dateFin) >= formatDateTime(currentDate) || !encheres ? (
-                <Grid item xs={4}>
-                    <div>
-                        {article.img ? (
-                            <div>
-                                <img src={article.img} alt="Image de l'article"
-                                     style={{width: '100%', height: 'auto'}}/>
-                            </div>
-                        ) : (
-                            <div style={{
-                                width: '100%',
-                                height: 0,
-                                paddingTop: '100%',
-                                backgroundColor: 'grey'
-                            }}></div>
-                        )}
-                    </div>
-                </Grid>
-            ) : null}
-            {!currentUtilisateur || article.vendeur.id !== currentUtilisateur.id || formatDateTime(article.dateFin) >= formatDateTime(currentDate) || !encheres ? (
-                <>
-                    <Typography variant="body1">Description: {article.description}</Typography>
-                    <Typography variant="body1">Catégorie: {article.categorie.libelle}</Typography>
-                    <Typography variant="body1">Meilleure offre: {encheres.length > 0 ? `${encheres[0].montantEnchere}€ par ${encheres[0].utilisateur.username}` : "Aucune offre pour le moment"}</Typography>
-                    <Typography variant="body1">Mise à prix: {article.miseAPrix}€</Typography>
-                    <Typography variant="body1">Fin de l'enchère : {formatDate(article.dateFin)}</Typography>
-                    {!isMobile && <Typography variant="body1">Retrait : {article.retrait.rue} {article.retrait.codePostal} {article.retrait.ville}</Typography>}
-                </>
-            ) : null}
-            {isConnected() && currentUtilisateur && article.vendeur.id !== currentUtilisateur.id && formatDateTime(article.dateFin) > formatDateTime(currentDate) && formatDateTime(article.dateDebut) < formatDateTime(currentDate) && (
-                <>
-                    <form onSubmit={handleSubmit} style={{ width: '100%' }}>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                fullWidth
-                                type={"number"}
-                                label="Ma Proposition"
-                                variant="outlined"
-                                value={proposition}
-                                onChange={handleSearchChange}
-                            />
-                            <Button type="submit" variant="contained" color="primary">
-                                Enchérir
-                            </Button>
-                        </Grid>
-                    </form>
-                </>
-            )}
-        </Grid>
-    );
-
     return (
         <>
             <Navbar />
@@ -276,8 +190,8 @@ const ArticleDetail = () => {
                                         <div >
                                             <Typography variant="body1">Description: {article.description}</Typography>
                                             <Typography variant="body1">Catégorie: {article.categorie.libelle}</Typography>
-                                            <Typography variant="body1">Meilleure offre: {encheres.length > 0 ? `${encheres[0].montantEnchere}€ par ${encheres[0].utilisateur.username}` : "Aucune offre pour le moment"}</Typography>
-                                            <Typography variant="body1">Mise à prix: {article.miseAPrix}€</Typography>
+                                            <Typography variant="body1">Meilleure offre: {encheres.length > 0 ? `${encheres[0].montantEnchere} pts par ${encheres[0].utilisateur.username}` : "Aucune offre pour le moment"}</Typography>
+                                            <Typography variant="body1">Mise à prix: {article.miseAPrix} pts</Typography>
                                             <Typography variant="body1">Fin de l'enchère : {formatDate(article.dateFin)}</Typography>
                                             <Typography variant="body1">Retrait : {article.retrait.rue} {article.retrait.codePostal} {article.retrait.ville}</Typography>
                                         </div>
@@ -297,15 +211,99 @@ const ArticleDetail = () => {
                                     </div>
                                     <Typography variant="body1">Description: {article.description}</Typography>
                                     <Typography variant="body1">Catégorie: {article.categorie.libelle}</Typography>
-                                    <Typography variant="body1">Meilleure offre: {encheres.length > 0 ? `${encheres[0].montantEnchere}€ par ${encheres[0].utilisateur.username}` : "Aucune offre pour le moment"}</Typography>
-                                    <Typography variant="body1">Mise à prix: {article.miseAPrix}€</Typography>
+                                    <Typography variant="body1">Meilleure offre: {encheres.length > 0 ? `${encheres[0].montantEnchere} pts par ${encheres[0].utilisateur.username}` : "Aucune offre pour le moment"}</Typography>
+                                    <Typography variant="body1">Mise à prix: {article.miseAPrix} pts</Typography>
                                     <Typography variant="body1">Fin de l'enchère : {formatDate(article.dateFin)}</Typography>
                                     <Typography variant="body1">Retrait : {article.retrait.rue} {article.retrait.codePostal} {article.retrait.ville}</Typography>
                                 </Grid>
                             )}
                         </Grid>
                     </>
-                ) : <RenderArticleDetails />}
+                ) : (<>
+                    <Grid item xs={12} sm={8}>
+                        {currentUtilisateur && article.vendeur.id === currentUtilisateur.id && formatDateTime(article.dateFin) < formatDateTime(currentDate) && encheres && (
+                            <>
+                                <Typography sx={{ display: 'flex', justifyContent: 'center' }} variant="h4">{article.acheteur.username} a remporté l'enchère</Typography>
+                            </>
+                        )}
+                        <Typography sx={{ display: 'flex', justifyContent: 'center' }} variant="h6">{article.nomArticle}</Typography>
+                        {currentUtilisateur && article.vendeur.id === currentUtilisateur.id && formatDateTime(article.dateFin) < formatDateTime(currentDate) && encheres && (
+                            <>
+                                <Grid container justifyContent="center" style={{ display: "flex" }}>
+                                    <Grid item xs={4}>
+                                        <div>
+                                            {article.img ? (
+                                                <div>
+                                                    <img src={article.img} alt="Image de l'article" style={{ width: '100%', height: 'auto' }} />
+                                                </div>
+                                            ) : (
+                                                <div style={{ width: '100%', height: 0, paddingTop: '100%', backgroundColor: 'grey' }}></div>
+                                            )}
+                                        </div>
+                                    </Grid>
+                                    <Grid item xs={8}>
+                                        <div >
+                                            <Typography variant="body1">Description: {article.description}</Typography>
+                                            <Typography variant="body1">Catégorie: {article.categorie.libelle}</Typography>
+                                            <Typography variant="body1">Meilleure offre: {encheres.length > 0 ? `${encheres[0].montantEnchere} pts par ${encheres[0].utilisateur.username}` : "Aucune offre pour le moment"}</Typography>
+                                            <Typography variant="body1">Mise à prix: {article.miseAPrix} pts</Typography>
+                                            <Typography variant="body1">Fin de l'enchère : {formatDate(article.dateFin)}</Typography>
+                                            <Typography variant="body1">Retrait : {article.retrait.rue} {article.retrait.codePostal} {article.retrait.ville}</Typography>
+                                        </div>
+                                    </Grid>
+                                </Grid>
+                            </>
+                        )}
+                        {!currentUtilisateur || article.vendeur.id !== currentUtilisateur.id || formatDateTime(article.dateFin) >= formatDateTime(currentDate) || !encheres ? (
+                            <Grid item xs={4}>
+                                <div>
+                                    {article.img ? (
+                                        <div>
+                                            <img src={article.img} alt="Image de l'article"
+                                                 style={{width: '100%', height: 'auto'}}/>
+                                        </div>
+                                    ) : (
+                                        <div style={{
+                                            width: '100%',
+                                            height: 0,
+                                            paddingTop: '100%',
+                                            backgroundColor: 'grey'
+                                        }}></div>
+                                    )}
+                                </div>
+                            </Grid>
+                        ) : null}
+                        {!currentUtilisateur || article.vendeur.id !== currentUtilisateur.id || formatDateTime(article.dateFin) >= formatDateTime(currentDate) || !encheres ? (
+                            <>
+                                <Typography variant="body1">Description: {article.description}</Typography>
+                                <Typography variant="body1">Catégorie: {article.categorie.libelle}</Typography>
+                                <Typography variant="body1">Meilleure offre: {encheres.length > 0 ? `${encheres[0].montantEnchere} pts par ${encheres[0].utilisateur.username}` : "Aucune offre pour le moment"}</Typography>
+                                <Typography variant="body1">Mise à prix: {article.miseAPrix} pts</Typography>
+                                <Typography variant="body1">Fin de l'enchère : {formatDate(article.dateFin)}</Typography>
+                                {!isMobile && <Typography variant="body1">Retrait : {article.retrait.rue} {article.retrait.codePostal} {article.retrait.ville}</Typography>}
+                            </>
+                        ) : null}
+                        {isConnected() && currentUtilisateur && article.vendeur.id !== currentUtilisateur.id && formatDateTime(article.dateFin) > formatDateTime(currentDate) && formatDateTime(article.dateDebut) < formatDateTime(currentDate) && (
+                            <>
+                                <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField
+                                            fullWidth
+                                            type="number"
+                                            label="Ma Proposition"
+                                            variant="outlined"
+                                            value={proposition}
+                                            onChange={handleSearchChange}
+                                        />
+                                        <Button type="submit" variant="contained" color="primary">
+                                            Enchérir
+                                        </Button>
+                                    </Grid>
+                                </form>
+                            </>
+                        )}
+                    </Grid>
+                </>)}
                 {currentUtilisateur && article.vendeur.id === currentUtilisateur.id && encheres && formatDateTime(article.dateFin) > formatDateTime(currentDate) && (
                     <Grid container spacing={2} justifyContent="center">
                         {encheres.map((auction) => (
@@ -316,7 +314,7 @@ const ArticleDetail = () => {
                                             {auction.utilisateur.pseudo}
                                         </Typography>
                                         <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                                            Montant de l'enchère: {auction.montantEnchere}€
+                                            Montant de l'enchère: {auction.montantEnchere} pts
                                         </Typography>
                                         <Typography variant="body2">
                                             Date de l'enchère: {new Date(auction.dateEnchere).toLocaleString()}
