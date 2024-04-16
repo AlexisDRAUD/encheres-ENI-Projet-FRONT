@@ -274,10 +274,11 @@ const Home = () => {
                                                                     src={article.img}
                                                                     alt="Image de l'article"
                                                                     style={{
-                                                                        width: '100%',
+                                                                        maxWidth: '300px',
+                                                                        minWidth: '300px',
                                                                         height: 'auto',
                                                                         objectFit: 'cover',
-                                                                        backgroundColor: '#ccc'
+                                                                        backgroundColor: '#ffffff'
                                                                     }}
                                                                 />
                                                             </div>
@@ -345,9 +346,10 @@ const Home = () => {
                                                                     alt="Image de l'article"
                                                                     style={{
                                                                         maxWidth: '300px',
+                                                                        minWidth: '300px',
                                                                         height: 'auto',
                                                                         objectFit: 'cover',
-                                                                        backgroundColor: '#ccc'
+                                                                        backgroundColor: '#ffffff'
                                                                     }}
                                                                 />
                                                             </div>
