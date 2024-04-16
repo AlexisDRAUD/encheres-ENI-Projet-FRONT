@@ -91,6 +91,7 @@ const Home = () => {
         setPageArticles(PageArticlesData);
         setArticles(PageArticlesData.content)
         setTotalPages(PageArticlesData.totalPages)
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     const handleSearchChange = (event) => {
