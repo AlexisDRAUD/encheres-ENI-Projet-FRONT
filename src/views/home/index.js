@@ -286,8 +286,9 @@ const Home = () => {
 
                                                         ) : (
                                                             <div style={{
-                                                                width: '100%',
-                                                                height: 0,
+                                                                maxWidth: '190px',
+                                                                minWidth: '190px',
+                                                                height: '27px',
                                                                 paddingTop: '100%',
                                                                 backgroundColor: 'grey'
                                                             }}></div>
@@ -346,9 +347,9 @@ const Home = () => {
                                                                     src={article.img}
                                                                     alt="Image de l'article"
                                                                     style={{
-                                                                        maxWidth: '300px',
-                                                                        minWidth: '300px',
-                                                                        height: 'auto',
+                                                                        maxWidth: '100px',
+                                                                        minWidth: '100px',
+                                                                        height: '100px',
                                                                         objectFit: 'cover',
                                                                         backgroundColor: '#ffffff'
                                                                     }}
