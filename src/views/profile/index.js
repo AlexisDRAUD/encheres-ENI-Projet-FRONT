@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {Button, TextField, Typography, Box, Grid} from "@mui/material";
 import UtilisateurService from "../../service/utilisateurService";
+import authService from "../../service/auth-service";
 import {useNavigate, useParams} from "react-router-dom";
 import Navbar from "../../components/navbar";
 
@@ -86,6 +87,8 @@ const Profil = () => {
         try {
             await UtilisateurService.deleteUser()
             alert("La suppression de l'utilisateur a réussi");
+            authService.logout();
+            window.location.replace("/");
         } catch (error) {
             console.error('Erreur lors de la mise à jour des informations utilisateur :', error);
         }
