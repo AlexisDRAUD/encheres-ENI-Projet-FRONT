@@ -60,7 +60,7 @@ const CreateCategorieForm = () => {
         console.log('canDelete', id)
         var articlesCategorie = articles.filter(a => a.categorie.id === id)
         console.log('articlesCategorie', articlesCategorie)
-        if(articlesCategorie.length != 0){
+        if(articlesCategorie.length !== 0){
             console.log('true')
             return true
         }else{

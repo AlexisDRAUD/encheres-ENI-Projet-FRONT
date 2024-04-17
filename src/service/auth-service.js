@@ -2,13 +2,13 @@ import axios from "axios";
 import IP from "../type/data";
 
 
-const API_URL = IP.serverip;
+const API_URL = IP.serverip+"/auth";
 
 
 class AuthService {
     login(username, password) {
         return axios
-            .post(API_URL + "/auth/signin", {
+            .post(API_URL + "/signin", {
                 username: username,
                 password: password
             })
