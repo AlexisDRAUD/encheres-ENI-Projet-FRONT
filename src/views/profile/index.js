@@ -109,7 +109,7 @@ const Profil = () => {
                             label="Pseudo"
                             name="username"
                             value={utilisateur.username}
-                            disabled="true"
+                            disabled={!editable || !isCreation}
                             onChange={handleChange}
                             fullWidth
                         />
