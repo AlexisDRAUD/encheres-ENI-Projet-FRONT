@@ -15,16 +15,16 @@ import {
     useMediaQuery,
     useTheme, InputLabel,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
 import Filters from "../../components/filter";
 import Navbar from "../../components/navbar";
 import SearchService from "../../service/searchService";
+import Articlecard from "../../components/articlecard";
 
 import './Home.css'; // Importation des styles CSS
 
 const Home = () => {
     const theme = useTheme();
-    const [PageArticles, setPageArticles] = useState([]);
+    const [, setPageArticles] = useState([]);
     const [pageNum, setPageNum] = useState(1);
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const [totalPages, setTotalPages] = useState(1);
@@ -34,7 +34,6 @@ const Home = () => {
     const [selectedCategory, setSelectedCategory] = useState('');
     const [user, setUser] = useState(null);
     const key = JSON.parse(sessionStorage.getItem('user'));
-    const [date] = useState(new Date(Date.now()));
     const [filters, setFilters] = useState({
         userId: (key && key.id) ? key.id : 0,
         search: '',
@@ -115,14 +114,6 @@ const Home = () => {
         setTotalPages(PageArticlesData.totalPages)
     };
 
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        const day = date.getDate().toString().padStart(2, '0');
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const year = date.getFullYear();
-        return `${day}/${month}/${year}`;
-    };
-
     const FilterGrid = () => {
         const handleCheckboxChange = async (event) => {
             const { name, checked } = event.target;
@@ -196,7 +187,6 @@ const Home = () => {
                 {!isMobile && (
                     <Box display="flex" justifyContent="center">
                         <Grid container alignItems="stretch" justifyContent="center" spacing={3}>
-                            {/* Card for category selection */}
                             <Grid item xs={12} sm={6} md={4}>
                                 <Card className="card-container">
                                     <CardContent>
@@ -223,8 +213,6 @@ const Home = () => {
                                     </CardContent>
                                 </Card>
                             </Grid>
-
-                            {/* Card for article search */}
                             <Grid item xs={12} sm={6} md={4}>
                                 <Card className="card-container">
                                     <CardContent>
@@ -261,68 +249,10 @@ const Home = () => {
                 <Grid container spacing={3} justifyContent="center" className="articles-grid"> {/* Ajout de la classe CSS */}
                     {articles.length > 0 ? (
                         articles.map(article => (
-                            <Grid item key={article.id} xs={12} sm={6} md={5} lg={5}>
-                                <Link to={`/article/${article.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                                    <Card>
-                                        <CardContent>
-                                            <Grid container spacing={2}>
-                                                <Grid item xs={4}>
-                                                    <div>
-                                                        {article.img ? (
-                                                            <div>
-                                                                {/* eslint-disable-next-line jsx-a11y/img-redundant-alt */}
-                                                                <img
-                                                                    src={article.img}
-                                                                    alt="Image de l'article"
-                                                                    style={{
-                                                                        maxWidth: '190px',
-                                                                        minWidth: '190px',
-                                                                        height: '200px',
-                                                                        objectFit: 'cover',
-                                                                        backgroundColor: '#ffffff'
-                                                                    }}
-                                                                />
-                                                            </div>
-
-                                                        ) : (
-                                                            <div style={{
-                                                                maxWidth: '190px',
-                                                                minWidth: '190px',
-                                                                height: '27px',
-                                                                paddingTop: '100%',
-                                                                backgroundColor: 'grey'
-                                                            }}></div>
-                                                        )}
-                                                    </div>
-                                                </Grid>
-                                                <Grid item xs={8}>
-                                                    <Typography gutterBottom variant="h5" component="div"
-                                                                style={{ textDecoration: 'underline' }}>
-                                                        {article.nomArticle}
-                                                    </Typography>
-                                                    <Typography variant="body2" color="text.secondary" component="div">
-                                                        <span>Prix :</span> {(article.prixVente) ? article.prixVente : article.miseAPrix}
-                                                    </Typography>
-                                                    <Typography variant="body2" color="text.secondary" component="div">
-                                                        <span>Fin de l'enchère :</span> {formatDate(article.dateFin)}
-                                                    </Typography>
-                                                    <Typography variant="body2" color="text.secondary" component="div">
-                                                        <span>Vendeur:</span> {article.vendeur.username}
-                                                    </Typography>
-                                                    <Typography variant="body2" color="text.secondary">
-                                                        {article.description}
-                                                    </Typography>
-                                                    {(formatDate(article.dateDebut) > formatDate(date) && article.vendeur.id === key.id)
-                                                        ? (<Link to={`/article/${article.id}/edit_or_delete`}>Modifier</Link>)
-                                                        : (<></>)
-                                                    }
-                                                </Grid>
-                                            </Grid>
-                                        </CardContent>
-                                    </Card>
-                                </Link>
-                            </Grid>
-                        ))
+                            <Articlecard
+                                article={article}
+                                key={key}
+                            />                        ))
                     ) : (
                         <Typography variant="h5" align="center" style={{ width: '100%' }}>
                             Pas de produit trouvé
@@ -334,65 +264,10 @@ const Home = () => {
                 <Grid container spacing={3} justifyContent="center" className="articles-grid"> {/* Ajout de la classe CSS */}
                     {articles.length > 0 ? (
                         articles.map(article => (
-                            <Grid item key={article.id} xs={12} sm={6} md={5} lg={5}>
-                                <Link to={`/article/${article.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                                    <Card>
-                                        <CardContent>
-                                            <Grid container spacing={2}>
-                                                <Grid item xs={4}>
-                                                    <div>
-                                                        {article.img ? (
-                                                            <div>
-                                                                <img
-                                                                    src={article.img}
-                                                                    alt="Image de l'article"
-                                                                    style={{
-                                                                        maxWidth: '100px',
-                                                                        minWidth: '100px',
-                                                                        height: '100px',
-                                                                        objectFit: 'cover',
-                                                                        backgroundColor: '#ffffff'
-                                                                    }}
-                                                                />
-                                                            </div>
-
-                                                        ) : (
-                                                            <div style={{
-                                                                width: '100%',
-                                                                height: 0,
-                                                                paddingTop: '100%',
-                                                                backgroundColor: 'grey'
-                                                            }}></div>
-                                                        )}
-                                                    </div>
-                                                </Grid>
-                                                <Grid item xs={8}>
-                                                    <Typography gutterBottom variant="h5" component="div"
-                                                                style={{ textDecoration: 'underline' }}>
-                                                        {article.nomArticle}
-                                                    </Typography>
-                                                    <Typography variant="body2" color="text.secondary" component="div">
-                                                        <span>Prix :</span> {(article.prixVente) ? article.prixVente : article.miseAPrix}
-                                                    </Typography>
-                                                    <Typography variant="body2" color="text.secondary" component="div">
-                                                        <span>Fin de l'enchère :</span> {formatDate(article.dateFin)}
-                                                    </Typography>
-                                                    <Typography variant="body2" color="text.secondary" component="div">
-                                                        <span>Retrait:</span> Retrait : {article.retrait.rue} {article.retrait.codePostal} {article.retrait.ville}
-                                                    </Typography>
-                                                    <Typography variant="body2" color="text.secondary" component="div">
-                                                        <span>Vendeur:</span> {article.vendeur.username}
-                                                    </Typography>
-                                                    {(formatDate(article.dateDebut) > formatDate(date) && article.vendeur.id === key.id)
-                                                        ? (<Link to={`/article/${article.id}/edit_or_delete`}>Modifier</Link>)
-                                                        : (<></>)
-                                                    }
-                                                </Grid>
-                                            </Grid>
-                                        </CardContent>
-                                    </Card>
-                                </Link>
-                            </Grid>
+                            <Articlecard
+                            article={article}
+                            key={key}
+                            />
                         ))
                     ) : (
                         <Typography variant="h5" align="center" style={{ width: '100%' }}>
@@ -401,7 +276,7 @@ const Home = () => {
                     )}
                 </Grid>
             )}
-            <div className="pagination-container"> {/* Ajout de la classe CSS */}
+            <div className="pagination-container">
                 <Pagination count={totalPages} page={pageNum} onChange={handlePageChange} shape="rounded" />
             </div>
         </>
