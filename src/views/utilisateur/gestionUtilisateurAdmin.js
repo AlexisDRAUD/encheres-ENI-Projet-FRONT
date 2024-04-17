@@ -1,6 +1,6 @@
 // CreateUtilisateurForm.js
 import React, {useEffect, useState} from 'react';
-import {Button, Typography, Grid} from '@mui/material';
+import {Button, Typography, Grid, useTheme, useMediaQuery} from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -14,6 +14,8 @@ import {Link} from "react-router-dom";
 import CreditModal from "../../components/modal/CreditModal";
 
 const CreateUtilisateurForm = () => {
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const [modalOpen, setModalOpen] = useState(false);
     const [currentUserId, setCurrentUserId] = useState(null); // Add this state
     const [utilisateurs, setUtilisateurs] = useState([]);
@@ -93,40 +95,53 @@ const CreateUtilisateurForm = () => {
                         <Table sx={{ maxWidth: 1500 }} aria-label="simple table" align="center">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell align="center">Id</TableCell>
-                                    <TableCell align="center">Nom</TableCell>
-                                    <TableCell align="center">Prénom</TableCell>
-                                    <TableCell align="center">username</TableCell>
-                                    <TableCell align="center">Action</TableCell>
+                                    {isMobile ? (
+                                        <TableCell>Utilisateur</TableCell>
+                                    ) : (
+                                        <>
+                                            <TableCell align="center">Id</TableCell>
+                                            <TableCell align="center">Nom</TableCell>
+                                            <TableCell align="center">Prénom</TableCell>
+                                            <TableCell align="center">Username</TableCell>
+                                            <TableCell align="center">Action</TableCell>
+                                        </>
+                                    )}
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {utilisateurs.map((u) => (
-                                    <TableRow
-                                        key={u.id}
-                                        sx={{ width: '30%' } }
-                                    >
-                                        <TableCell component="th" scope="row" align="center">
-                                            {u.id}
-                                        </TableCell>
-                                        <TableCell component="th" scope="row" align="center">
-                                            {u.nom}
-                                        </TableCell>
-                                        <TableCell component="th" scope="row" align="center">
-                                            {u.prenom}
-                                        </TableCell>
-                                        <TableCell component="th" scope="row" align="center">
-                                            {u.username}
-                                        </TableCell>
-                                        <TableCell component="th" scope="row" align="center">
-                                            <Button type="button" variant="contained" color="primary" onClick={() => suppUtilisateur(u.id)}>
-                                                Supprimer
-                                            </Button>
-                                            <Button type="button" variant="contained" color="primary" onClick={() => desactiveUtilisateur(u.id)}>
-                                                Désactiver
-                                            </Button>
-                                            <Button variant="contained" color="primary" onClick={() => handleOpenModal(u.id)}>Ajouter Crédits</Button>
-                                        </TableCell>
+                                    <TableRow key={u.id}>
+                                        {isMobile ? (
+                                            <TableCell>
+                                                <Typography variant="subtitle1">ID: {u.id}</Typography>
+                                                <Typography variant="body2">Nom: {u.nom}</Typography>
+                                                <Typography variant="body2">Prénom: {u.prenom}</Typography>
+                                                <Typography variant="body2">Username: {u.username}</Typography>
+                                                <Button variant="contained" color="primary" onClick={() => handleOpenModal(u.id)}>Ajouter Crédits</Button>
+                                                <Button type="button" variant="contained" color="primary" onClick={() => suppUtilisateur(u.id)}>
+                                                    Supprimer
+                                                </Button>
+                                                <Button type="button" variant="contained" color="primary" onClick={() => desactiveUtilisateur(u.id)}>
+                                                    Désactiver
+                                                </Button>
+                                            </TableCell>
+                                        ) : (
+                                            <>
+                                                <TableCell align="center">{u.id}</TableCell>
+                                                <TableCell align="center">{u.nom}</TableCell>
+                                                <TableCell align="center">{u.prenom}</TableCell>
+                                                <TableCell align="center">{u.username}</TableCell>
+                                                <TableCell align="center">
+                                                    <Button variant="contained" color="primary" onClick={() => handleOpenModal(u.id)}>Ajouter Crédits</Button>
+                                                    <Button type="button" variant="contained" color="primary" onClick={() => suppUtilisateur(u.id)}>
+                                                        Supprimer
+                                                    </Button>
+                                                    <Button type="button" variant="contained" color="primary" onClick={() => desactiveUtilisateur(u.id)}>
+                                                        Désactiver
+                                                    </Button>
+                                                </TableCell>
+                                            </>
+                                        )}
                                     </TableRow>
                                 ))}
                             </TableBody>

@@ -9,6 +9,7 @@ const SessionTimeout = () => {
             logoutTimer = setTimeout(() => {
                 AuthService.logout();
                 window.location.reload();
+                window.location.replace('/login')
             }, 5 * 60 * 1000);
         };
 

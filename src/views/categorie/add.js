@@ -1,6 +1,6 @@
 // CreateCategorieForm.js
 import React, {useEffect, useState} from 'react';
-import {TextField, Button, Typography, Grid} from '@mui/material';
+import {TextField, Button, Typography, Grid, useTheme, useMediaQuery} from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -16,6 +16,9 @@ const CreateCategorieForm = () => {
 
     const [categories, setCategories] = useState([]);
     const [articles, setArticles] = useState([]);
+
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -84,61 +87,58 @@ const CreateCategorieForm = () => {
     return (
         <>
             <Navbar />
-            <div style={{ padding: '80px' }}>
-        <Grid container spacing={2} justifyContent="center" alignItems="center" direction="column">
-            <Typography variant="h4" gutterBottom>
-                Créer une nouvelle catégorie
-            </Typography>
-            <form onSubmit={handleSubmit} style={{width: '100%'}}>
-                <Grid item xs={12} sm={6}>
-                    <TextField
-                        fullWidth
-                        label="Catégorie"
-                        name="nomCategorie"
-                        value={categorie.libelle}
-                        onChange={handleChange}
-                        margin="normal"
-                    />
-                    <Button type="submit" variant="contained" color="primary">
-                        Ajouter
-                    </Button>
+            <div style={{ padding: isMobile ? '30px' : '80px' }}>
+                <Grid container spacing={2} justifyContent="center" alignItems="center" direction="column">
+                    <Typography variant="h5" gutterBottom>
+                        Créer une nouvelle catégorie
+                    </Typography>
+                    <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+                        <Grid item xs={12}>
+                            <TextField
+                                fullWidth
+                                label="Catégorie"
+                                name="nomCategorie"
+                                value={categorie.libelle}
+                                onChange={handleChange}
+                                margin="normal"
+                            />
+                            <Button type="submit" variant="contained" color="primary" style={{ marginTop: 8 }}>
+                                Ajouter
+                            </Button>
+                        </Grid>
+                    </form>
+                    <TableContainer component={Paper}>
+                        <Table sx={{ width: '100%' }} aria-label="simple table" align="center">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Id</TableCell>
+                                    <TableCell align="center">Libellé</TableCell>
+                                    <TableCell align="center">Action</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {categories.map((categorie) => (
+                                    <TableRow key={categorie.id}>
+                                        <TableCell component="th" scope="row" align="center">
+                                            {categorie.id}
+                                        </TableCell>
+                                        <TableCell component="th" scope="row" align="center">
+                                            {categorie.libelle}
+                                        </TableCell>
+                                        <TableCell component="th" scope="row" align="center">
+                                            <Button type="button" variant="contained" color="primary" onClick={() => suppCategorie(categorie.id)}
+                                                    disabled={canDelete(categorie.id)}>
+                                                Supprimer
+                                            </Button>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
                 </Grid>
-            </form>
-            <TableContainer component={Paper}>
-                <Table sx={{ maxWidth: 1500 }} aria-label="simple table" align="center">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Id</TableCell>
-                            <TableCell align="center">Libellé</TableCell>
-                            <TableCell align="center">Action</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {categories.map((categorie) => (
-                            <TableRow
-                                key={categorie.id}
-                                sx={{ width: '30%' } }
-                            >
-                                <TableCell component="th" scope="row" align="center">
-                                    {categorie.id}
-                                </TableCell>
-                                <TableCell component="th" scope="row" align="center">
-                                    {categorie.libelle}
-                                </TableCell>
-                                <TableCell component="th" scope="row" align="center" >
-                                    <Button type="button" variant="contained" color="primary" onClick={() => suppCategorie(categorie.id)}
-                                    disabled={canDelete(categorie.id)}>
-                                        Supprimer
-                                    </Button>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        </Grid>
             </div>
-            </>
+        </>
     );
 };
 
