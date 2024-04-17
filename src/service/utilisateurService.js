@@ -132,7 +132,16 @@ const UtilisateurService = {
         }else {
             return {}
         }
-    }
+    },
+
+    addcredit: async(money) => {
+        try {
+            await axios.post(`${API_URL}/user/credit`, money);
+        } catch (error) {
+            console.error('Erreur lors de l\'ajoute de money de l\'utilisateur:', error);
+            return error.response.data;
+        }
+    },
 };
 
 export default UtilisateurService;

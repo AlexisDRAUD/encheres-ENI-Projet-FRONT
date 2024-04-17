@@ -11,22 +11,32 @@ import Paper from '@mui/material/Paper';
 import UtilisateurService from "../../service/utilisateurService";
 import Navbar from "../../components/navbar";
 import {Link} from "react-router-dom";
+import CreditModal from "../../components/modal/CreditModal";
 
 const CreateUtilisateurForm = () => {
-
+    const [modalOpen, setModalOpen] = useState(false);
+    const [currentUserId, setCurrentUserId] = useState(null); // Add this state
     const [utilisateurs, setUtilisateurs] = useState([]);
     const [utilisateursDesactive, setUtilisateursDesactive] = useState([]);
+
+    const handleOpenModal = (userId) => {
+        setCurrentUserId(userId); // Set the current user ID
+        setModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setModalOpen(false);
+        setCurrentUserId(null); // Clear the current user ID when closing the modal
+    };
 
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const fetchedUsers = await UtilisateurService.getUtilisateurs() ;
-                setUtilisateurs(fetchedUsers)
-                const fetchedUsersDesact = await UtilisateurService.getUtilisateursDesactive() ;
-                setUtilisateursDesactive(fetchedUsersDesact)
-
+                const fetchedUsers = await UtilisateurService.getUtilisateurs();
+                setUtilisateurs(fetchedUsers);
+                const fetchedUsersDesact = await UtilisateurService.getUtilisateursDesactive();
+                setUtilisateursDesactive(fetchedUsersDesact);
             } catch (error) {
-                // handle errors
                 console.error('Error fetching utilisateurs:', error);
             }
         };
@@ -115,6 +125,7 @@ const CreateUtilisateurForm = () => {
                                             <Button type="button" variant="contained" color="primary" onClick={() => desactiveUtilisateur(u.id)}>
                                                 Désactiver
                                             </Button>
+                                            <Button variant="contained" color="primary" onClick={() => handleOpenModal(u.id)}>Ajouter Crédits</Button>
                                         </TableCell>
                                     </TableRow>
                                 ))}
@@ -164,6 +175,7 @@ const CreateUtilisateurForm = () => {
                         </Table>
                     </TableContainer>
                 </Grid>
+                <CreditModal open={modalOpen} onClose={handleCloseModal} userId={currentUserId} />
                 <Button variant="contained" color="primary" component={Link} to="/">
                     Retour
                 </Button>
