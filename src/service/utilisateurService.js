@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {useState} from "react";
 
 const API_URL = 'http://localhost:8080';
 
@@ -14,6 +15,7 @@ if (key) {
 }
 
 const UtilisateurService = {
+
     getUtilisateurById: async () => {
         if (key){
             try {
@@ -33,6 +35,20 @@ const UtilisateurService = {
         if (key){
             try {
                 const response = await axios.get(`${API_URL}/user`);
+                return response.data;
+            } catch (error) {
+                console.error('Erreur lors de la récupération des utilisateurs :', error);
+                throw error;
+            }
+        } else {
+            return {}
+        }
+    },
+
+    getUtilisateursDesactive: async () => {
+        if (key){
+            try {
+                const response = await axios.get(`${API_URL}/user/disabled`);
                 return response.data;
             } catch (error) {
                 console.error('Erreur lors de la récupération des utilisateurs :', error);
@@ -68,7 +84,7 @@ const UtilisateurService = {
     deleteUserByAdmin: async(id) => {
         if (key) {
             try {
-                await axios.delete(`${API_URL}/user/${id}`);
+                await axios.delete(`${API_URL}/user/${id}/${false}`);
             } catch (error) {
                 console.error('Erreur lors de la supprission de l\'utilisateur:', error);
                 throw error;
@@ -81,9 +97,35 @@ const UtilisateurService = {
     deleteUser: async() => {
         if (key) {
             try {
-                await axios.delete(`${API_URL}/user/${key.id}`);
+                await axios.delete(`${API_URL}/user/${key.id}/${false}`);
             } catch (error) {
                 console.error('Erreur lors de la suppression de l\'utilisateur:', error);
+                throw error;
+            }
+        }else {
+            return {}
+        }
+    },
+
+    desactiverUserByAdmin: async(id) => {
+        if (key) {
+            try {
+                await axios.delete(`${API_URL}/user/${id}/${true}`);
+            } catch (error) {
+                console.error('Erreur lors de la supprission de l\'utilisateur:', error);
+                throw error;
+            }
+        }else {
+            return {}
+        }
+    },
+
+    reactiverUserByAdmin: async(id) => {
+        if (key) {
+            try {
+                await axios.delete(`${API_URL}/user/reactiver/${id}`);
+            } catch (error) {
+                console.error('Erreur lors de la supprission de l\'utilisateur:', error);
                 throw error;
             }
         }else {
