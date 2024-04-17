@@ -35,7 +35,7 @@ const CategorieService = {
     },
     deleteCategorie: async (id) => {
         try {
-        await axios.post(`${API_URL}/categorie/delete/${id}`);
+        await axios.delete(`${API_URL}/categorie/delete/${id}`);
         } catch (error) {
             console.error('Erreur lors de la suppression en base:', error);
             throw error;
