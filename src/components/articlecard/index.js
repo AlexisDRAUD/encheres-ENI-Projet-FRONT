@@ -2,6 +2,9 @@ import React, {useState} from "react";
 import {Link} from "react-router-dom";
 import {Card, CardContent, Grid, Typography, useMediaQuery, useTheme} from "@mui/material";
 
+
+
+
 const formatDate = (dateString) => {
     const date = new Date(dateString);
     const day = date.getDate().toString().padStart(2, '0');
@@ -10,10 +13,22 @@ const formatDate = (dateString) => {
     return `${day}/${month}/${year}`;
 };
 
-const Articlecard = ({ article, key }) => {
+const formatDateTime = (dateString) => {
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    const hours = date.getHours();
+    const min = date.getMinutes();
+    return `${day}/${month}/${year}/${hours}/${min}`;
+};
+
+const Articlecard = ({ article}) => {
     const [date] = useState(new Date(Date.now()));
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+    const key = JSON.parse(sessionStorage.getItem('user'));
+
     return (
         <>
         {isMobile && (
@@ -66,7 +81,7 @@ const Articlecard = ({ article, key }) => {
                                         <Typography variant="body2" color="text.secondary">
                                             {article.description}
                                         </Typography>
-                                        {(formatDate(article.dateDebut) > formatDate(date) && article.vendeur.id === key.id)
+                                        {(formatDateTime(article.dateDebut) > formatDateTime(date) && article.vendeur.id === key.id)
                                             ? (<Link to={`/article/${article.id}/edit_or_delete`}>Modifier</Link>)
                                             : (<></>)
                                         }
@@ -129,7 +144,7 @@ const Articlecard = ({ article, key }) => {
                                     <Typography variant="body2" color="text.secondary">
                                         {article.description}
                                     </Typography>
-                                    {(formatDate(article.dateDebut) > formatDate(date) && article.vendeur.id === key.id)
+                                    {(formatDateTime(article.dateDebut) > formatDateTime(date) && article.vendeur.id === key.id)
                                         ? (<Link to={`/article/${article.id}/edit_or_delete`}>Modifier</Link>)
                                         : (<></>)
                                     }
