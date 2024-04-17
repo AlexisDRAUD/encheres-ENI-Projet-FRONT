@@ -7,6 +7,7 @@ import CategorieService from "../../service/categorieService";
 import UtilisateurService from "../../service/utilisateurService";
 import Navbar from "../../components/navbar";
 import axios from "axios";
+import IP from "../../type/data";
 
 const CreateArticleForm = () => {
     const key = JSON.parse(sessionStorage.getItem('user'));
@@ -75,8 +76,8 @@ const CreateArticleForm = () => {
         try {
             article.vendeurId = utilisateur.id;
             article.prixVente = article.miseAPrix;
-            article.img = ('http://localhost:8080/upload/' + file.name);
-            await axios.post('http://localhost:8080/upload', formData);
+            article.img = (IP.serverip+'/upload/' + file.name);
+            await axios.post(IP.serverip+'/upload', formData);
             await ArticleService.addArticle(article);
             alert('Article added successfully!');
             window.location.replace("/");

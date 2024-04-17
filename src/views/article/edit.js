@@ -6,6 +6,7 @@ import ArticleService from "../../service/articleService";
 import CategorieService from "../../service/categorieService";
 import Navbar from "../../components/navbar";
 import axios from "axios";
+import IP from "../../type/data";
 
 const CreateArticleEditOrDelete = () => {
     const { id } = useParams();
@@ -56,8 +57,8 @@ const CreateArticleEditOrDelete = () => {
         formData.append('image', file);
         event.preventDefault();
         try {
-            article.img = ('http://localhost:8080/upload/' + file.name);
-            await axios.post('http://localhost:8080/upload', formData);
+            article.img = (IP.serverip +'/upload/' + file.name);
+            await axios.post(IP.serverip+'/upload', formData);
             await ArticleService.updateArticle(article);
             alert('Article update successfully!');
         } catch (error) {

@@ -1,7 +1,8 @@
 import axios from 'axios';
 import {useState} from "react";
+import IP from "../type/data";
 
-const API_URL = 'http://localhost:8080';
+const API_URL = IP.serverip;
 
 const key = JSON.parse(sessionStorage.getItem('user'));
 

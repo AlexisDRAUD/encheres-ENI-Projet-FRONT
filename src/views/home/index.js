@@ -152,7 +152,7 @@ const Home = () => {
                                 onChange={handleSearchChange}
                             />
                         </Grid>
-                        <Grid item xs={12} sm={4} md={3}>
+                        <Grid item xs={12} sm={4} md={3} justifyContent="center" alignItems="center">
                             <FormControl fullWidth>
                                 <InputLabel id="category-label">Catégorie</InputLabel>
                                 <Select
@@ -213,7 +213,7 @@ const Home = () => {
                                     </CardContent>
                                 </Card>
                             </Grid>
-                            <Grid item xs={12} sm={6} md={4}>
+                            <Grid item xs={12} sm={6} md={4} justifyContent="center" alignItems="center">
                                 <Card className="card-container">
                                     <CardContent>
                                         <Typography variant="h6" gutterBottom className="card-header">
@@ -234,7 +234,7 @@ const Home = () => {
                                                     onClick={handleSearchClick}
                                                     className="search-button"
                                                 >
-                                                    Search
+                                                    Recherche
                                                 </Button>
                                             </Box>
                                         </div>

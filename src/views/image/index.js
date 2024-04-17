@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import IP from "../../type/data";
 
 function ImageUpload() {
     const [file, setFile] = useState(null);
@@ -9,7 +10,7 @@ function ImageUpload() {
     useEffect(() => {
         async function fetchImageList() {
             try {
-                const response = await axios.get('http://localhost:8080/upload/list');
+                const response = await axios.get(IP.serverip+'upload/list');
                 setImageList(response.data);
             } catch (error) {
                 console.error('Error fetching image list:', error);
@@ -33,7 +34,7 @@ function ImageUpload() {
         formData.append('image', file);
 
         try {
-            const response = await axios.post('http://localhost:8080/upload', formData);
+            const response = await axios.post(IP.serverip+'/upload', formData);
             setResponse(response.data);
         } catch (error) {
             console.error('Error uploading image:', error);
@@ -43,7 +44,7 @@ function ImageUpload() {
 
     const handleImageClick = (imageName) => {
         // Handle image click logic (e.g., open image in a new tab)
-        window.open(`http://localhost:8080/upload/${imageName}`);
+        window.open(IP.serverip+`upload/${imageName}`);
     };
 
     return (
@@ -62,7 +63,7 @@ function ImageUpload() {
                 {imageList.map((imageName, index) => (
                     <li key={index} onClick={() => handleImageClick(imageName)}>
 
-                        <img src={`http://localhost:8080/upload/${imageName}`} alt={imageName} style={{ width: '100px', height: 'auto' }} />
+                        <img src={IP.serverip+`upload/${imageName}`} alt={imageName} style={{ width: '100px', height: 'auto' }} />
                         <br />
                         {imageName}
                     </li>

@@ -1,13 +1,14 @@
 import axios from "axios";
+import IP from "../type/data";
 
 
-const API_URL = "http://localhost:8080/auth/";
+const API_URL = IP.serverip;
 
 
 class AuthService {
     login(username, password) {
         return axios
-            .post(API_URL + "signin", {
+            .post(API_URL + "/auth/signin", {
                 username: username,
                 password: password
             })
@@ -25,7 +26,7 @@ class AuthService {
     }
 
     register(username, email, password) {
-        return axios.post(API_URL + "signup", {
+        return axios.post(API_URL + "/signup", {
             username: username,
             email: email,
             password: password
@@ -34,7 +35,7 @@ class AuthService {
 
     async forgottenPass(email) {
         try {
-            await axios.post(API_URL + "resetPassword?email=" + email, {});
+            await axios.post(API_URL + "/resetPassword?email=" + email, {});
         } catch (error) {
             return error.response.data;
         }
@@ -42,7 +43,7 @@ class AuthService {
 
     async savePass(password, passwordConfirmation, token) {
         try {
-            await axios.post(API_URL + "savePassword", {
+            await axios.post(API_URL + "/savePassword", {
                 password: password,
                 passwordConfirmation: passwordConfirmation,
                 token: token
