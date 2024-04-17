@@ -67,9 +67,14 @@ const Navbar = () => {
                 {isLoggedIn ? (
                     <>
                         {isAdmin && (
-                            <ListItem button component={Link} to="/categorie/gestion">
-                                <ListItemText primary="Gérer les catégories" />
-                            </ListItem>
+                            <>
+                                <ListItem button component={Link} to="/categorie/gestion">
+                                    <ListItemText primary="Gérer les catégories" />
+                                </ListItem>
+                                <ListItem button component={Link} to="/admin/gestionUser">
+                                    <ListItemText primary="Gérer les utilisateurs" />
+                                </ListItem>
+                            </>
                         )}
                         <ListItem button component={Link} to="/article/add">
                             <ListItemText primary="Vendre un article" />
@@ -112,9 +117,14 @@ const Navbar = () => {
                         {isLoggedIn ? (
                             <>
                                 {isAdmin && (
-                                    <Button color="inherit" component={Link} to="/categorie/gestion">
-                                        Gérer les catégories
-                                    </Button>
+                                    <>
+                                        <Button color="inherit" component={Link} to="/categorie/gestion">
+                                            Gérer les catégories
+                                        </Button>
+                                        <Button color="inherit" component={Link} to="/admin/gestionUser">
+                                            Gérer les utilisateurss
+                                        </Button>
+                                    </>
                                 )}
                                 <Button color="inherit" component={Link} to="/article/add">
                                     Vendre un article

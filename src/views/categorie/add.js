@@ -10,10 +10,12 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import CategorieService from "../../service/categorieService";
 import Navbar from "../../components/navbar";
+import ArticleService from "../../service/articleService";
 
 const CreateCategorieForm = () => {
 
     const [categories, setCategories] = useState([]);
+    const [articles, setArticles] = useState([]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -32,7 +34,8 @@ const CreateCategorieForm = () => {
             try {
                 const fetchedCategories = await CategorieService.getAllCategories();
                 setCategories(fetchedCategories)
-                console.log('fetchedCategories recup', fetchedCategories)
+                const fetchedArticles = await ArticleService.getAllArticles();
+                setArticles((fetchedArticles))
             } catch (error) {
                 // handle errors
                 console.error('Error fetching article:', error);
@@ -45,11 +48,26 @@ const CreateCategorieForm = () => {
         libelle: ""
     });
 
+    console.log('articles', articles)
+
     const handleChange = (event) => {
         setCategorie({...categorie, libelle: event.target.value});
         console.log('categorie.libelle', categorie.libelle)
         console.log('categorie', categorie)
     };
+
+    const canDelete = (id) => {
+        console.log('canDelete', id)
+        var articlesCategorie = articles.filter(a => a.categorie.id === id)
+        console.log('articlesCategorie', articlesCategorie)
+        if(articlesCategorie.length != 0){
+            console.log('true')
+            return true
+        }else{
+            console.log('false')
+            return false
+        }
+    }
 
     async function suppCategorie(id) {
         try {
@@ -61,7 +79,6 @@ const CreateCategorieForm = () => {
         }
         window.location.reload();
     }
-
     console.log('categories', categories)
 
     return (
@@ -108,8 +125,9 @@ const CreateCategorieForm = () => {
                                 <TableCell component="th" scope="row" align="center">
                                     {categorie.libelle}
                                 </TableCell>
-                                <TableCell component="th" scope="row" align="center">
-                                    <Button type="button" variant="contained" color="primary" onClick={() => suppCategorie(categorie.id)}>
+                                <TableCell component="th" scope="row" align="center" >
+                                    <Button type="button" variant="contained" color="primary" onClick={() => suppCategorie(categorie.id)}
+                                    disabled={canDelete(categorie.id)}>
                                         Supprimer
                                     </Button>
                                 </TableCell>
