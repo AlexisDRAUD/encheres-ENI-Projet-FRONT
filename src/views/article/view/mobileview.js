@@ -3,7 +3,7 @@ import {
     Typography,
     Grid,
     CardContent,
-    Snackbar,
+    Snackbar, Button,
 } from '@mui/material';import Paper from "@mui/material/Paper";
 import EnchereService from "../../../service/enchereService";
 import ArticleService from "../../../service/articleService";
@@ -38,6 +38,11 @@ const MobileView = ({ article, encheres, currentUtilisateur, currentDate }) => {
         userId: "",
         articleId:"",
     });
+    const [isActive, setIsActive] = useState(true);
+
+    const handleClick = () => {
+        setIsActive(false);
+    }
 
     const handleSearchChange = (event) => {
         setProposition(event.target.value);
@@ -87,7 +92,7 @@ const MobileView = ({ article, encheres, currentUtilisateur, currentDate }) => {
     return (
         <>
             <Grid container spacing={3} justifyContent="center">
-                {article && currentUtilisateur && formatDateTime(article.dateFin) < formatDateTime(currentDate) ? (
+                {article && currentUtilisateur && formatDateTime(article.dateFin) < formatDateTime(currentDate) && article.acheteur.id === currentUtilisateur.id? (
                     article.acheteur && article.acheteur.id === currentUtilisateur.id ? (
                         <>
                         <Grid item xs={12} sm={8}>
@@ -115,6 +120,9 @@ const MobileView = ({ article, encheres, currentUtilisateur, currentDate }) => {
                                 <Typography variant="body1">Fin de l'enchère : {formatDate(article.dateFin)}</Typography>
                                 <Typography variant="body1">Retrait : {article.retrait.rue} {article.retrait.codePostal} {article.retrait.ville}</Typography>
                             </Grid>
+                            <Button onClick={handleClick} disabled={!isActive} variant={'outlined'}>
+                                Retrait
+                            </Button>
                         </Grid>
                     </>
                     ) : (
@@ -142,14 +150,23 @@ const MobileView = ({ article, encheres, currentUtilisateur, currentDate }) => {
                     </Grid>
                         </>
                     )
-                ) : <RenderArticleDetails
-                    currentUtilisateur={currentUtilisateur}
-                    article={article}
-                    encheres={encheres}
-                    handleSubmit={handleSubmit}
-                    proposition={proposition}
-                    handleSearchChange={handleSearchChange}
-                />}
+                ) : (
+                    <>
+                        <RenderArticleDetails
+                            currentUtilisateur={currentUtilisateur}
+                            article={article}
+                            encheres={encheres}
+                            handleSubmit={handleSubmit}
+                            proposition={proposition}
+                            handleSearchChange={handleSearchChange}
+                        />
+                        {currentUtilisateur && article.vendeur.id === currentUtilisateur.id && formatDateTime(article.dateFin) < formatDateTime(currentDate) && encheres && (
+                            <Button onClick={handleClick} disabled={!isActive} variant="outlined">
+                                Retrait
+                            </Button>
+                        )}
+                    </>
+                )}
                 {currentUtilisateur && article.vendeur.id === currentUtilisateur.id && encheres && formatDateTime(article.dateFin) > formatDateTime(currentDate) && (
                     <Grid container spacing={2} justifyContent="center">
                         {encheres.map((auction) => (
