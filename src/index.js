@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './index.css';
@@ -19,28 +19,44 @@ import ChangePassword from "./views/login/newPassword";
 import CreateUtilisateurForm from "./views/utilisateur/gestionUtilisateurAdmin";
 import NotFound from "./views/notfound";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+function App() {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
 
-root.render(
-    <React.StrictMode>
+    useEffect(() => {
+        const user = JSON.parse(sessionStorage.getItem('user'));
+        setIsLoggedIn(user !== null);
+        setIsAdmin(user && user.admin);
+    }, []);
+
+    return (
         <BrowserRouter>
             <SessionTimeout />
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/image" element={<ImageUpload />} />
                 <Route path="/article/:id" element={<ArticleDetail />} />
-                <Route path="/article/:id/edit_or_delete" element={<CreateArticleEditOrDelete/>} />
+                <Route path="/article/:id/edit_or_delete" element={<CreateArticleEditOrDelete />} />
                 <Route path="/article/add" element={<CreateArticleForm />} />
-                <Route path="/categorie/gestion" element={<CreateCategorieForm />} />
-                <Route path="/admin/gestionUser" element={<CreateUtilisateurForm />} />
+                {isAdmin && <>
+                    <Route path="/categorie/gestion" element={<CreateCategorieForm />} />
+                    <Route path="/admin/gestionUser" element={<CreateUtilisateurForm />} />
+                </>}
                 <Route path="/login" element={<Login />} />
                 <Route path="/profil/:param" element={<Profil />} />
                 <Route path="/profil" element={<Profil />} />
                 <Route path="/lost-password" element={<LostPassword />} />
                 <Route path="/change-password/:token" element={<ChangePassword />} />
-                <Route path='*' element={<NotFound />}/>
+                <Route path='*' element={<NotFound />} />
             </Routes>
         </BrowserRouter>
+    );
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+    <React.StrictMode>
+        <App />
     </React.StrictMode>
 );
 

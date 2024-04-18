@@ -14,7 +14,14 @@ class AuthService {
             })
             .then(response => {
                 if (response.data) {
-                    sessionStorage.setItem("user", JSON.stringify(response.data));
+                    const data = {
+                        id : response.data.id,
+                        accessToken : response.data.accessToken
+                    }
+                    if (response.data.admin){
+                        data.admin = true
+                    }
+                    sessionStorage.setItem("user", JSON.stringify(data));
                 }
 
                 return response.data;
