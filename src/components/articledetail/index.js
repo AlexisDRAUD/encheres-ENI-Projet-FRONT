@@ -22,6 +22,7 @@ const formatDate = (dateString) => {
 
 const RenderArticleDetails = ({currentUtilisateur, article, encheres, handleSubmit, proposition, handleSearchChange, }) => {
     const currentDate = new Date();
+    console.log(currentDate)
 
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
