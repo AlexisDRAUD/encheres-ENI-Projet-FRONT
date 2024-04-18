@@ -67,17 +67,13 @@ const CreateArticleForm = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        if (!file) {
-            alert('Veuillez sélectionner un fichier');
-            return;
-        }
         const formData = new FormData();
         formData.append('image', file);
         try {
             article.vendeurId = utilisateur.id;
             article.prixVente = article.miseAPrix;
             article.img = (IP.serverip+'/upload/' + file.name);
-            await axios.post(IP.serverip+'/upload', formData);
+            axios.post(IP.serverip+'/upload', formData);
             await ArticleService.addArticle(article);
             alert('Article added successfully!');
             window.location.replace("/");

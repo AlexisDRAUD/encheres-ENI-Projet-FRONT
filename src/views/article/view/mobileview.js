@@ -15,9 +15,9 @@ const formatDateTime = (dateString) => {
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear();
-    const hours = date.getHours();
-    const min = date.getMinutes();
-    return `${day}/${month}/${year}/${hours}/${min}`;
+    const hours = date.getHours().toString().padStart(2, '0');
+    const min = date.getMinutes().toString().padStart(2, '0');
+    return `${year}-${month}-${day} ${hours}:${min}`;
 };
 
 const formatDate = (dateString) => {
@@ -27,7 +27,6 @@ const formatDate = (dateString) => {
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
 };
-
 const MobileView = ({ article, encheres, currentUtilisateur, currentDate }) => {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [proposition, setProposition] = useState("");
@@ -53,6 +52,7 @@ const MobileView = ({ article, encheres, currentUtilisateur, currentDate }) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        currentDate.addHours(2)
 
         const formattedDateTime = currentDate.toISOString();
 
