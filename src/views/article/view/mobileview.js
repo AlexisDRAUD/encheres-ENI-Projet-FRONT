@@ -87,8 +87,9 @@ const MobileView = ({ article, encheres, currentUtilisateur, currentDate }) => {
     return (
         <>
             <Grid container spacing={3} justifyContent="center">
-                {article && currentUtilisateur && formatDateTime(article.dateFin) < formatDateTime(currentDate) && article.acheteur.id === currentUtilisateur.id ? (
-                    <>
+                {article && currentUtilisateur && formatDateTime(article.dateFin) < formatDateTime(currentDate) ? (
+                    article.acheteur && article.acheteur.id === currentUtilisateur.id ? (
+                        <>
                         <Grid item xs={12} sm={8}>
                             <Grid container justifyContent="center" style={{ display: "flex" }}>
                                 <Typography variant="h6">Vous avez remporté la vente</Typography>
@@ -116,6 +117,31 @@ const MobileView = ({ article, encheres, currentUtilisateur, currentDate }) => {
                             </Grid>
                         </Grid>
                     </>
+                    ) : (
+                        <>
+                        <Grid item xs={12}>
+                            <Typography variant="body1" style={{ textAlign: 'center' }}>La vente n'a pas abouti</Typography>
+                        </Grid>
+                    <Grid container justifyContent="center" style={{ display: "flex" }}>
+                        <div>
+                            {article.img ? (
+                                <div>
+                                    {/* eslint-disable-next-line jsx-a11y/img-redundant-alt */}
+                                    <img src={article.img} alt="Image de l'article" style={{ width: '100%', height: 'auto' }} />
+                                </div>
+                            ) : (
+                                <div style={{ width: '100%', height: 0, paddingTop: '100%', backgroundColor: 'grey' }}></div>
+                            )}
+                        </div>
+                        <Typography variant="body1">Description: {article.description}</Typography>
+                        <Typography variant="body1">Catégorie: {article.categorie.libelle}</Typography>
+                        <Typography variant="body1">Meilleure offre: {encheres.length > 0 ? `${encheres[0].montantEnchere}€ par ${encheres[0].utilisateur.username}` : "Aucune offre pour le moment"}</Typography>
+                        <Typography variant="body1">Mise à prix: {article.miseAPrix}€</Typography>
+                        <Typography variant="body1">Fin de l'enchère : {formatDate(article.dateFin)}</Typography>
+                        <Typography variant="body1">Retrait : {article.retrait.rue} {article.retrait.codePostal} {article.retrait.ville}</Typography>
+                    </Grid>
+                        </>
+                    )
                 ) : <RenderArticleDetails
                     currentUtilisateur={currentUtilisateur}
                     article={article}

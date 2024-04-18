@@ -95,8 +95,6 @@ const Home = () => {
 
     const handleSearchChange = (event) => {
         const { value } = event.target;
-        const newFilters = { ...filters, search: value };
-        updateFilters(newFilters);
         setSearchTerm(value);
     };
 
