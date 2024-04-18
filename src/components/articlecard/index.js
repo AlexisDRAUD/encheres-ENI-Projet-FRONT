@@ -24,6 +24,8 @@ const formatDateTime = (dateString) => {
 };
 
 const Articlecard = ({ article}) => {
+    const currentDate = new Date();
+    currentDate.addHours(2);
     const [date] = useState(new Date(Date.now()));
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -38,7 +40,7 @@ const Articlecard = ({ article}) => {
                     <Link to={`/article/${article.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                         <Card>
                             <CardContent>
-                                {(article.acheteurRetire === true && article.vendeurRetire === true) ? (
+                                {(article.acheteurRetire === true && article.vendeurRetire === true && formatDateTime(article.dateFin) < formatDateTime(currentDate)) ? (
                                     <Chip
                                         label="Vendu"
                                         color="success"

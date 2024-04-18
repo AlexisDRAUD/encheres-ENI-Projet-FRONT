@@ -60,6 +60,7 @@ const ComputerView = ({ article, encheres, currentUtilisateur, currentDate}) => 
 
     const handleClick = () => {
         ArticleService.updateArticleRetire(article);
+        window.location.reload();
     }
 
     const handleSearchChange = (event) => {
@@ -103,6 +104,7 @@ const ComputerView = ({ article, encheres, currentUtilisateur, currentDate}) => 
             currentUtilisateur = (fetchedUtilisateur);
             encheres = (fetchedEnchere.sort((a, b) => b.montantEnchere - a.montantEnchere));
             setProposition("");
+            window.location.replace('/')
         }
     };
 
