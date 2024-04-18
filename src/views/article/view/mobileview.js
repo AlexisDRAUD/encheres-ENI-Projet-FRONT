@@ -42,10 +42,10 @@ const MobileView = ({ article, encheres, currentUtilisateur, currentDate }) => {
         }
     }, [article, currentUtilisateur]);
 
-    const handleClick = () => {
-        ArticleService.updateArticleRetire(article);
+    const handleClick = async () => {
+        await ArticleService.updateArticleRetire(article);
         window.location.reload();
-    };
+    }
 
     const handleSearchChange = (event) => {
         setProposition(event.target.value);

@@ -58,8 +58,8 @@ const ComputerView = ({ article, encheres, currentUtilisateur, currentDate}) => 
 
 
 
-    const handleClick = () => {
-        ArticleService.updateArticleRetire(article);
+    const handleClick = async () => {
+        await ArticleService.updateArticleRetire(article);
         window.location.reload();
     }
 
