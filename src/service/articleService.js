@@ -62,7 +62,7 @@ const ArticleService = {
 
     deleteArticle: async (id) => {
         try {
-            await axios.post(`${API_URL}/article/delete/${id}`);
+            await axios.delete(`${API_URL}/article/delete/${id}`);
         } catch (error) {
             console.error('Erreur lors de la suppression en base:', error);
             throw error;
