@@ -122,7 +122,7 @@ const Navbar = () => {
                                             Gérer les catégories
                                         </Button>
                                         <Button color="inherit" component={Link} to="/admin/gestionUser">
-                                            Gérer les utilisateurss
+                                            Gérer les utilisateurs
                                         </Button>
                                     </>
                                 )}
