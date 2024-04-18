@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {Link} from "react-router-dom";
-import {Card, CardContent, Grid, Typography, useMediaQuery, useTheme} from "@mui/material";
+import {Card, CardContent, Chip, Grid, Typography, useMediaQuery, useTheme} from "@mui/material";
 
 
 
@@ -28,6 +28,8 @@ const Articlecard = ({ article}) => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const key = JSON.parse(sessionStorage.getItem('user'));
+    console.log(article.vendeurRetire)
+    console.log(article.acheteurRetire)
 
     return (
         <>
@@ -36,6 +38,19 @@ const Articlecard = ({ article}) => {
                     <Link to={`/article/${article.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                         <Card>
                             <CardContent>
+                                {(article.acheteurRetire === true && article.vendeurRetire === true) ? (
+                                    <Chip
+                                        label="Vendu"
+                                        color="success"
+                                        style={{ position: 'relative', top: 5, right: '-84%', zIndex: 200 }}
+                                    />
+                                ) : (
+                                    <Chip
+                                        label="En Vente"
+                                        color="info"
+                                        style={{ position: 'relative', top: 5, right: '-80%', zIndex: 200 }}
+                                    />
+                                )}
                                 <Grid container spacing={2}>
                                     <Grid item xs={4}>
                                         <div>
@@ -81,7 +96,7 @@ const Articlecard = ({ article}) => {
                                         <Typography variant="body2" color="text.secondary">
                                             {article.description}
                                         </Typography>
-                                        {(formatDateTime(article.dateDebut) > formatDateTime(date) && article.vendeur.id === key.id)
+                                        {(formatDateTime(article.dateDebut) > formatDateTime(date) && key && article.vendeur.id === key.id)
                                             ? (<Link to={`/article/${article.id}/edit_or_delete`}>Modifier</Link>)
                                             : (<></>)
                                         }
@@ -96,6 +111,19 @@ const Articlecard = ({ article}) => {
             <Grid item key={article.id} xs={12} sm={6} md={5} lg={5}>
                 <Link to={`/article/${article.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                     <Card>
+                        {(article.acheteurRetire === true && article.vendeurRetire === true) ? (
+                            <Chip
+                                label="Vendu"
+                                color="success"
+                                style={{ position: 'relative', top: 5, right: '-89%', zIndex: 200 }}
+                            />
+                        ) : (
+                            <Chip
+                                label="En Vente"
+                                color="info"
+                                style={{ position: 'relative', top: 5, right: '-85%', zIndex: 200 }}
+                            />
+                        )}
                         <CardContent>
                             <Grid container spacing={2}>
                                 <Grid item xs={4}>
@@ -144,7 +172,7 @@ const Articlecard = ({ article}) => {
                                     <Typography variant="body2" color="text.secondary">
                                         {article.description}
                                     </Typography>
-                                    {(formatDateTime(article.dateDebut) > formatDateTime(date) && article.vendeur.id === key.id)
+                                    {(formatDateTime(article.dateDebut) > formatDateTime(date) && key && article.vendeur.id === key.id)
                                         ? (<Link to={`/article/${article.id}/edit_or_delete`}>Modifier</Link>)
                                         : (<></>)
                                     }
