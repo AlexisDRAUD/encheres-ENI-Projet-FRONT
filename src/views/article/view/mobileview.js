@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Typography,
     Grid,
@@ -32,17 +32,20 @@ const MobileView = ({ article, encheres, currentUtilisateur, currentDate }) => {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [proposition, setProposition] = useState("");
     const [errors, setErrors] = useState([]);
-    const [enchere] = useState({
-        dateEnchere: "",
-        montantEnchere: 0,
-        userId: "",
-        articleId:"",
-    });
     const [isActive, setIsActive] = useState(true);
+    useEffect(() => {
+        if (article && currentUtilisateur) {
+            if (article.acheteur && article.acheteur.id === currentUtilisateur.id) {
+                setIsActive(!article.acheteurRetire);
+            } else {
+                setIsActive(!article.vendeurRetire);
+            }
+        }
+    }, [article, currentUtilisateur]);
 
     const handleClick = () => {
-        setIsActive(false);
-    }
+        ArticleService.updateArticleRetire(article);
+    };
 
     const handleSearchChange = (event) => {
         setProposition(event.target.value);
@@ -53,10 +56,12 @@ const MobileView = ({ article, encheres, currentUtilisateur, currentDate }) => {
 
         const formattedDateTime = currentDate.toISOString();
 
-        enchere.articleId = article.id;
-        enchere.userId = currentUtilisateur.id;
-        enchere.montantEnchere = proposition;
-        enchere.dateEnchere = formattedDateTime;
+        const enchere = { // Utilisation de la variable locale enchere au lieu de useState
+            dateEnchere: formattedDateTime,
+            montantEnchere: proposition,
+            userId: currentUtilisateur.id,
+            articleId: article.id,
+        };
 
         try {
             const response = await EnchereService.addEnchere(enchere);

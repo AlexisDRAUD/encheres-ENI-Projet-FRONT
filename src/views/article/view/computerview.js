@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Typography,
     Grid,
@@ -40,9 +40,20 @@ const ComputerView = ({ article, encheres, currentUtilisateur, currentDate}) => 
         articleId:"",
     });
     const [isActive, setIsActive] = useState(true);
+    useEffect(() => {
+        if (article && currentUtilisateur) {
+            if (article.acheteur && article.acheteur.id === currentUtilisateur.id) {
+                setIsActive(!article.acheteurRetire);
+            } else {
+                setIsActive(!article.vendeurRetire);
+            }
+        }
+    }, [article, currentUtilisateur]);
+
+
 
     const handleClick = () => {
-        setIsActive(false);
+        ArticleService.updateArticleRetire(article);
     }
 
     const handleSearchChange = (event) => {

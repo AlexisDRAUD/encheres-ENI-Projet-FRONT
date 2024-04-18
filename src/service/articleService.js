@@ -68,6 +68,14 @@ const ArticleService = {
             throw error;
         }
     },
+    updateArticleRetire: async (article) => {
+        try {
+            await axios.put(`${API_URL}/article/${article.id}/retire`);
+        } catch (error) {
+            console.error('Erreur lors de la modification de l article:', error);
+            throw error;
+        }
+    },
 };
 
 export default ArticleService;
