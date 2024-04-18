@@ -99,7 +99,7 @@ const MobileView = ({ article, encheres, currentUtilisateur, currentDate }) => {
     return (
         <>
             <Grid container spacing={3} justifyContent="center">
-                {article && currentUtilisateur && formatDateTime(article.dateFin) < formatDateTime(currentDate) && article.acheteur.id === currentUtilisateur.id? (
+                {article && currentUtilisateur && formatDateTime(article.dateFin) <= formatDateTime(currentDate) && article.acheteur.id === currentUtilisateur.id? (
                     article.acheteur && article.acheteur.id === currentUtilisateur.id ? (
                         <>
                         <Grid item xs={12} sm={8}>
@@ -167,14 +167,14 @@ const MobileView = ({ article, encheres, currentUtilisateur, currentDate }) => {
                             proposition={proposition}
                             handleSearchChange={handleSearchChange}
                         />
-                        {currentUtilisateur && article.vendeur.id === currentUtilisateur.id && formatDateTime(article.dateFin) < formatDateTime(currentDate) && encheres && (
+                        {currentUtilisateur && article.vendeur.id === currentUtilisateur.id && formatDateTime(article.dateFin) <= formatDateTime(currentDate) && encheres && (
                             <Button onClick={handleClick} disabled={!isActive} variant="outlined">
                                 Retrait
                             </Button>
                         )}
                     </>
                 )}
-                {currentUtilisateur && article.vendeur.id === currentUtilisateur.id && encheres && formatDateTime(article.dateFin) > formatDateTime(currentDate) && (
+                {currentUtilisateur && article.vendeur.id === currentUtilisateur.id && encheres && formatDateTime(article.dateFin) >= formatDateTime(currentDate) && (
                     <Grid container spacing={2} justifyContent="center">
                         {encheres.map((auction) => (
                             <Grid item key={auction.id}>

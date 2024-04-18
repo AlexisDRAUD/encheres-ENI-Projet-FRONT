@@ -40,7 +40,7 @@ const Articlecard = ({ article}) => {
                     <Link to={`/article/${article.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                         <Card>
                             <CardContent>
-                                {(article.acheteurRetire === true && article.vendeurRetire === true && formatDateTime(article.dateFin) < formatDateTime(currentDate)) ? (
+                                {(article.acheteurRetire === true && article.vendeurRetire === true && formatDateTime(article.dateFin) <= formatDateTime(currentDate)) ? (
                                     <Chip
                                         label="Vendu"
                                         color="success"
