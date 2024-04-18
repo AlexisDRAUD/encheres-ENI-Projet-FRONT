@@ -249,7 +249,6 @@ const Home = () => {
                         articles.map(article => (
                             <Articlecard
                                 article={article}
-                                key={key}
                             />                        ))
                     ) : (
                         <Typography variant="h5" align="center" style={{ width: '100%' }}>
@@ -264,7 +263,6 @@ const Home = () => {
                         articles.map(article => (
                             <Articlecard
                             article={article}
-                            key={key}
                             />
                         ))
                     ) : (

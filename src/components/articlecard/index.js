@@ -81,7 +81,7 @@ const Articlecard = ({ article}) => {
                                         <Typography variant="body2" color="text.secondary">
                                             {article.description}
                                         </Typography>
-                                        {(formatDateTime(article.dateDebut) > formatDateTime(date) && article.vendeur.id === key.id)
+                                        {(formatDateTime(article.dateDebut) > formatDateTime(date) && key && article.vendeur.id === key.id)
                                             ? (<Link to={`/article/${article.id}/edit_or_delete`}>Modifier</Link>)
                                             : (<></>)
                                         }
@@ -144,7 +144,7 @@ const Articlecard = ({ article}) => {
                                     <Typography variant="body2" color="text.secondary">
                                         {article.description}
                                     </Typography>
-                                    {(formatDateTime(article.dateDebut) > formatDateTime(date) && article.vendeur.id === key.id)
+                                    {(formatDateTime(article.dateDebut) > formatDateTime(date) && key && article.vendeur.id === key.id)
                                         ? (<Link to={`/article/${article.id}/edit_or_delete`}>Modifier</Link>)
                                         : (<></>)
                                     }
