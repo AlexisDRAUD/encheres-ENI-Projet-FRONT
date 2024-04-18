@@ -17,6 +17,7 @@ import ImageUpload from "./views/image";
 import LostPassword from "./views/login/forgetPassword";
 import ChangePassword from "./views/login/newPassword";
 import CreateUtilisateurForm from "./views/utilisateur/gestionUtilisateurAdmin";
+import NotFound from "./views/notfound";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -37,6 +38,7 @@ root.render(
                 <Route path="/profil" element={<Profil />} />
                 <Route path="/lost-password" element={<LostPassword />} />
                 <Route path="/change-password/:token" element={<ChangePassword />} />
+                <Route path='*' element={<NotFound />}/>
             </Routes>
         </BrowserRouter>
     </React.StrictMode>
