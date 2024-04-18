@@ -6,13 +6,14 @@ const formatDateTime = (dateString) => {
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear();
-    const hours = date.getHours();
-    const min = date.getMinutes();
-    return `${day}/${month}/${year}/${hours}/${min}`;
+    const hours = date.getHours().toString();
+    const min = date.getMinutes().toString();
+    return `${year}-${month}-${day} ${hours}:${min}`;
 };
 
+
 const formatDate = (dateString) => {
-    const date = new Date(dateString);
+    const date = new Date(dateString)
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear();
@@ -22,8 +23,6 @@ const formatDate = (dateString) => {
 
 const RenderArticleDetails = ({currentUtilisateur, article, encheres, handleSubmit, proposition, handleSearchChange, }) => {
     const currentDate = new Date();
-    console.log(currentDate)
-
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const isConnected = () => {
