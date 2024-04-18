@@ -106,6 +106,7 @@ const Home = () => {
     };
 
     const handleSearchClick = async () => {
+        updateFilters({ ...filters, search: searchTerm });
         const PageArticlesData = await SearchService.Search(pageNum);
         setPageArticles(PageArticlesData);
         setArticles(PageArticlesData.content)
