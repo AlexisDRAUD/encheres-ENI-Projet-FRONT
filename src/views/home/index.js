@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import CategorieService from "../../service/categorieService";
 import {
     Box,
@@ -25,8 +25,11 @@ import './Home.css'; // Importation des styles CSS
 const Home = () => {
     const theme = useTheme();
     const [, setPageArticles] = useState([]);
-    const [pageNum, setPageNum] = useState(1);
-    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+    const [pageNum, setPageNum] = useState(() => {
+        const lastPageVisited = JSON.parse(localStorage.getItem('currentPage'));
+        return lastPageVisited || 1;
+    });
+    const pageNumRef = useRef(pageNum);    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const [totalPages, setTotalPages] = useState(1);
     const [articles, setArticles] = useState([]);
     const [categories, setCategories] = useState([]);
@@ -34,17 +37,32 @@ const Home = () => {
     const [selectedCategory, setSelectedCategory] = useState('');
     const [user, setUser] = useState(null);
     const key = JSON.parse(sessionStorage.getItem('user'));
-    const [filters, setFilters] = useState({
-        userId: (key && key.id) ? key.id : 0,
-        search: '',
-        categorieId: 0,
-        openBids: true,
-        ongoingBids: false,
-        wonBids: false,
-        ongoingSales: false,
-        notStartedSales: false,
-        completedSales: false,
+    const [filters, setFilters] = useState(() => {
+        const filtersFromStorage = sessionStorage.getItem("filters");
+        return filtersFromStorage ? JSON.parse(filtersFromStorage) : {
+            userId: (key && key.id) ? key.id : 0,
+            search: '',
+            categorieId: 0,
+            openBids: true,
+            ongoingBids: false,
+            wonBids: false,
+            ongoingSales: false,
+            notStartedSales: false,
+            completedSales: false,
+        };
     });
+
+    useEffect(() => {
+        pageNumRef.current = pageNum;
+        localStorage.setItem('currentPage', JSON.stringify(pageNumRef.current));
+    }, [pageNum]);
+
+    useEffect(() => {
+        const lastPageVisited = JSON.parse(localStorage.getItem('currentPage'));
+        if (lastPageVisited) {
+            setPageNum(lastPageVisited);
+        }
+    }, []);
 
     useEffect(() => {
         const fetchResources = async () => {
