@@ -40,7 +40,11 @@ const Home = () => {
     const [filters, setFilters] = useState(() => {
         const filtersFromStorage = sessionStorage.getItem("filters");
         let userId = 0;
-        userId = key.id;
+        if (!key){
+            userId = 0;
+        }else {
+            userId = key.id;
+        }
         return filtersFromStorage ? JSON.parse(filtersFromStorage) : {
             userId: userId,
             search: '',
@@ -137,7 +141,13 @@ const Home = () => {
     const FilterGrid = () => {
         const handleCheckboxChange = async (event) => {
             const { name, checked } = event.target;
-            const newFilters = { ...filters, [name]: checked ,userId: key.id};
+            let userId = 0;
+            if (key) {
+                userId = key.id;
+            }else {
+                userId = 0;
+            }
+            const newFilters = { ...filters, [name]: checked ,userId: userId};
             updateFilters(newFilters);
             setPageNum(1);
             const PageArticlesData = await SearchService.Search(1);

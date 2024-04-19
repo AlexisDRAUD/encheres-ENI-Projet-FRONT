@@ -30,6 +30,17 @@ class AuthService {
 
     logout() {
         sessionStorage.removeItem("user");
+        sessionStorage.setItem("filters", JSON.stringify( {
+            userId: 0,
+            search: '',
+            categorieId: 0,
+            openBids: true,
+            ongoingBids: false,
+            wonBids: false,
+            ongoingSales: false,
+            notStartedSales: false,
+            completedSales: false,
+        }));
     }
 
     register(username, email, password) {
