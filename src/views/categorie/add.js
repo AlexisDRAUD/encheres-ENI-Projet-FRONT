@@ -24,7 +24,6 @@ const CreateCategorieForm = () => {
         event.preventDefault();
         try {
             await CategorieService.addCategorie(categorie);
-            alert('Catégorie ajoutée avec succès!');
         } catch (error) {
             alert('Failed to add catégorie: ' + error.message);
         }
@@ -76,7 +75,6 @@ const CreateCategorieForm = () => {
         try {
             console.log('delete', id)
             await CategorieService.deleteCategorie(id);
-            alert('Catégorie supprimée avec succès!');
         } catch (error) {
             alert('Failed to delete catégorie: ' + error.message);
         }

@@ -20,14 +20,6 @@ import CreateUtilisateurForm from "./views/utilisateur/gestionUtilisateurAdmin";
 import NotFound from "./views/notfound";
 
 function App() {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [isAdmin, setIsAdmin] = useState(false);
-
-    useEffect(() => {
-        const user = JSON.parse(sessionStorage.getItem('user'));
-        setIsLoggedIn(user !== null);
-        setIsAdmin(user && user.admin);
-    }, []);
 
     return (
         <BrowserRouter>
@@ -38,10 +30,8 @@ function App() {
                 <Route path="/article/:id" element={<ArticleDetail />} />
                 <Route path="/article/:id/edit_or_delete" element={<CreateArticleEditOrDelete />} />
                 <Route path="/article/add" element={<CreateArticleForm />} />
-                {isAdmin && <>
-                    <Route path="/categorie/gestion" element={<CreateCategorieForm />} />
-                    <Route path="/admin/gestionUser" element={<CreateUtilisateurForm />} />
-                </>}
+                <Route path="/categorie/gestion" element={<CreateCategorieForm />} />
+                <Route path="/admin/gestionUser" element={<CreateUtilisateurForm />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/profil/:param" element={<Profil />} />
                 <Route path="/profil" element={<Profil />} />
