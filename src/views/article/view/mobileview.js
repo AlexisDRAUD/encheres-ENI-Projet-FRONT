@@ -20,6 +20,12 @@ const formatDateTime = (dateString) => {
     return `${year}-${month}-${day} ${hours}:${min}`;
 };
 
+const isDateBeforeCurrentDate = (articleDateFin, currentDate) => {
+    const articleDate = new Date(articleDateFin);
+    const current = new Date(currentDate);
+    return articleDate <= current;
+};
+
 const formatDate = (dateString) => {
     const date = new Date(dateString);
     const day = date.getDate().toString().padStart(2, '0');
@@ -99,7 +105,7 @@ const MobileView = ({ article, encheres, currentUtilisateur, currentDate }) => {
     return (
         <>
             <Grid container spacing={3} justifyContent="center">
-                {article && currentUtilisateur && formatDateTime(article.dateFin) <= formatDateTime(currentDate) && article.acheteur.id === currentUtilisateur.id? (
+                {article && currentUtilisateur && isDateBeforeCurrentDate(article.dateFin, currentDate) && article.acheteur.id === currentUtilisateur.id? (
                     article.acheteur && article.acheteur.id === currentUtilisateur.id ? (
                         <>
                         <Grid item xs={12} sm={8}>
@@ -167,7 +173,7 @@ const MobileView = ({ article, encheres, currentUtilisateur, currentDate }) => {
                             proposition={proposition}
                             handleSearchChange={handleSearchChange}
                         />
-                        {currentUtilisateur && article.vendeur.id === currentUtilisateur.id && formatDateTime(article.dateFin) <= formatDateTime(currentDate) && encheres && (
+                        {currentUtilisateur && article.vendeur.id === currentUtilisateur.id && isDateBeforeCurrentDate(article.dateFin, currentDate) && encheres && (
                             <Button onClick={handleClick} disabled={!isActive} variant="outlined">
                                 Retrait
                             </Button>
