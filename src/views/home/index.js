@@ -39,8 +39,10 @@ const Home = () => {
     const key = JSON.parse(sessionStorage.getItem('user'));
     const [filters, setFilters] = useState(() => {
         const filtersFromStorage = sessionStorage.getItem("filters");
+        let userId = 0;
+        userId = key.id;
         return filtersFromStorage ? JSON.parse(filtersFromStorage) : {
-            userId: (key && key.id) ? key.id : 0,
+            userId: userId,
             search: '',
             categorieId: 0,
             openBids: true,
@@ -51,6 +53,7 @@ const Home = () => {
             completedSales: false,
         };
     });
+
 
     useEffect(() => {
         pageNumRef.current = pageNum;
@@ -118,7 +121,7 @@ const Home = () => {
 
     const handleCategoryChange = (event) => {
         const { value } = event.target;
-        const newFilters = { ...filters, categorieId: value };
+        const newFilters = { ...filters, categorieId: value};
         updateFilters(newFilters);
         setSelectedCategory(value);
     };
@@ -134,7 +137,7 @@ const Home = () => {
     const FilterGrid = () => {
         const handleCheckboxChange = async (event) => {
             const { name, checked } = event.target;
-            const newFilters = { ...filters, [name]: checked };
+            const newFilters = { ...filters, [name]: checked ,userId: key.id};
             updateFilters(newFilters);
             setPageNum(1);
             const PageArticlesData = await SearchService.Search(1);
@@ -277,7 +280,7 @@ const Home = () => {
                 </Grid>
             )}
             {isMobile && (
-                <Grid container spacing={3} justifyContent="center" className="articles-grid"> {/* Ajout de la classe CSS */}
+                <Grid container spacing={3} justifyContent="center" className="articles-grid">
                     {articles.length > 0 ? (
                         articles.map(article => (
                             <Articlecard
